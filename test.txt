@@ -1,0 +1,1 @@
+Ha látod ezt a szöveget, akkor működik a GIT!
