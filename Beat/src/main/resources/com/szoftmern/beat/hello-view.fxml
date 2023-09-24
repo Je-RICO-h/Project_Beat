@@ -10,11 +10,11 @@
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
    <Button mnemonicParsing="false" onAction="#volUp" text="volUp" />
-   <Label fx:id="Volumelabel" text="Volume: 100% " />
+   <Label fx:id="volumeLabel" text="Volume: 100% " />
    <Button mnemonicParsing="false" onAction="#volDown" text="volDown" />
    <Button mnemonicParsing="false" onAction="#mute" text="Mute" />
    <Button mnemonicParsing="false" onAction="#pause" text="Pause/Continue" />
    <Button mnemonicParsing="false" onAction="#stop" text="Stop" />
-   <Label fx:id="statuslabel" text=" " />
-  <Button fx:id="playbutton" onAction="#testMusicPlayer" prefHeight="26.0" prefWidth="93.0" text="Play Music" />
+   <Label fx:id="statusLabel" text=" " />
+  <Button fx:id="playButton" onAction="#testMusicPlayer" prefHeight="26.0" prefWidth="93.0" text="Play Music" />
 </VBox>
