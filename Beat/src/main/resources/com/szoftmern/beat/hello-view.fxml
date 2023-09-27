@@ -3,18 +3,37 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="217.0" prefWidth="241.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
+<VBox alignment="CENTER" prefHeight="430.0" prefWidth="273.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
-   <Button mnemonicParsing="false" onAction="#volUp" text="volUp" />
    <Label fx:id="Volumelabel" text="Volume: 100% " />
-   <Button mnemonicParsing="false" onAction="#volDown" text="volDown" />
+   <Slider fx:id="volumeSlider" />
    <Button mnemonicParsing="false" onAction="#mute" text="Mute" />
-   <Button mnemonicParsing="false" onAction="#pause" text="Pause/Continue" />
-   <Button mnemonicParsing="false" onAction="#stop" text="Stop" />
    <Label fx:id="statuslabel" text=" " />
-  <Button fx:id="playbutton" onAction="#testMusicPlayer" prefHeight="26.0" prefWidth="93.0" text="Play Music" />
+   <Label fx:id="musicDuration" />
+   <HBox prefHeight="100.0" prefWidth="200.0">
+      <children>
+         <Label fx:id="starttime" />
+         <Slider fx:id="timeSlider" prefHeight="21.0" prefWidth="174.0" />
+         <Label fx:id="endtime" />
+      </children>
+      <padding>
+         <Insets top="50.0" />
+      </padding>
+   </HBox>
+   <HBox prefHeight="100.0" prefWidth="200.0" spacing="55.0">
+      <children>
+         <Button mnemonicParsing="false" onAction="#prev" text="Prev" />
+         <Button fx:id="playbutton" mnemonicParsing="false" onAction="#pausePlay" text="Play" />
+         <Button mnemonicParsing="false" onAction="#next" text="Next" />
+      </children>
+      <padding>
+         <Insets top="40.0" />
+      </padding>
+   </HBox>
 </VBox>
