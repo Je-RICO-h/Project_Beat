@@ -1,10 +1,8 @@
 package com.szoftmern.beat;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
     private static Connection conn;
@@ -22,8 +20,32 @@ public class DatabaseManager {
         }
     }
 
-    public static String getFirstTrackURL() {
-        String query = "SELECT resource_url FROM Tracks LIMIT 1";
+
+    public static List<String> getSearchDatabase(String keyword)
+    {
+
+        List<String> myList = new ArrayList<>();
+
+        String query = "SELECT title FROM Tracks WHERE title LIKE \"%" + keyword + "%\"";
+
+        System.out.println(query);
+
+        try (Statement stmt = conn.createStatement()) {
+            try (ResultSet rs = stmt.executeQuery(query)) {
+                while (rs.next()) {
+                    myList.add(rs.getString("title"));
+                }
+                System.out.println(myList);
+                return myList;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return myList;
+        }
+    }
+
+    public static String getTrackURL(String title) {
+        String query = "SELECT resource_url FROM Tracks WHERE title=\"" + title + "\"";
 
         try (Statement stmt = conn.createStatement()) {
             try (ResultSet rs = stmt.executeQuery(query)) {

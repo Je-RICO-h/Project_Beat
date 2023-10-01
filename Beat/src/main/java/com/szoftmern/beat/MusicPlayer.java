@@ -1,19 +1,51 @@
 package com.szoftmern.beat;
 
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
 
-public class MusicPlayer {
+import java.util.List;
+import java.util.Random;
+
+import static com.szoftmern.beat.DatabaseManager.getSearchDatabase;
+
+public class MusicPlayer extends Application {
     //Declaration of Labels, Buttons etc.
+    public ListView<String> listView;
+    public TextField searchBar;
     public Label statusLabel;
-    public Label volumeLabel;
+   public Label volumeLabel;
     private MediaPlayer player;
     private String musicName;
 
     //Constructor
     public MusicPlayer() {}
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+    }
+
+    @FXML
+    public void selectedItem(){
+        String selectedItem = listView.getSelectionModel().getSelectedItem();
+        this.musicName = selectedItem;
+        System.out.println("Kiválasztott elem: " + selectedItem);
+    }
+
+    @FXML
+    public void search() {
+        String keyword = searchBar.getText();
+        ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
+        listView.setItems(result);
+    }
 
     @FXML
     public void volDown()
@@ -75,7 +107,8 @@ public class MusicPlayer {
         }
     }
 
-    @FXML void pause()
+    @FXML
+    public void pause()
     {
         //If status of the player is playing, pause the music, else play it
         if(player.getStatus() == MediaPlayer.Status.PLAYING)
@@ -91,14 +124,16 @@ public class MusicPlayer {
 
     }
 
-    @FXML void stop()
+    @FXML
+    public void stop()
     {
         //Resets and stops the music
         player.stop();
         changeStatus("Music Stopped");
     }
 
-    @FXML void changeStatus(String text)
+    @FXML
+    public void changeStatus(String text)
     {
         statusLabel.setText(text);
     }
@@ -106,29 +141,45 @@ public class MusicPlayer {
     @FXML
     public void testMusicPlayer()
     {
-        String musicURL = DatabaseManager.getFirstTrackURL();
-        String trackTitle = DatabaseManager.getTrackTitleFromURL(musicURL);
-        //Open fileexplorer, and choose a music
-//        FileChooser fileChooser = new FileChooser();
+        String musicURL;
 
-        //Set a default directory everytime it opened, null means the same window
-//        fileChooser.setInitialDirectory(new File("Assets"));
+        if (this.musicName != null) {
+            musicURL = DatabaseManager.getTrackURL(musicName);
+        } else {
+            String randomMusicTitle = randomMusicTitle();
+            this.musicName = randomMusicTitle;
+            musicURL = DatabaseManager.getTrackURL(musicName);
+        }
+//            String trackTitle = DatabaseManager.getTrackTitleFromURL(musicURL);
+            //Open fileexplorer, and choose a music
+    //        FileChooser fileChooser = new FileChooser();
 
-        //Open filexplorer to select a file the return value is the file itself
-//        File musicFile = fileChooser.showOpenDialog(null);
+            //Set a default directory everytime it opened, null means the same window
+    //        fileChooser.setInitialDirectory(new File("Assets"));
 
-        //Play Music
-        //Media sound = new Media(musicFile.toURI().toString());
-        Media sound = new Media(musicURL);
-        this.player = new MediaPlayer(sound);
+            //Open filexplorer to select a file the return value is the file itself
+    //        File musicFile = fileChooser.showOpenDialog(null);
 
-        player.play();
+            //Play Music
+            //Media sound = new Media(musicFile.toURI().toString());
+            Media sound = new Media(musicURL);
+            this.player = new MediaPlayer(sound);
 
-        //Save the music name, as this is required for pause function status change
-        //this.musicName = musicFile.getName();
-        this.musicName = trackTitle;
+            player.play();
 
-        //Update the status label
-        changeStatus("Playing: " + this.musicName);
+            //Save the music name, as this is required for pause function status change
+            //this.musicName = musicFile.getName();
+//            this.musicName = trackTitle;
+
+            //Update the status label
+            changeStatus("Playing: " + this.musicName);
+    }
+
+    public String randomMusicTitle(){
+        Random random = new Random();
+
+        ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(""));
+        int index = random.nextInt(result.size());
+        return result.get(index);
     }
 }
