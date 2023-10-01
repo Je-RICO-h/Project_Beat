@@ -9,22 +9,28 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
    <children>
-      <VBox alignment="CENTER" layoutX="-4.0" layoutY="-3.0" prefHeight="550.0" prefWidth="458.0" spacing="20.0">
+      <VBox alignment="CENTER" layoutX="-4.0" layoutY="-3.0" prefHeight="700.0" prefWidth="458.0" spacing="20.0">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
             <HBox alignment="CENTER" prefHeight="66.0" prefWidth="256.0" spacing="20.0">
                <children>
-                  <TextField fx:id="searchBar" prefHeight="26.0" prefWidth="264.0" />
+                  <TextField fx:id="searchBar" onKeyPressed="#search" prefHeight="26.0" prefWidth="264.0" />
                   <Button contentDisplay="CENTER" minHeight="1.0" mnemonicParsing="false" onAction="#search" prefHeight="26.0" prefWidth="110.0" text="Search" textAlignment="CENTER" />
                </children>
             </HBox>
-            <ListView fx:id="listView" layoutX="24.0" layoutY="69.0" onMouseClicked="#selectedItem" prefHeight="309.0" prefWidth="553.0" />
+            <ListView fx:id="searchResultView" layoutX="24.0" layoutY="69.0" onMouseClicked="#selectedSearchItem" prefHeight="174.0" prefWidth="418.0" />
+            <HBox alignment="CENTER" prefHeight="66.0" prefWidth="256.0" spacing="20.0">
+               <children><Label fx:id="topListLabel" text="Top 10 legnépszerűbb zene:" />
+               <TextField fx:id="topNumberLabel" text="10" prefHeight="26" prefWidth="50" />
+               </children>
+            </HBox>
+            <ListView fx:id="topMusicList" onMouseClicked="#selectedTopListItem" prefHeight="200.0" prefWidth="200.0" />
             <Label fx:id="statusLabel" text=" " />
-            <Button mnemonicParsing="false" onAction="#volUp" prefHeight="60.0" prefWidth="54.0" text="volUp" />
+            <Button mnemonicParsing="false" onAction="#volUp" text="volUp" />
             <Label fx:id="volumeLabel" text="Volume: 100% " />
             <Button mnemonicParsing="false" onAction="#volDown" text="volDown" />
             <Button mnemonicParsing="false" onAction="#mute" text="Mute" />

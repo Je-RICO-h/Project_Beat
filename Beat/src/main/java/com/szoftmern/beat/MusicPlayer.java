@@ -1,41 +1,44 @@
 package com.szoftmern.beat;
 
-import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import java.util.List;
 import java.util.Random;
 
 import static com.szoftmern.beat.DatabaseManager.getSearchDatabase;
+import static com.szoftmern.beat.DatabaseManager.getTopMusic;
 
-public class MusicPlayer extends Application {
+public class MusicPlayer {
     //Declaration of Labels, Buttons etc.
-    public ListView<String> listView;
+    public ListView<String> searchResultView;
+    public ListView<String> topMusicList;
     public TextField searchBar;
+    public TextField topNumberLabel;
     public Label statusLabel;
-   public Label volumeLabel;
+    public Label volumeLabel;
+    public Button playButton;
     private MediaPlayer player;
     private String musicName;
 
     //Constructor
-    public MusicPlayer() {}
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
+    public MusicPlayer() {
+        refreshTopList();
+    }
+    @FXML
+    public void selectedSearchItem(){
+        String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
+        this.musicName = selectedItem;
+        System.out.println("Kiválasztott elem: " + selectedItem);
     }
 
-    @FXML
-    public void selectedItem(){
-        String selectedItem = listView.getSelectionModel().getSelectedItem();
+    public void selectedTopListItem(){
+        String selectedItem = topMusicList.getSelectionModel().getSelectedItem();
         this.musicName = selectedItem;
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
@@ -44,7 +47,47 @@ public class MusicPlayer extends Application {
     public void search() {
         String keyword = searchBar.getText();
         ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
-        listView.setItems(result);
+        searchResultView.setItems(result);
+    }
+    
+    public void refreshTopList() {
+        Thread updateThread = new Thread(() -> {
+            while (true) {
+
+                Platform.runLater(() -> {
+                    ObservableList<String> top = FXCollections.observableArrayList(getTopMusic());
+                    topMusicList.setItems(top);
+
+                    topMusicList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+                        @Override
+                        public ListCell<String> call(ListView<String> param) {
+                            return new ListCell<String>() {
+                                @Override
+                                protected void updateItem(String item, boolean empty) {
+                                    super.updateItem(item, empty);
+
+                                    if (item == null || empty) {
+                                        setText(null);
+                                    } else {
+                                        int index = getIndex() + 1;
+                                        setText(index + ". " + item);
+                                    }
+                                }
+                            };
+                        }
+                    });
+                });
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        updateThread.setDaemon(true);
+        updateThread.start();
     }
 
     @FXML
@@ -146,8 +189,7 @@ public class MusicPlayer extends Application {
         if (this.musicName != null) {
             musicURL = DatabaseManager.getTrackURL(musicName);
         } else {
-            String randomMusicTitle = randomMusicTitle();
-            this.musicName = randomMusicTitle;
+            this.musicName = randomMusicTitle();
             musicURL = DatabaseManager.getTrackURL(musicName);
         }
 //            String trackTitle = DatabaseManager.getTrackTitleFromURL(musicURL);

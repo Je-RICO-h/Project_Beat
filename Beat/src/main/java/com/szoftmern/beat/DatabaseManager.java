@@ -20,27 +20,44 @@ public class DatabaseManager {
         }
     }
 
-
-    public static List<String> getSearchDatabase(String keyword)
+    public static List<String> getTopMusic()
     {
+        List<String> topMusicList = new ArrayList<>();
 
-        List<String> myList = new ArrayList<>();
-
-        String query = "SELECT title FROM Tracks WHERE title LIKE \"%" + keyword + "%\"";
-
-        System.out.println(query);
+        String query = "SELECT title FROM Tracks ORDER BY play_count DESC LIMIT 10";
 
         try (Statement stmt = conn.createStatement()) {
             try (ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
-                    myList.add(rs.getString("title"));
+                    topMusicList.add(rs.getString("title"));
                 }
-                System.out.println(myList);
-                return myList;
+                System.out.println(topMusicList);
+                return topMusicList;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-            return myList;
+            return topMusicList;
+        }
+    }
+
+    public static List<String> getSearchDatabase(String keyword)
+    {
+
+        List<String> tilteList = new ArrayList<>();
+
+        String query = "SELECT title FROM Tracks WHERE title LIKE \"%" + keyword + "%\" ORDER BY title";
+
+        try (Statement stmt = conn.createStatement()) {
+            try (ResultSet rs = stmt.executeQuery(query)) {
+                while (rs.next()) {
+                    tilteList.add(rs.getString("title"));
+                }
+                System.out.println(tilteList);
+                return tilteList;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return tilteList;
         }
     }
 
