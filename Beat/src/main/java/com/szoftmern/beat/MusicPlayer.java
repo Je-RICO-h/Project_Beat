@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import java.io.File;
@@ -16,6 +18,13 @@ import static java.lang.Math.round;
 
 public class MusicPlayer {
     //Declaration of Labels, Buttons etc.
+    @FXML
+    private ImageView heart;
+
+    @FXML
+    private ImageView play_pause;
+    @FXML
+    private ImageView sound;
     public Label statuslabel;
     public Label Volumelabel;
     public Button playbutton;
@@ -32,6 +41,10 @@ public class MusicPlayer {
 
     //List for the music names
     private ArrayList<String> musicNames = new ArrayList<>();
+
+    boolean liked=false;
+
+
 
     //Constructor
     public MusicPlayer() {
@@ -70,12 +83,16 @@ public class MusicPlayer {
 
         //Set the volume status text
 
-        if(player.isMute() && player.getVolume() != 0.0)
+        if(player.isMute() && player.getVolume() != 0.0) {
             Volumelabel.setText("Volume: 0 %");
+            sound.setImage(new Image(getClass().getResourceAsStream("img/mute.png")));
+
+        }
         else
         {
             //Formatting the text and convert it into percentage
             String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
+            sound.setImage(new Image(getClass().getResourceAsStream("img/sound.png")));
 
             //Write out Volume
             Volumelabel.setText(text);
@@ -89,20 +106,24 @@ public class MusicPlayer {
         if(player == null)
         {
             playMusic();
-            playbutton.setText("Pause");
+            //playbutton.setText("Pause");
+            play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
+
         }
         //If status of the player is playing, pause the music, else play it
         else if(player.getStatus() == MediaPlayer.Status.PLAYING)
         {
             player.pause();
-            changeStatus("Music Paused");
-            playbutton.setText("Play");
+            //changeStatus("Music Paused");
+            //playbutton.setText("Play");
+            play_pause.setImage(new Image(getClass().getResourceAsStream("img/play.png")));
         }
         else
         {
             player.play();
-            changeStatus("Playing: " + musicNames.get(this.pos));
-            playbutton.setText("Pause");
+            changeStatus( musicNames.get(this.pos));
+            //playbutton.setText("Pause");
+            play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
         }
 
     }
@@ -127,13 +148,13 @@ public class MusicPlayer {
         //Update the sliders time
         player.currentTimeProperty().addListener((obs2, oldTime, newTime) -> {
 
-                //Update the slider
-                timeSlider.setValue(newTime.toSeconds());
+            //Update the slider
+            timeSlider.setValue(newTime.toSeconds());
 
-                //Update the start time label
-                String smin = String.format("%02d:%02d", round((newTime.toSeconds() / 60) % 60), round(newTime.toSeconds() % 60));
+            //Update the start time label
+            String smin = String.format("%02d:%02d", round((newTime.toSeconds() / 60) % 60), round(newTime.toSeconds() % 60));
 
-                starttime.setText(smin);
+            starttime.setText(smin);
         });
     }
 
@@ -194,10 +215,65 @@ public class MusicPlayer {
             player.play();
 
             //Update the status label
-            changeStatus("Playing: " + musicNames.get(this.pos));
+            changeStatus( musicNames.get(this.pos));
 
         }
     }
+
+    @FXML
+    public void volUp()
+    {
+        //If volume is not at max, increase the volume
+        if(player.getVolume() != 1.0)
+        {
+            player.setVolume(player.getVolume() + 0.1);
+            if (player.getVolume()>=1.0)
+            {
+                player.setVolume(1.0);
+            }
+
+            //Only display if its not muted
+
+            if (!player.isMute())
+            {
+                //Formatting the text and convert it into percentage
+                String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
+                volumeSlider.setValue(player.getVolume()*100);
+
+                //Write out Volume
+                Volumelabel.setText(text);
+            }
+        }
+    }
+
+    @FXML
+    public void volDown()
+    {
+        //If music is not at 0 volume, decrease it
+        if(player.getVolume() >= 0.0)
+        {
+            player.setVolume(player.getVolume() - 0.1);
+            if (player.getVolume()<=0.1)
+            {
+                player.setVolume(0.0);
+            }
+
+            //Only display if its not muted
+
+            if (!player.isMute())
+            {
+                //Formatting the text and convert it into percentage
+                String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
+
+                volumeSlider.setValue(player.getVolume()*100);
+
+                //Write out Volume
+                Volumelabel.setText(text);
+            }
+        }
+    }
+
+
 
     @FXML
     public void next()
@@ -225,5 +301,23 @@ public class MusicPlayer {
         //Play the previous music
         player.stop();
         playMusic();
+    }
+
+    @FXML
+    void like() {
+        if(liked==false)
+        {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
+            liked=true;
+
+        }
+        else
+        {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
+            liked=false;
+
+        }
+
+
     }
 }
