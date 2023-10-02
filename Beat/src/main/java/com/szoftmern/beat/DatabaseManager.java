@@ -20,11 +20,11 @@ public class DatabaseManager {
         }
     }
 
-    public static List<String> getTopMusic()
+    public static List<String> getTopMusic(int topNumber)
     {
         List<String> topMusicList = new ArrayList<>();
 
-        String query = "SELECT title FROM Tracks ORDER BY play_count DESC LIMIT 10";
+        String query = "SELECT title FROM Tracks ORDER BY play_count DESC LIMIT " + topNumber;
 
         try (Statement stmt = conn.createStatement()) {
             try (ResultSet rs = stmt.executeQuery(query)) {

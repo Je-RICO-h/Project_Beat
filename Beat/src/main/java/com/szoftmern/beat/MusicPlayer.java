@@ -55,7 +55,8 @@ public class MusicPlayer {
             while (true) {
 
                 Platform.runLater(() -> {
-                    ObservableList<String> top = FXCollections.observableArrayList(getTopMusic());
+                    int topNumber = Integer.parseInt(topNumberLabel.getText());
+                    ObservableList<String> top = FXCollections.observableArrayList(getTopMusic(topNumber));
                     topMusicList.setItems(top);
 
                     topMusicList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {

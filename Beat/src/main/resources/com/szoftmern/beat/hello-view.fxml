@@ -23,9 +23,9 @@
                </children>
             </HBox>
             <ListView fx:id="searchResultView" layoutX="24.0" layoutY="69.0" onMouseClicked="#selectedSearchItem" prefHeight="174.0" prefWidth="418.0" />
-            <HBox alignment="CENTER" prefHeight="66.0" prefWidth="256.0" spacing="20.0">
-               <children><Label fx:id="topListLabel" text="Top 10 legnépszerűbb zene:" />
-               <TextField fx:id="topNumberLabel" text="10" prefHeight="26" prefWidth="50" />
+            <HBox alignment="CENTER" prefHeight="66.0" prefWidth="256.0">
+               <children><Label fx:id="topListLabel" text="Top " />
+               <TextField fx:id="topNumberLabel" text="10" onKeyPressed="#selectedTopListItem" prefHeight="26" prefWidth="50" />
                </children>
             </HBox>
             <ListView fx:id="topMusicList" onMouseClicked="#selectedTopListItem" prefHeight="200.0" prefWidth="200.0" />
