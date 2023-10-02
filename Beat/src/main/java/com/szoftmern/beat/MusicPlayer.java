@@ -13,7 +13,9 @@ import javafx.scene.media.MediaPlayer;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.List;
 
+import static com.szoftmern.beat.DatabaseManager.*;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
@@ -37,10 +39,10 @@ public class MusicPlayer {
     private int pos = -1;
 
     //List for the musics
-    private ArrayList<Media> musicList = new ArrayList<>();
+    private List<String> musicList = new ArrayList<>();
 
     //List for the music names
-    private ArrayList<String> musicNames = new ArrayList<>();
+    private List<String> musicNames = new ArrayList<>();
 
     boolean liked=false;
 
@@ -48,25 +50,93 @@ public class MusicPlayer {
 
     //Constructor
     public MusicPlayer() {
-        //Get music files from folder
-        File folder = new File("Assets");
-
-        //Initialize the .mp3 filter
-        FileFilter filter = new FileFilter() {
-            public boolean accept(File f)
-            {
-                return f.getName().endsWith("mp3");
-            }
-        };
+//        //Get music files from folder
+//        File folder = new File("Assets");
+//
+//        //Initialize the .mp3 filter
+//        FileFilter filter = new FileFilter() {
+//            public boolean accept(File f)
+//            {
+//                return f.getName().endsWith("mp3");
+//            }
+//        };
 
         //Loop through the folder, and get every mp3 music file, and load it in
-        for (File file : folder.listFiles(filter)) {
-            Media sound = new Media(file.toURI().toString());
-            this.musicList.add(sound);
-            this.musicNames.add(file.getName());
-            pos = 0;
+//        for (File file : folder.listFiles(filter)) {
+//            Media sound = new Media(file.toURI().toString());
+//            this.musicList.add(sound);
+//            this.musicNames.add(file.getName());
+//            pos = 0;
+//        }
+        this.musicNames = getSearchDatabase("");
+
+        for (String title: musicNames) {
+            String URL = getTrackURL(title);
+            this.musicList.add(URL);
         }
+        pos = 0;
     }
+
+//    @FXML
+//    public void selectedSearchItem(){
+//        String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
+//        this.musicName = selectedItem;
+//        System.out.println("Kiválasztott elem: " + selectedItem);
+//    }
+//
+//    public void selectedTopListItem(){
+//        String selectedItem = topMusicList.getSelectionModel().getSelectedItem();
+//        this.musicName = selectedItem;
+//        System.out.println("Kiválasztott elem: " + selectedItem);
+//    }
+//
+//    @FXML
+//    public void search() {
+//        String keyword = searchBar.getText();
+//        ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
+//        searchResultView.setItems(result);
+//    }
+//
+//    public void refreshTopList() {
+//        Thread updateThread = new Thread(() -> {
+//            while (true) {
+//
+//                Platform.runLater(() -> {
+//                    int topNumber = Integer.parseInt(topNumberLabel.getText());
+//                    ObservableList<String> top = FXCollections.observableArrayList(getTopMusic(topNumber));
+//                    topMusicList.setItems(top);
+//
+//                    topMusicList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+//                        @Override
+//                        public ListCell<String> call(ListView<String> param) {
+//                            return new ListCell<String>() {
+//                                @Override
+//                                protected void updateItem(String item, boolean empty) {
+//                                    super.updateItem(item, empty);
+//
+//                                    if (item == null || empty) {
+//                                        setText(null);
+//                                    } else {
+//                                        int index = getIndex() + 1;
+//                                        setText(index + ". " + item);
+//                                    }
+//                                }
+//                            };
+//                        }
+//                    });
+//                });
+//
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        updateThread.setDaemon(true);
+//        updateThread.start();
+//    }
 
     @FXML
     public void mute()
@@ -172,7 +242,8 @@ public class MusicPlayer {
             } catch(Exception e) {
 
                 //Dummy init to access the property
-                this.player = new MediaPlayer(musicList.get(this.pos));
+                Media media = new Media(musicList.get(this.pos));
+                this.player = new MediaPlayer(media);
 
                 // Volume Control
                 volumeSlider.setValue(100);
@@ -189,7 +260,7 @@ public class MusicPlayer {
                 });
             }
             //Create a new player with the new music and set the previous volume for it
-            this.player = new MediaPlayer(musicList.get(this.pos));
+            this.player = new MediaPlayer(new Media(musicList.get(this.pos)));
 
             //Set the volume
             player.setVolume(volumeSlider.getValue() / 100);
