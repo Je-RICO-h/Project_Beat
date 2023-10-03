@@ -5,16 +5,11 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +28,7 @@ public class MusicPlayer {
     public Label statuslabel;
     public Label artistNameLabel;
     public TextField searchTextField;
+    public ListView<String> searchResultView;
     public Label Volumelabel;
     public Button playbutton;
     public Slider volumeSlider;
@@ -49,11 +45,7 @@ public class MusicPlayer {
     //List for the music names
     private List<String> musicNames = new ArrayList<>();
 
-    private List<String> searchResult = new ArrayList<>();
-
     boolean liked=false;
-
-
 
     //Constructor
     public MusicPlayer() {
@@ -66,27 +58,31 @@ public class MusicPlayer {
         pos = 0;
     }
 
-//    @FXML
-//    public void selectedSearchItem(){
-//        String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
-//        this.musicName = selectedItem;
-//        System.out.println("Kiválasztott elem: " + selectedItem);
-//    }
-//
+    @FXML
+    public void selectedSearchItem(){
+        String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
+        pos = this.musicList.indexOf(getTrackURL(selectedItem));
+        playMusic();
+        searchResultView.setVisible(false);
+        System.out.println("Kiválasztott elem: " + selectedItem);
+    }
+
 //    public void selectedTopListItem(){
 //        String selectedItem = topMusicList.getSelectionModel().getSelectedItem();
 //        this.musicName = selectedItem;
 //        System.out.println("Kiválasztott elem: " + selectedItem);
 //    }
-//
+
     @FXML
     public void search() {
         String keyword = searchTextField.getText();
         if (!keyword.isEmpty()) {
-            searchResult = getSearchDatabase(keyword);
+            ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
+            searchResultView.setItems(result);
+            searchResultView.setVisible(true);
+        } else {
+            searchResultView.setVisible(false);
         }
-//        ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
-//        searchResultView.setItems(result);
     }
 //
 //    public void refreshTopList() {
