@@ -40,6 +40,23 @@ public class DatabaseManager {
         }
     }
 
+    public static String getArtist(String title) {
+        String query = "SELECT name " +
+                       "FROM Artists, Tracks,Track_Artists " +
+                       "WHERE artist_id = Artists.id AND track_id = Tracks.id AND title LIKE \"" + title + "\" " +
+                       "GROUP BY title";
+
+        try (Statement stmt = conn.createStatement()) {
+            try (ResultSet rs = stmt.executeQuery(query)) {
+                rs.next();
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return "";
+        }
+    }
+
     public static List<String> getSearchDatabase(String keyword)
     {
 

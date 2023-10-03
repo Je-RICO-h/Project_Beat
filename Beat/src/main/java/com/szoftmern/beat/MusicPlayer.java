@@ -2,10 +2,13 @@ package com.szoftmern.beat;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
@@ -28,6 +31,8 @@ public class MusicPlayer {
     @FXML
     private ImageView sound;
     public Label statuslabel;
+    public Label artistNameLabel;
+    public TextField searchTextField;
     public Label Volumelabel;
     public Button playbutton;
     public Slider volumeSlider;
@@ -44,30 +49,14 @@ public class MusicPlayer {
     //List for the music names
     private List<String> musicNames = new ArrayList<>();
 
+    private List<String> searchResult = new ArrayList<>();
+
     boolean liked=false;
 
 
 
     //Constructor
     public MusicPlayer() {
-//        //Get music files from folder
-//        File folder = new File("Assets");
-//
-//        //Initialize the .mp3 filter
-//        FileFilter filter = new FileFilter() {
-//            public boolean accept(File f)
-//            {
-//                return f.getName().endsWith("mp3");
-//            }
-//        };
-
-        //Loop through the folder, and get every mp3 music file, and load it in
-//        for (File file : folder.listFiles(filter)) {
-//            Media sound = new Media(file.toURI().toString());
-//            this.musicList.add(sound);
-//            this.musicNames.add(file.getName());
-//            pos = 0;
-//        }
         this.musicNames = getSearchDatabase("");
 
         for (String title: musicNames) {
@@ -90,12 +79,15 @@ public class MusicPlayer {
 //        System.out.println("Kiválasztott elem: " + selectedItem);
 //    }
 //
-//    @FXML
-//    public void search() {
-//        String keyword = searchBar.getText();
+    @FXML
+    public void search() {
+        String keyword = searchTextField.getText();
+        if (!keyword.isEmpty()) {
+            searchResult = getSearchDatabase(keyword);
+        }
 //        ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
 //        searchResultView.setItems(result);
-//    }
+    }
 //
 //    public void refreshTopList() {
 //        Thread updateThread = new Thread(() -> {
@@ -205,6 +197,14 @@ public class MusicPlayer {
         statuslabel.setText(text);
     }
 
+    @FXML
+    public void changeArtist(String title)
+    {
+        //Function to change the label
+        String text = getArtist(title);
+        artistNameLabel.setText(text);
+    }
+
     public void refreshTimeSlider()
     {
         //Set the sliders max value to the duration
@@ -287,6 +287,8 @@ public class MusicPlayer {
 
             //Update the status label
             changeStatus( musicNames.get(this.pos));
+
+            changeArtist(musicNames.get(this.pos));
 
         }
     }
