@@ -10,10 +10,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.szoftmern.beat.DatabaseManager.*;
 import static java.lang.Math.round;
@@ -22,7 +26,6 @@ public class MusicPlayer {
     //Declaration of Labels, Buttons etc.
     @FXML
     private ImageView heart;
-
     @FXML
     private ImageView play_pause;
     @FXML
@@ -44,9 +47,11 @@ public class MusicPlayer {
     //List for the music names
     private List<String> musicNames = new ArrayList<>();
 
-    boolean liked=false;
+    //List for previously played music
+    private Set<String> musicHistory = new HashSet<>();
 
-
+    boolean liked = false;
+    boolean loop = false;
 
     //Constructor
     public MusicPlayer() {
@@ -217,14 +222,36 @@ public class MusicPlayer {
 
         //Update the sliders time
         player.currentTimeProperty().addListener((obs2, oldTime, newTime) -> {
-
-            //Update the slider
-            timeSlider.setValue(newTime.toSeconds());
+            //If it is not being dragged, update the time
+            if (! timeSlider.isValueChanging()) {
+                timeSlider.setValue(newTime.toSeconds());
+            }
 
             //Update the start time label
             String smin = String.format("%02d:%02d", round((newTime.toSeconds() / 60) % 60), round(newTime.toSeconds() % 60));
 
             starttime.setText(smin);
+
+            //If music is finished, play the next song
+            if (newTime.toSeconds() >= player.getTotalDuration().toSeconds())
+                next();
+        });
+
+        //Seek the player, if the slider drag is stopped
+        timeSlider.valueChangingProperty().addListener((obs, wasChanging, isChanging) -> {
+            if (!isChanging) {
+                player.seek(Duration.seconds(timeSlider.getValue()));
+            }
+        });
+
+        //Change the value property of the player
+        timeSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (!timeSlider.isValueChanging()) {
+                double currentTime = player.getCurrentTime().toSeconds();
+                if (Math.abs(currentTime - newValue.doubleValue()) > 0.5) {
+                    player.seek(Duration.seconds(newValue.doubleValue()));
+                }
+            }
         });
     }
 
@@ -261,6 +288,9 @@ public class MusicPlayer {
             }
             //Create a new player with the new music and set the previous volume for it
             this.player = new MediaPlayer(new Media(musicList.get(this.pos)));
+
+            //Update the music history by appending this music to it if its not into it
+            this.musicHistory.add(musicList.get(this.pos));
 
             //Set the volume
             player.setVolume(volumeSlider.getValue() / 100);
@@ -353,7 +383,9 @@ public class MusicPlayer {
         if (pos == musicList.size()-1)
             pos = 0;
         else
-            pos += 1;
+            //If the music is set to loop, replay the music, else go to the next
+            if(!loop)
+                pos += 1;
 
         //Play the next music
         player.stop();
@@ -388,7 +420,11 @@ public class MusicPlayer {
             liked=false;
 
         }
+    }
 
-
+    @FXML
+    void loop(){
+        //Set loop with button
+        loop = !loop;
     }
 }
