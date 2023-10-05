@@ -30,10 +30,6 @@ public class MusicPlayer {
     //Declaration of Labels, Buttons etc.
     @FXML
     private ImageView heart;
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     @FXML
     private ImageView play_pause;
     @FXML
@@ -61,10 +57,6 @@ public class MusicPlayer {
 
     boolean liked = false;
     boolean loop = false;
-
-    boolean liked=false;
-
-
 
     //Constructor
     public MusicPlayer() {
@@ -235,23 +227,15 @@ public class MusicPlayer {
 
         //Update the sliders time
         player.currentTimeProperty().addListener((obs2, oldTime, newTime) -> {
-<<<<<<< Updated upstream
-
-            //Update the slider
-            timeSlider.setValue(newTime.toSeconds());
-=======
             //If it is not being dragged, update the time
             if (! timeSlider.isValueChanging()) {
                 timeSlider.setValue(newTime.toSeconds());
             }
->>>>>>> Stashed changes
 
             //Update the start time label
             String smin = String.format("%02d:%02d", round((newTime.toSeconds() / 60) % 60), round(newTime.toSeconds() % 60));
 
             starttime.setText(smin);
-<<<<<<< Updated upstream
-=======
 
             //If music is finished, play the next song
             if (newTime.toSeconds() >= player.getTotalDuration().toSeconds())
@@ -273,7 +257,6 @@ public class MusicPlayer {
                     player.seek(Duration.seconds(newValue.doubleValue()));
                 }
             }
->>>>>>> Stashed changes
         });
     }
 
@@ -444,11 +427,6 @@ public class MusicPlayer {
             liked=false;
 
         }
-<<<<<<< Updated upstream
-
-
-    }
-=======
     }
 
     @FXML
@@ -464,5 +442,4 @@ public class MusicPlayer {
         }
     }
 
->>>>>>> Stashed changes
 }
