@@ -2,9 +2,11 @@ package com.szoftmern.beat;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +25,8 @@ import static com.szoftmern.beat.DatabaseManager.*;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
+    @FXML
+    private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
     @FXML
     private ImageView heart;
@@ -426,5 +430,13 @@ public class MusicPlayer {
     void loop(){
         //Set loop with button
         loop = !loop;
+
+        if(loop){
+            loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop2.png")));
+        }
+        else {
+            loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop1.png")));
+        }
     }
+
 }
