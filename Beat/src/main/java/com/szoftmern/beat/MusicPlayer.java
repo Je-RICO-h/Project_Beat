@@ -51,7 +51,6 @@ public class MusicPlayer {
     //List for the music names
     private List<String> musicNames = new ArrayList<>();
 
-
     //List for previously played music
     private Set<String> musicHistory = new HashSet<>();
 
@@ -296,8 +295,6 @@ public class MusicPlayer {
 
             //Update the music history by appending this music to it if its not into it
             this.musicHistory.add(musicList.get(this.pos));
-
-
 
             //Set the volume
             player.setVolume(volumeSlider.getValue() / 100);
