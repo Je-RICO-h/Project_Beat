@@ -2,25 +2,38 @@ package com.szoftmern.beat;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import static com.szoftmern.beat.DatabaseManager.*;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
+    @FXML
+    private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
     @FXML
     private ImageView heart;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     @FXML
     private ImageView play_pause;
     @FXML
@@ -37,10 +50,17 @@ public class MusicPlayer {
     private int pos = -1;
 
     //List for the musics
-    private ArrayList<Media> musicList = new ArrayList<>();
+    private List<String> musicList = new ArrayList<>();
 
     //List for the music names
-    private ArrayList<String> musicNames = new ArrayList<>();
+    private List<String> musicNames = new ArrayList<>();
+
+
+    //List for previously played music
+    private Set<String> musicHistory = new HashSet<>();
+
+    boolean liked = false;
+    boolean loop = false;
 
     boolean liked=false;
 
@@ -48,25 +68,93 @@ public class MusicPlayer {
 
     //Constructor
     public MusicPlayer() {
-        //Get music files from folder
-        File folder = new File("Assets");
-
-        //Initialize the .mp3 filter
-        FileFilter filter = new FileFilter() {
-            public boolean accept(File f)
-            {
-                return f.getName().endsWith("mp3");
-            }
-        };
+//        //Get music files from folder
+//        File folder = new File("Assets");
+//
+//        //Initialize the .mp3 filter
+//        FileFilter filter = new FileFilter() {
+//            public boolean accept(File f)
+//            {
+//                return f.getName().endsWith("mp3");
+//            }
+//        };
 
         //Loop through the folder, and get every mp3 music file, and load it in
-        for (File file : folder.listFiles(filter)) {
-            Media sound = new Media(file.toURI().toString());
-            this.musicList.add(sound);
-            this.musicNames.add(file.getName());
-            pos = 0;
+//        for (File file : folder.listFiles(filter)) {
+//            Media sound = new Media(file.toURI().toString());
+//            this.musicList.add(sound);
+//            this.musicNames.add(file.getName());
+//            pos = 0;
+//        }
+        this.musicNames = getSearchDatabase("");
+
+        for (String title: musicNames) {
+            String URL = getTrackURL(title);
+            this.musicList.add(URL);
         }
+        pos = 0;
     }
+
+//    @FXML
+//    public void selectedSearchItem(){
+//        String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
+//        this.musicName = selectedItem;
+//        System.out.println("Kiválasztott elem: " + selectedItem);
+//    }
+//
+//    public void selectedTopListItem(){
+//        String selectedItem = topMusicList.getSelectionModel().getSelectedItem();
+//        this.musicName = selectedItem;
+//        System.out.println("Kiválasztott elem: " + selectedItem);
+//    }
+//
+//    @FXML
+//    public void search() {
+//        String keyword = searchBar.getText();
+//        ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
+//        searchResultView.setItems(result);
+//    }
+//
+//    public void refreshTopList() {
+//        Thread updateThread = new Thread(() -> {
+//            while (true) {
+//
+//                Platform.runLater(() -> {
+//                    int topNumber = Integer.parseInt(topNumberLabel.getText());
+//                    ObservableList<String> top = FXCollections.observableArrayList(getTopMusic(topNumber));
+//                    topMusicList.setItems(top);
+//
+//                    topMusicList.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+//                        @Override
+//                        public ListCell<String> call(ListView<String> param) {
+//                            return new ListCell<String>() {
+//                                @Override
+//                                protected void updateItem(String item, boolean empty) {
+//                                    super.updateItem(item, empty);
+//
+//                                    if (item == null || empty) {
+//                                        setText(null);
+//                                    } else {
+//                                        int index = getIndex() + 1;
+//                                        setText(index + ". " + item);
+//                                    }
+//                                }
+//                            };
+//                        }
+//                    });
+//                });
+//
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        updateThread.setDaemon(true);
+//        updateThread.start();
+//    }
 
     @FXML
     public void mute()
@@ -147,14 +235,45 @@ public class MusicPlayer {
 
         //Update the sliders time
         player.currentTimeProperty().addListener((obs2, oldTime, newTime) -> {
+<<<<<<< Updated upstream
 
             //Update the slider
             timeSlider.setValue(newTime.toSeconds());
+=======
+            //If it is not being dragged, update the time
+            if (! timeSlider.isValueChanging()) {
+                timeSlider.setValue(newTime.toSeconds());
+            }
+>>>>>>> Stashed changes
 
             //Update the start time label
             String smin = String.format("%02d:%02d", round((newTime.toSeconds() / 60) % 60), round(newTime.toSeconds() % 60));
 
             starttime.setText(smin);
+<<<<<<< Updated upstream
+=======
+
+            //If music is finished, play the next song
+            if (newTime.toSeconds() >= player.getTotalDuration().toSeconds())
+                next();
+        });
+
+        //Seek the player, if the slider drag is stopped
+        timeSlider.valueChangingProperty().addListener((obs, wasChanging, isChanging) -> {
+            if (!isChanging) {
+                player.seek(Duration.seconds(timeSlider.getValue()));
+            }
+        });
+
+        //Change the value property of the player
+        timeSlider.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (!timeSlider.isValueChanging()) {
+                double currentTime = player.getCurrentTime().toSeconds();
+                if (Math.abs(currentTime - newValue.doubleValue()) > 0.5) {
+                    player.seek(Duration.seconds(newValue.doubleValue()));
+                }
+            }
+>>>>>>> Stashed changes
         });
     }
 
@@ -172,7 +291,8 @@ public class MusicPlayer {
             } catch(Exception e) {
 
                 //Dummy init to access the property
-                this.player = new MediaPlayer(musicList.get(this.pos));
+                Media media = new Media(musicList.get(this.pos));
+                this.player = new MediaPlayer(media);
 
                 // Volume Control
                 volumeSlider.setValue(100);
@@ -189,7 +309,12 @@ public class MusicPlayer {
                 });
             }
             //Create a new player with the new music and set the previous volume for it
-            this.player = new MediaPlayer(musicList.get(this.pos));
+            this.player = new MediaPlayer(new Media(musicList.get(this.pos)));
+
+            //Update the music history by appending this music to it if its not into it
+            this.musicHistory.add(musicList.get(this.pos));
+
+
 
             //Set the volume
             player.setVolume(volumeSlider.getValue() / 100);
@@ -282,7 +407,9 @@ public class MusicPlayer {
         if (pos == musicList.size()-1)
             pos = 0;
         else
-            pos += 1;
+            //If the music is set to loop, replay the music, else go to the next
+            if(!loop)
+                pos += 1;
 
         //Play the next music
         player.stop();
@@ -317,7 +444,25 @@ public class MusicPlayer {
             liked=false;
 
         }
+<<<<<<< Updated upstream
 
 
     }
+=======
+    }
+
+    @FXML
+    void loop(){
+        //Set loop with button
+        loop = !loop;
+
+        if(loop){
+            loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop2.png")));
+        }
+        else {
+            loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop1.png")));
+        }
+    }
+
+>>>>>>> Stashed changes
 }
