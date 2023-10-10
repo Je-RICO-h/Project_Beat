@@ -49,7 +49,7 @@ public class MusicPlayer {
 
     //Constructor
     public MusicPlayer() {
-        this.musicNames = getSearchDatabase("");
+        this.musicNames = getEveryTitle();
 
         for (String title: musicNames) {
             String URL = getTrackURL(title);
@@ -77,7 +77,7 @@ public class MusicPlayer {
     public void search() {
         String keyword = searchTextField.getText();
         if (!keyword.isEmpty()) {
-            ObservableList<String> result = FXCollections.observableArrayList(getSearchDatabase(keyword));
+            ObservableList<String> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
             searchResultView.setItems(result);
             searchResultView.setVisible(true);
         } else {
