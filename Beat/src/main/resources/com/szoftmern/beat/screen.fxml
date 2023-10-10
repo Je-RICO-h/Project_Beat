@@ -233,7 +233,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <Label text="Előadó" textFill="WHITE">
+                  <Label fx:id="artistNameLabel" text="Előadó" textFill="WHITE">
                      <font>
                         <Font size="22.0" />
                      </font>
