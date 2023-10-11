@@ -14,4 +14,5 @@ public class Track {
     private String resourceURL;
     private int playCount;
     private List<String> artists;
+    private List<String> genres;
 }
