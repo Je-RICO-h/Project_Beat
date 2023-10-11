@@ -70,7 +70,8 @@ public class MusicPlayer implements Initializable {
             String URL = getTrackURL(title);
             this.musicList.add(URL);
         }
-        pos = 0;
+
+        this.pos = 0;
     }
 
 
@@ -397,7 +398,6 @@ public class MusicPlayer implements Initializable {
             }
         }
     }
-
 
 
     @FXML

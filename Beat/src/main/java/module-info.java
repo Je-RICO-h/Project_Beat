@@ -10,6 +10,7 @@ module com.szoftmern.beat {
     requires com.almasb.fxgl.all;
 
     requires java.sql;
+    requires lombok;
 
     opens com.szoftmern.beat to javafx.fxml;
     exports com.szoftmern.beat;
