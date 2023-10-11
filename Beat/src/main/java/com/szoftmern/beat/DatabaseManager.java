@@ -43,22 +43,25 @@ public class DatabaseManager {
     public static List<String> getEveryTitle() {
         List<String> titleList = new ArrayList<>();
 
-        String query = "SELECT title FROM Tracks ORDER BY title";
+        String query = "SELECT title " +
+                "FROM Tracks " +
+                "ORDER BY title";
         Collection<Object> results = executeQuery(query, "title");
 
         for (Object obj : results) {
             titleList.add("" + obj);
         }
 
-        System.out.printf("\n" + titleList.size());
         return titleList;
     }
 
-    public static Collection<String> getTopMusic(int topNumber) {
-        Collection<String> topMusicList = new ArrayList<>();
+    public static List<String> getTopMusicList() {
+        List<String> topMusicList = new ArrayList<>();
 
-        String query = "SELECT title FROM Tracks ORDER BY play_count DESC " +
-                       "LIMIT " + topNumber;
+        String query = "SELECT title " +
+                "FROM Tracks ORDER " +
+                "BY play_count DESC " +
+                "LIMIT 10";
 
         Collection<Object> results = executeQuery(query, "title");
 
@@ -73,9 +76,9 @@ public class DatabaseManager {
         String artist = "";
 
         String query = "SELECT name " +
-                       "FROM Artists A, Tracks T, Track_Artists " +
-                       "WHERE artist_id = A.id AND track_id = T.id AND title LIKE \"" + title + "\"" +
-                       "GROUP BY title";
+                "FROM Artists A, Tracks T, Track_Artists " +
+                "WHERE artist_id = A.id AND track_id = T.id AND title LIKE \"" + title + "\"" +
+                "GROUP BY title";
 
         Collection<Object> results = executeQuery(query, "name");
 
@@ -101,14 +104,20 @@ public class DatabaseManager {
     }
 
     public static String getTrackURL(String title) {
-        String query = "SELECT resource_url FROM Tracks WHERE title = \"" + title + "\"";
+        String query = "SELECT resource_url " +
+                "FROM Tracks " +
+                "WHERE title = \"" + title + "\"";
         Collection<Object> results = executeQuery(query, "resource_url");
 
         return "" + results.toArray()[0];
     }
+
+    public static String getTitleFromURL(String url) {
+        String query = "SELECT title " +
+                "FROM Tracks " +
+                "WHERE resource_url = \"" + url + "\"";
+        Collection<Object> results = executeQuery(query, "title");
+
+        return "" + results.toArray()[0];
+    }
 }
-
-
-
-
-
