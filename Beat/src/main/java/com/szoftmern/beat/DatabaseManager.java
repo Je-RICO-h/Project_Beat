@@ -19,6 +19,13 @@ public class DatabaseManager {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        JpaTrackDAO tDAo = new JpaTrackDAO();
+
+        for (Track t : tDAo.getEntities()) {
+            System.out.println(t.getTitle());
+        }
+
     }
 
     public static Collection<Object> executeQuery(String queryStr, String column) {
