@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+  http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+  <persistence-unit name="com.szoftmern.beat" transaction-type="RESOURCE_LOCAL">
+      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+      <class>com.szoftmern.beat.Artist</class>
+      <class>com.szoftmern.beat.Genre</class>
+      <class>com.szoftmern.beat.Playlist</class>
+      <class>com.szoftmern.beat.RadioStation</class>
+      <class>com.szoftmern.beat.Track</class>
+      <class>com.szoftmern.beat.User</class>
+
+      <properties>
+          <property name="hibernate.connection.url"
+                    value="jdbc:mariadb://beat-db.cunlipdvpspb.eu-north-1.rds.amazonaws.com:3306"/>
+          <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
+          <property name="hibernate.connection.username" value="beatdev_admin"/>
+          <property name="hibernate.connection.password" value="Beat_Proj10"/>
+      </properties>
+
+  </persistence-unit>
+</persistence>

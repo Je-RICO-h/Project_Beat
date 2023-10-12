@@ -11,6 +11,7 @@ module com.szoftmern.beat {
 
     requires java.sql;
     requires lombok;
+    requires java.persistence;
 
     opens com.szoftmern.beat to javafx.fxml;
     exports com.szoftmern.beat;
