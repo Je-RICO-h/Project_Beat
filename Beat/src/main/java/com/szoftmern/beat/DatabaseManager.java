@@ -20,12 +20,16 @@ public class DatabaseManager {
             System.out.println(e.getMessage());
         }
 
-        JpaTrackDAO tDAo = new JpaTrackDAO();
+        try (JpaTrackDAO tDAo = new JpaTrackDAO()) {
+            System.out.println("hello");
 
-        for (Track t : tDAo.getEntities()) {
-            System.out.println(t.getTitle());
+            for (Track t : tDAo.getEntities()) {
+               System.out.println(t.getTitle());
+            }
+        } catch (Exception e) {
+            System.out.println("Hiba!");
+            System.out.println(e.getMessage());
         }
-
     }
 
     public static Collection<Object> executeQuery(String queryStr, String column) {
