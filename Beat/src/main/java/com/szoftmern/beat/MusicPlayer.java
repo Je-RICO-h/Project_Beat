@@ -53,10 +53,8 @@ public class MusicPlayer implements Initializable {
     private int pos = -1;
 
     //List for the musics
-    private List<String> musicList = new ArrayList<>();
+    private List<Track> musicList = new ArrayList<>();
 
-    //List for the music names
-    private List<String> musicNames = new ArrayList<>();
 
     //List for previously played music
     private Set<Track> musicHistory = new HashSet<>();
@@ -66,12 +64,8 @@ public class MusicPlayer implements Initializable {
 
     //Constructor
     public MusicPlayer() {
-        for (String title : getEveryTitle()) {
-            this.musicNames.add(title);
-        }
-
-        for (String title : getEveryTitle()) {
-            this.musicList.add(getTrackURL(title));
+        for (Track track: getEveryTrack()) {
+            this.musicList.add(track);
         }
 
         this.pos = 0;
@@ -113,7 +107,7 @@ public class MusicPlayer implements Initializable {
     public void selectedSearchItem(){
         String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
         System.out.println(selectedItem);
-        pos = this.musicList.indexOf(getTrackURL(selectedItem.split("\n")[0])) - 1;
+        pos = this.musicList.indexOf(getTrackFromTitle(selectedItem.split("\n")[0])) - 1;
         next();
         searchResultView.setVisible(false);
         System.out.println("Kiválasztott elem: " + selectedItem);
@@ -125,7 +119,7 @@ public class MusicPlayer implements Initializable {
         String selectedItem = topListView.getSelectionModel().getSelectedItem();
         String title = selectedItem.split("\n")[0].substring(selectedItem.split("\n")[0].indexOf(" ") == 3 ? 4 : 3);
         System.out.println(title);
-        pos = this.musicList.indexOf(getTrackURL(title)) - 1;
+        pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
         next();
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
@@ -134,7 +128,7 @@ public class MusicPlayer implements Initializable {
     @FXML
     public void selectedHistoryMusicItem(){
         String selectedItem = historyListView.getSelectionModel().getSelectedItem();
-        pos = this.musicList.indexOf(getTrackURL(selectedItem.split("\n")[0])) - 1;
+        pos = this.musicList.indexOf(getTrackFromTitle(selectedItem.split("\n")[0])) - 1;
         next();
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
@@ -225,7 +219,7 @@ public class MusicPlayer implements Initializable {
         else
         {
             player.play();
-            changeStatus( musicNames.get(this.pos));
+            changeStatus( musicList.get(this.pos).getTitle());
             //playbutton.setText("Pause");
             play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
         }
@@ -240,11 +234,19 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void changeArtist(String title)
+    public void changeArtist(List<String> artistsName)
     {
         //Function to change the label
-        String text = getArtist(title);
-        artistNameLabel.setText(text);
+        StringBuilder text = new StringBuilder();
+
+        for (int i = 0; i < artistsName.size(); i++) {
+            text.append(artistsName.get(i));
+
+            if (i != artistsName.size() - 1) {
+                text.append(", ");
+            }
+        }
+        artistNameLabel.setText(text.toString());
     }
 
     public void refreshTimeSlider()
@@ -306,7 +308,7 @@ public class MusicPlayer implements Initializable {
             } catch(Exception e) {
 
                 //Dummy init to access the property
-                Media media = new Media(musicList.get(this.pos));
+                Media media = new Media(musicList.get(this.pos).getResourceUrl());
                 this.player = new MediaPlayer(media);
 
                 // Volume Control
@@ -324,10 +326,10 @@ public class MusicPlayer implements Initializable {
                 });
             }
             //Create a new player with the new music and set the previous volume for it
-            this.player = new MediaPlayer(new Media(musicList.get(this.pos)));
+            this.player = new MediaPlayer(new Media(musicList.get(this.pos).getResourceUrl()));
 
             //Update the music history by appending this music to it if its not into it
-            this.musicHistory.add(getTrackFromURL(musicList.get(this.pos)));
+            this.musicHistory.add(musicList.get(this.pos));
 
             displayhistory();
 
@@ -355,9 +357,9 @@ public class MusicPlayer implements Initializable {
             player.play();
 
             //Update the status label
-            changeStatus( musicNames.get(this.pos));
+            changeStatus( musicList.get(this.pos).getTitle());
 
-            changeArtist(musicNames.get(this.pos));
+            changeArtist(getArtistNameList(musicList.get(this.pos).getArtists()));
 
         }
     }

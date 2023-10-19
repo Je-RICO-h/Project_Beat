@@ -1,11 +1,15 @@
 package com.szoftmern.beat;
 
+import lombok.Getter;
+
 import java.util.*;
 import static com.szoftmern.beat.EntityUtil.*;
 
 public class DatabaseManager {
     private static JpaTrackDAO trackDAO;
     private static JpaArtistDAO artistDAO;
+    // Returns every track's data in our DB
+    @Getter
     private static List<Track> everyTrack;
 
     public DatabaseManager() {
@@ -31,17 +35,6 @@ public class DatabaseManager {
         }
     }
 
-    // Returns every track's title in our DB
-    public static List<String> getEveryTitle() {
-        List<String> titleList = new ArrayList<>();
-
-        for (Track t : everyTrack) {
-            titleList.add(t.getTitle());
-        }
-
-        return titleList;
-    }
-
     // Gets the top 10 most played music
     public static List<Track> getTopMusicList() {
         List<Track> topMusicList = new ArrayList<>();
@@ -59,27 +52,15 @@ public class DatabaseManager {
         return topMusicList;
     }
 
-    // Get a track's artists, but only returns one of them
-    public static String getArtist(String title) {
-        String artist = "";
-
-        for (Track t : everyTrack) {
-            if (t.getTitle().equals(title)) {
-                artist = t.getArtists().get(0).getName();
-            }
-        }
-
-        return artist;
-    }
 
     // Searches the DB for any tracks or artists which contain the specified keyword
     public static List<Track> searchDatabaseForTracks(String keyword) {
-        List<Track> trackList;
         List<Artist> artistList;
+        List<Track> resultList;
 
         // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
         // eredmenyet egyszer a program elejen...
-        trackList = trackDAO.entityManager
+        resultList = trackDAO.entityManager
                 .createQuery("""
                         SELECT T
                         FROM Track T
@@ -99,8 +80,6 @@ public class DatabaseManager {
                 .setParameter("keyword", "%" + keyword + "%")
                 .getResultList();
 
-        List<Track> resultList = new ArrayList<>(trackList);
-
         for (Artist artist:artistList) {
             for (Track track:artist.getTracks()) {
                 if (!(resultList.equals(track))) {
@@ -112,27 +91,13 @@ public class DatabaseManager {
         return resultList;
     }
 
-    // Get a track's URL from its title
-    public static String getTrackURL(String title) {
-        String url = "";
-
-        for (Track t : everyTrack) {
-            if (t.getTitle().equals(title)) {
-                url = t.getResourceUrl();
-            }
+    public static Track getTrackFromTitle(String title) {
+        for (Track track:getEveryTrack()) {
+           if (track.getTitle().equals(title)) {
+               return track;
+           }
         }
 
-        return url;
-    }
-
-    // Get a track's title from its URL
-    public static Track getTrackFromURL(String url) {
-
-        for (Track t : everyTrack) {
-            if (t.getResourceUrl().equals(url)) {
-                return t;
-            }
-        }
         return null;
     }
 }
