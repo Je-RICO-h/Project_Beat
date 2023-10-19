@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.List;
 
 @Data
@@ -44,4 +44,6 @@ public class Artist {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
+
+
 }

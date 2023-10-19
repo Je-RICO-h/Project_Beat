@@ -1,10 +1,12 @@
 package com.szoftmern.beat;
 
+import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -32,7 +34,7 @@ public class Track {
 
     @Basic
     @Column(name = "play_count")
-    private long playCount;
+    private int playCount;
 
     @ManyToMany
     @JoinTable(name = "Track_Artists", schema = "beat-db", joinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "artist_id", referencedColumnName = "id", nullable = false))
@@ -49,6 +51,15 @@ public class Track {
     @ManyToMany
     @JoinTable(name = "Favorite_Tracks", schema = "beat-db", joinColumns = @JoinColumn(name = "track_id", referencedColumnName = "id", nullable = false), inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false))
     private List<User> usersWhoFavorited;
+
+
+    public static Comparator<Track> playCountComparator = new Comparator<Track>() {
+        @Override
+        public int compare(Track o1, Track o2) {
+            return o1.playCount - o2.playCount;
+        }
+    };
+
 
     @Override
     public boolean equals(Object o) {
