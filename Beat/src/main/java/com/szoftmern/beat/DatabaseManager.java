@@ -73,39 +73,9 @@ public class DatabaseManager {
     }
 
     // Searches the DB for any tracks or artists which contain the specified keyword
-//    public static Map<String,List<String>> searchDatabaseForTracks(String keyword) {
-//        List<Track> trackList;
-//        List<Artist> artistList;
-//
-//        // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
-//        // eredmenyet egyszer a program elejen...
-//        trackList = trackDAO.entityManager
-//                .createQuery("""
-//                        SELECT T
-//                        FROM Track T
-//                        WHERE T.title LIKE :keyword
-//                        """,
-//                        Track.class)
-//                .setParameter("keyword", "%" + keyword + "%")
-//                .getResultList();
-//
-//        artistList = trackDAO.entityManager
-//                .createQuery("""
-//                        SELECT A
-//                        FROM Artist A
-//                        WHERE A.name LIKE :keyword
-//                        """,
-//                       Artist.class)
-//                .setParameter("keyword", "%" + keyword + "%")
-//                .getResultList();
-//
-//        return getTitlesAndArtists(trackList,artistList);
-//    }
-
-    public static List<String> searchDatabaseForTracks(String keyword) {
+    public static List<Track> searchDatabaseForTracks(String keyword) {
         List<Track> trackList;
         List<Artist> artistList;
-        List<String> resultList = new ArrayList<>();
 
         // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
         // eredmenyet egyszer a program elejen...
@@ -129,13 +99,16 @@ public class DatabaseManager {
                 .setParameter("keyword", "%" + keyword + "%")
                 .getResultList();
 
-        for (Track track:trackList) {
-            resultList.add(track.getTitle());
-        }
+        List<Track> resultList = new ArrayList<>(trackList);
 
         for (Artist artist:artistList) {
-            resultList.add(artist.getName());
+            for (Track track:artist.getTracks()) {
+                if (!(resultList.equals(track))) {
+                    resultList.add(track);
+                }
+            }
         }
+
         return resultList;
     }
 

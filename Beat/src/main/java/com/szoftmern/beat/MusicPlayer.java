@@ -113,7 +113,7 @@ public class MusicPlayer implements Initializable {
     public void selectedSearchItem(){
         String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
         System.out.println(selectedItem);
-        pos = this.musicList.indexOf(getTrackURL(selectedItem)) - 1;
+        pos = this.musicList.indexOf(getTrackURL(selectedItem.split("\n")[0])) - 1;
         next();
         searchResultView.setVisible(false);
         System.out.println("Kiválasztott elem: " + selectedItem);
@@ -123,7 +123,7 @@ public class MusicPlayer implements Initializable {
     @FXML
     public void selectedTopListItem(){
         String selectedItem = topListView.getSelectionModel().getSelectedItem();
-        String title = selectedItem.substring(selectedItem.indexOf(" ") == 3 ? 4 : 3);
+        String title = selectedItem.split("\n")[0].substring(selectedItem.split("\n")[0].indexOf(" ") == 3 ? 4 : 3);
         System.out.println(title);
         pos = this.musicList.indexOf(getTrackURL(title)) - 1;
         next();
@@ -134,7 +134,7 @@ public class MusicPlayer implements Initializable {
     @FXML
     public void selectedHistoryMusicItem(){
         String selectedItem = historyListView.getSelectionModel().getSelectedItem();
-        pos = this.musicList.indexOf(getTrackURL(selectedItem)) - 1;
+        pos = this.musicList.indexOf(getTrackURL(selectedItem.split("\n")[0])) - 1;
         next();
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
@@ -144,8 +144,15 @@ public class MusicPlayer implements Initializable {
     public void search() {
         String keyword = searchTextField.getText();
         if (!keyword.isEmpty()) {
-            ObservableList<String> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
-            searchResultView.setItems(result);
+            ObservableList<Track> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
+
+            Platform.runLater(() -> {
+                searchResultView.getItems().clear();
+                for (Track track : result) {
+                   searchResultView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
+                }
+            });
+
             searchResultView.setVisible(true);
         } else {
             searchResultView.setVisible(false);
@@ -155,6 +162,7 @@ public class MusicPlayer implements Initializable {
 
     public void displayhistory() {
         ObservableList<Track> result = FXCollections.observableArrayList(musicHistory);
+
         Platform.runLater(() -> {
             historyListView.getItems().clear();
             for (Track track : result) {
