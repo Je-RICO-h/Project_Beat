@@ -1,134 +1,123 @@
 package com.szoftmern.beat;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class DatabaseManager {
-    private static Connection conn;
+    private static JpaTrackDAO trackDAO;
+    private static JpaArtistDAO artistDAO;
+    private static List<Track> everyTrack;
 
     public DatabaseManager() {
-        String host = "jdbc:mariadb://beat-db.cunlipdvpspb.eu-north-1.rds.amazonaws.com:3306/beat-db";
-        String user = "beatdev_admin";
-        String password = "Beat_Proj10";
-
         try {
-            conn = DriverManager.getConnection(host, user, password);
+            trackDAO = new JpaTrackDAO();
+            artistDAO = new JpaArtistDAO();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try (JpaTrackDAO tDAo = new JpaTrackDAO()) {
-            System.out.println("hello");
-
-            for (Track t : tDAo.getEntities()) {
-               System.out.println(t.getTitle());
-            }
+            // get every Track class via JPA from the DB
+            everyTrack = trackDAO.getEntities();
         } catch (Exception e) {
-            System.out.println("Hiba!");
             System.out.println(e.getMessage());
         }
     }
 
-    public static Collection<Object> executeQuery(String queryStr, String column) {
-        Collection<Object> results = new ArrayList<>();
+    // Deallocating resources
+    public void close() {
+        try {
+            trackDAO.close();
+            artistDAO.close();
 
-        try (Statement stmt = conn.createStatement()) {
-            try (ResultSet rs = stmt.executeQuery(queryStr)) {
-
-                // from every row, add the column we specified to the results
-                while (rs.next()) {
-                    results.add(rs.getObject(column));
-                }
-            }
-        }
-        catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-        return results;
     }
 
+    // Returns every track's title in our DB
     public static List<String> getEveryTitle() {
         List<String> titleList = new ArrayList<>();
 
-        String query = "SELECT title " +
-                "FROM Tracks " +
-                "ORDER BY title";
-        Collection<Object> results = executeQuery(query, "title");
-
-        for (Object obj : results) {
-            titleList.add("" + obj);
+        for (Track t : everyTrack) {
+            titleList.add(t.getTitle());
         }
 
         return titleList;
     }
 
+    // Gets the top 10 most played music
     public static List<String> getTopMusicList() {
         List<String> topMusicList = new ArrayList<>();
 
-        String query = "SELECT title " +
-                "FROM Tracks ORDER " +
-                "BY play_count DESC " +
-                "LIMIT 10";
+        List<Track> tracks = everyTrack;
 
-        Collection<Object> results = executeQuery(query, "title");
+        // sorts the tracks in descending order by their play count
+        Collections.sort(tracks, Collections.reverseOrder(Track.playCountComparator));
 
-        for (Object obj : results) {
-            topMusicList.add("" + obj);
+        // get the top 10 most played music
+        for (int i = 0; i < 10; i++) {
+            topMusicList.add(tracks.get(i).getTitle());
         }
 
         return topMusicList;
     }
 
+    // Get a track's artists, but only returns one of them
     public static String getArtist(String title) {
         String artist = "";
 
-        String query = "SELECT name " +
-                "FROM Artists A, Tracks T, Track_Artists " +
-                "WHERE artist_id = A.id AND track_id = T.id AND title LIKE \"" + title + "\"" +
-                "GROUP BY title";
-
-        Collection<Object> results = executeQuery(query, "name");
-
-        for (Object obj : results) {
-            artist = "" + obj;
+        for (Track t : everyTrack) {
+            if (t.getTitle().equals(title)) {
+                artist = t.getArtists().get(0).getName();
+            }
         }
 
         return artist;
     }
 
-    public static List<String> searchDatabaseForTracks(String keyword)
-    {
-        List<String> titleList = new ArrayList<>();
+    // Searches the DB for any tracks or artists which contain the specified keyword
+    public static List<String> searchDatabaseForTracks(String keyword) {
+        List<String> titleList;
 
-        String query = "SELECT title FROM Tracks WHERE title LIKE \"%" + keyword + "%\" ORDER BY title";
-        Collection<Object> results = executeQuery(query, "title");
-
-        for (Object obj : results) {
-            titleList.add("" + obj);
-        }
+        // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
+        // eredmenyet egyszer a program elejen...
+        titleList = trackDAO.entityManager
+                .createQuery("""
+                        SELECT T.title 
+                        FROM Track T 
+                        WHERE title LIKE :keyword 
+                        UNION 
+                        SELECT A.name 
+                        FROM Artist A 
+                        WHERE name 
+                        LIKE :keyword
+                        """,
+                        String.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
 
         return titleList;
     }
 
+    // Get a track's URL from its title
     public static String getTrackURL(String title) {
-        String query = "SELECT resource_url " +
-                "FROM Tracks " +
-                "WHERE title = \"" + title + "\"";
-        Collection<Object> results = executeQuery(query, "resource_url");
+        String url = "";
 
-        return "" + results.toArray()[0];
+        for (Track t : everyTrack) {
+            if (t.getTitle().equals(title)) {
+                url = t.getResourceUrl();
+            }
+        }
+
+        return url;
     }
 
+    // Get a track's title from its URL
     public static String getTitleFromURL(String url) {
-        String query = "SELECT title " +
-                "FROM Tracks " +
-                "WHERE resource_url = \"" + url + "\"";
-        Collection<Object> results = executeQuery(query, "title");
+        String title = "";
 
-        return "" + results.toArray()[0];
+        for (Track t : everyTrack) {
+            if (t.getResourceUrl().equals(url)) {
+                title = t.getTitle();
+            }
+        }
+
+        return title;
     }
 }

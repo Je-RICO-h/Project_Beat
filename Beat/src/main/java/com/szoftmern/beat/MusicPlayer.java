@@ -64,11 +64,12 @@ public class MusicPlayer implements Initializable {
 
     //Constructor
     public MusicPlayer() {
-        this.musicNames = getEveryTitle();
+        for (String title : getEveryTitle()) {
+            this.musicNames.add(title);
+        }
 
-        for (String title: musicNames) {
-            String URL = getTrackURL(title);
-            this.musicList.add(URL);
+        for (String title : getEveryTitle()) {
+            this.musicList.add(getTrackURL(title));
         }
 
         this.pos = 0;
