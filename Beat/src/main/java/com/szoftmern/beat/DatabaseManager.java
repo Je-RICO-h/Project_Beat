@@ -1,6 +1,7 @@
 package com.szoftmern.beat;
 
 import java.util.*;
+import static com.szoftmern.beat.EntityUtil.*;
 
 public class DatabaseManager {
     private static JpaTrackDAO trackDAO;
@@ -42,8 +43,8 @@ public class DatabaseManager {
     }
 
     // Gets the top 10 most played music
-    public static List<String> getTopMusicList() {
-        List<String> topMusicList = new ArrayList<>();
+    public static List<Track> getTopMusicList() {
+        List<Track> topMusicList = new ArrayList<>();
 
         List<Track> tracks = everyTrack;
 
@@ -52,7 +53,7 @@ public class DatabaseManager {
 
         // get the top 10 most played music
         for (int i = 0; i < 10; i++) {
-            topMusicList.add(tracks.get(i).getTitle());
+            topMusicList.add(tracks.get(i));
         }
 
         return topMusicList;
@@ -72,27 +73,70 @@ public class DatabaseManager {
     }
 
     // Searches the DB for any tracks or artists which contain the specified keyword
+//    public static Map<String,List<String>> searchDatabaseForTracks(String keyword) {
+//        List<Track> trackList;
+//        List<Artist> artistList;
+//
+//        // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
+//        // eredmenyet egyszer a program elejen...
+//        trackList = trackDAO.entityManager
+//                .createQuery("""
+//                        SELECT T
+//                        FROM Track T
+//                        WHERE T.title LIKE :keyword
+//                        """,
+//                        Track.class)
+//                .setParameter("keyword", "%" + keyword + "%")
+//                .getResultList();
+//
+//        artistList = trackDAO.entityManager
+//                .createQuery("""
+//                        SELECT A
+//                        FROM Artist A
+//                        WHERE A.name LIKE :keyword
+//                        """,
+//                       Artist.class)
+//                .setParameter("keyword", "%" + keyword + "%")
+//                .getResultList();
+//
+//        return getTitlesAndArtists(trackList,artistList);
+//    }
+
     public static List<String> searchDatabaseForTracks(String keyword) {
-        List<String> titleList;
+        List<Track> trackList;
+        List<Artist> artistList;
+        List<String> resultList = new ArrayList<>();
 
         // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
         // eredmenyet egyszer a program elejen...
-        titleList = trackDAO.entityManager
+        trackList = trackDAO.entityManager
                 .createQuery("""
-                        SELECT T.title 
-                        FROM Track T 
-                        WHERE title LIKE :keyword 
-                        UNION 
-                        SELECT A.name 
-                        FROM Artist A 
-                        WHERE name 
-                        LIKE :keyword
+                        SELECT T
+                        FROM Track T
+                        WHERE T.title LIKE :keyword
                         """,
-                        String.class)
+                        Track.class)
                 .setParameter("keyword", "%" + keyword + "%")
                 .getResultList();
 
-        return titleList;
+        artistList = trackDAO.entityManager
+                .createQuery("""
+                        SELECT A
+                        FROM Artist A
+                        WHERE A.name LIKE :keyword
+                        """,
+                        Artist.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
+
+        for (Track track:trackList) {
+            resultList.add(track.getTitle());
+        }
+
+        for (Artist artist:artistList) {
+            resultList.add(artist.getName());
+        }
+        return resultList;
     }
 
     // Get a track's URL from its title
@@ -109,15 +153,13 @@ public class DatabaseManager {
     }
 
     // Get a track's title from its URL
-    public static String getTitleFromURL(String url) {
-        String title = "";
+    public static Track getTrackFromURL(String url) {
 
         for (Track t : everyTrack) {
             if (t.getResourceUrl().equals(url)) {
-                title = t.getTitle();
+                return t;
             }
         }
-
-        return title;
+        return null;
     }
 }

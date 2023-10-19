@@ -5,6 +5,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import java.net.URL;
 import java.util.*;
 
 import static com.szoftmern.beat.DatabaseManager.*;
+import static com.szoftmern.beat.EntityUtil.*;
 import static java.lang.Math.round;
 
 public class MusicPlayer implements Initializable {
@@ -57,7 +59,7 @@ public class MusicPlayer implements Initializable {
     private List<String> musicNames = new ArrayList<>();
 
     //List for previously played music
-    private Set<String> musicHistory = new HashSet<>();
+    private Set<Track> musicHistory = new HashSet<>();
 
     boolean liked = false;
     boolean loop = false;
@@ -94,13 +96,13 @@ public class MusicPlayer implements Initializable {
 
 
     public void updateTopList() {
-        ObservableList<String> top = FXCollections.observableArrayList(getTopMusicList());
+        ObservableList<Track> top = FXCollections.observableArrayList(getTopMusicList());
 
         Platform.runLater(() -> {
             topListView.getItems().clear();
             int count = 1;
-            for (String item : top) {
-                topListView.getItems().add(count + ". " + item);
+            for (Track track : top) {
+                topListView.getItems().add(count + ". " + track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
                 count++;
             }
         });
@@ -152,8 +154,13 @@ public class MusicPlayer implements Initializable {
 
 
     public void displayhistory() {
-        ObservableList<String> result = FXCollections.observableArrayList(musicHistory);
-        historyListView.setItems(result);
+        ObservableList<Track> result = FXCollections.observableArrayList(musicHistory);
+        Platform.runLater(() -> {
+            historyListView.getItems().clear();
+            for (Track track : result) {
+                historyListView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
+            }
+        });
     }
 
 
@@ -312,7 +319,7 @@ public class MusicPlayer implements Initializable {
             this.player = new MediaPlayer(new Media(musicList.get(this.pos)));
 
             //Update the music history by appending this music to it if its not into it
-            this.musicHistory.add(getTitleFromURL(musicList.get(this.pos)));
+            this.musicHistory.add(getTrackFromURL(musicList.get(this.pos)));
 
             displayhistory();
 
