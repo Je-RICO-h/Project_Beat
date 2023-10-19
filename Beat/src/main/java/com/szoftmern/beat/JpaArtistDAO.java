@@ -1,11 +1,14 @@
 package com.szoftmern.beat;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 import java.util.List;
 
-public class JpaTrackDAO implements AutoCloseable, EntityDAO {
-    final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.szoftmern.beat");
-    final EntityManager entityManager = entityManagerFactory.createEntityManager();
+public class JpaArtistDAO implements EntityDAO {
+    public final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.szoftmern.beat");
+    public final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     @Override
     public void saveEntity(Object t) {
@@ -15,10 +18,10 @@ public class JpaTrackDAO implements AutoCloseable, EntityDAO {
     @Override
     public List<Track> getEntities() {
         TypedQuery query =
-                entityManager.createQuery("SELECT T FROM Track T", Track.class);
-        List<Track> tracks = query.getResultList();
+                entityManager.createQuery("SELECT T FROM Artist T", Artist.class);
+        List<Track> artists = query.getResultList();
 
-        return tracks;
+        return artists;
     }
 
     @Override
