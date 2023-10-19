@@ -93,8 +93,8 @@
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>5.4.4.Final</version>
+      <artifactId>hibernate-core</artifactId>
+      <version>6.2.7.Final</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

@@ -11,8 +11,9 @@ module com.szoftmern.beat {
 
     requires java.sql;
     requires lombok;
-    requires java.persistence;
+    requires jakarta.persistence;
+    requires org.hibernate.orm.core;
 
-    opens com.szoftmern.beat to javafx.fxml;
+    opens com.szoftmern.beat to javafx.fxml, org.hibernate.orm.core;
     exports com.szoftmern.beat;
 }
