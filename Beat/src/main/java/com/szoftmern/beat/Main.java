@@ -14,6 +14,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
 
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load(), 1280,720 );
         stage.setTitle("Beat!");
 
@@ -27,6 +28,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         DatabaseManager manager = new DatabaseManager();
         launch();
+
+        manager.close();
     }
 }
 

@@ -5,6 +5,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import java.net.URL;
 import java.util.*;
 
 import static com.szoftmern.beat.DatabaseManager.*;
+import static com.szoftmern.beat.EntityUtil.*;
 import static java.lang.Math.round;
 
 public class MusicPlayer implements Initializable {
@@ -51,26 +53,22 @@ public class MusicPlayer implements Initializable {
     private int pos = -1;
 
     //List for the musics
-    private List<String> musicList = new ArrayList<>();
+    private List<Track> musicList = new ArrayList<>();
 
-    //List for the music names
-    private List<String> musicNames = new ArrayList<>();
 
     //List for previously played music
-    private Set<String> musicHistory = new HashSet<>();
+    private Set<Track> musicHistory = new HashSet<>();
 
     boolean liked = false;
     boolean loop = false;
 
     //Constructor
     public MusicPlayer() {
-        this.musicNames = getEveryTitle();
-
-        for (String title: musicNames) {
-            String URL = getTrackURL(title);
-            this.musicList.add(URL);
+        for (Track track: getEveryTrack()) {
+            this.musicList.add(track);
         }
-        pos = 0;
+
+        this.pos = 0;
     }
 
 
@@ -92,13 +90,13 @@ public class MusicPlayer implements Initializable {
 
 
     public void updateTopList() {
-        ObservableList<String> top = FXCollections.observableArrayList(getTopMusicList());
+        ObservableList<Track> top = FXCollections.observableArrayList(getTopMusicList());
 
         Platform.runLater(() -> {
             topListView.getItems().clear();
             int count = 1;
-            for (String item : top) {
-                topListView.getItems().add(count + ". " + item);
+            for (Track track : top) {
+                topListView.getItems().add(count + ". " + track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
                 count++;
             }
         });
@@ -109,7 +107,7 @@ public class MusicPlayer implements Initializable {
     public void selectedSearchItem(){
         String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
         System.out.println(selectedItem);
-        pos = this.musicList.indexOf(getTrackURL(selectedItem)) - 1;
+        pos = this.musicList.indexOf(getTrackFromTitle(selectedItem.split("\n")[0])) - 1;
         next();
         searchResultView.setVisible(false);
         System.out.println("Kiválasztott elem: " + selectedItem);
@@ -119,9 +117,9 @@ public class MusicPlayer implements Initializable {
     @FXML
     public void selectedTopListItem(){
         String selectedItem = topListView.getSelectionModel().getSelectedItem();
-        String title = selectedItem.substring(selectedItem.indexOf(" ") == 3 ? 4 : 3);
+        String title = selectedItem.split("\n")[0].substring(selectedItem.split("\n")[0].indexOf(" ") == 3 ? 4 : 3);
         System.out.println(title);
-        pos = this.musicList.indexOf(getTrackURL(title)) - 1;
+        pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
         next();
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
@@ -130,7 +128,7 @@ public class MusicPlayer implements Initializable {
     @FXML
     public void selectedHistoryMusicItem(){
         String selectedItem = historyListView.getSelectionModel().getSelectedItem();
-        pos = this.musicList.indexOf(getTrackURL(selectedItem)) - 1;
+        pos = this.musicList.indexOf(getTrackFromTitle(selectedItem.split("\n")[0])) - 1;
         next();
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
@@ -140,8 +138,15 @@ public class MusicPlayer implements Initializable {
     public void search() {
         String keyword = searchTextField.getText();
         if (!keyword.isEmpty()) {
-            ObservableList<String> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
-            searchResultView.setItems(result);
+            ObservableList<Track> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
+
+            Platform.runLater(() -> {
+                searchResultView.getItems().clear();
+                for (Track track : result) {
+                   searchResultView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
+                }
+            });
+
             searchResultView.setVisible(true);
         } else {
             searchResultView.setVisible(false);
@@ -150,8 +155,14 @@ public class MusicPlayer implements Initializable {
 
 
     public void displayhistory() {
-        ObservableList<String> result = FXCollections.observableArrayList(musicHistory);
-        historyListView.setItems(result);
+        ObservableList<Track> result = FXCollections.observableArrayList(musicHistory);
+
+        Platform.runLater(() -> {
+            historyListView.getItems().clear();
+            for (Track track : result) {
+                historyListView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
+            }
+        });
     }
 
 
@@ -208,7 +219,7 @@ public class MusicPlayer implements Initializable {
         else
         {
             player.play();
-            changeStatus( musicNames.get(this.pos));
+            changeStatus( musicList.get(this.pos).getTitle());
             //playbutton.setText("Pause");
             play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
         }
@@ -223,11 +234,19 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void changeArtist(String title)
+    public void changeArtist(List<String> artistsName)
     {
         //Function to change the label
-        String text = getArtist(title);
-        artistNameLabel.setText(text);
+        StringBuilder text = new StringBuilder();
+
+        for (int i = 0; i < artistsName.size(); i++) {
+            text.append(artistsName.get(i));
+
+            if (i != artistsName.size() - 1) {
+                text.append(", ");
+            }
+        }
+        artistNameLabel.setText(text.toString());
     }
 
     public void refreshTimeSlider()
@@ -289,7 +308,7 @@ public class MusicPlayer implements Initializable {
             } catch(Exception e) {
 
                 //Dummy init to access the property
-                Media media = new Media(musicList.get(this.pos));
+                Media media = new Media(musicList.get(this.pos).getResourceUrl());
                 this.player = new MediaPlayer(media);
 
                 // Volume Control
@@ -307,10 +326,10 @@ public class MusicPlayer implements Initializable {
                 });
             }
             //Create a new player with the new music and set the previous volume for it
-            this.player = new MediaPlayer(new Media(musicList.get(this.pos)));
+            this.player = new MediaPlayer(new Media(musicList.get(this.pos).getResourceUrl()));
 
             //Update the music history by appending this music to it if its not into it
-            this.musicHistory.add(getTitleFromURL(musicList.get(this.pos)));
+            this.musicHistory.add(musicList.get(this.pos));
 
             displayhistory();
 
@@ -338,9 +357,9 @@ public class MusicPlayer implements Initializable {
             player.play();
 
             //Update the status label
-            changeStatus( musicNames.get(this.pos));
+            changeStatus( musicList.get(this.pos).getTitle());
 
-            changeArtist(musicNames.get(this.pos));
+            changeArtist(getArtistNameList(musicList.get(this.pos).getArtists()));
 
         }
     }
@@ -397,7 +416,6 @@ public class MusicPlayer implements Initializable {
             }
         }
     }
-
 
 
     @FXML
