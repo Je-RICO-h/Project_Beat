@@ -110,7 +110,7 @@
                            <children>
                               <VBox>
                                  <children>
-                                    <TextField fx:id="searchTextField" onKeyPressed="#search" prefHeight="26.0" prefWidth="745.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
+                                    <TextField fx:id="searchTextField" onKeyPressed="#onKeyPressedSearchTextField" prefHeight="26.0" prefWidth="745.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
                                        <font>
                                           <Font size="17.0" />
                                        </font>
@@ -134,7 +134,7 @@
                            </children>
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#search" text="Button">
+                        <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onActionSearchButton" text="Button">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

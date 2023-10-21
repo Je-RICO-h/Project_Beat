@@ -132,36 +132,43 @@ public class MusicPlayer implements Initializable {
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
 
+    @FXML
+    public void onActionSearchButton() {
+        search();
+    }
 
     @FXML
+    public void onKeyPressedSearchTextField() {
+        searchTimer.cancel();
+        searchTimer = new Timer();
+        searchTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                search();
+            }
+        }, 1500); // 1500 ms = 1.5 másodperc késleltetés
+    }
+
     public void search() {
         String keyword = searchTextField.getText();
         currentKeyword = keyword;
 
         if (!keyword.isEmpty()) {
-            // Ne kezdd el azonnal a keresést, hanem állítsd be az időzítőt
-            searchTimer.cancel();
-            searchTimer = new Timer();
-            searchTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    // Ellenőrizd, hogy a keresett kulcsszó megegyezik-e a jelenlegi kulcsszóval
-                    if (!currentKeyword.equals(searchTextField.getText())) {
-                        return; // Ha nem, ne végezd el a keresést
-                    }
+            // Ellenőrizd, hogy a keresett kulcsszó megegyezik-e a jelenlegi kulcsszóval
+            if (!currentKeyword.equals(searchTextField.getText())) {
+                return; // Ha nem, ne végezd el a keresést
+            }
 
-                    String keyword = currentKeyword;
-                    ObservableList<Track> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
+            ObservableList<Track> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
 
-                    Platform.runLater(() -> {
-                        searchResultView.getItems().clear();
-                        for (Track track : result) {
-                            searchResultView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
-                        }
-                        searchResultView.setVisible(true);
-                    });
+            Platform.runLater(() -> {
+                searchResultView.getItems().clear();
+                for (Track track : result) {
+                    searchResultView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
                 }
-            }, 1000); // 1000 ms = 1 másodperc késleltetés
+            });
+
+            searchResultView.setVisible(true);
         } else {
             searchResultView.setVisible(false);
         }
