@@ -59,8 +59,11 @@ public class MusicPlayer implements Initializable {
 
     //Constructor
     public MusicPlayer() {
-        for (Track track: getEveryTrack()) {
-            this.musicList.add(track);
+        this.musicNames = getEveryTitle();
+
+        for (String title: musicNames) {
+            String URL = getTrackURL(title);
+            this.musicList.add(URL);
         }
 
         this.pos = 0;
@@ -160,6 +163,86 @@ public class MusicPlayer implements Initializable {
         });
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Timer timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                // Frissítési feladat végrehajtása (toplista frissítése)
+                updateTopList();
+            }
+        };
+
+        // Időzítő beállítása 5 perces periódussal
+        timer.schedule(task, 0, 300000);
+    }
+
+
+    public void updateTopList() {
+        ObservableList<String> top = FXCollections.observableArrayList(getTopMusicList());
+
+        Platform.runLater(() -> {
+            topListView.getItems().clear();
+            int count = 1;
+            for (String item : top) {
+                topListView.getItems().add(count + ". " + item);
+                count++;
+            }
+        });
+    }
+
+
+    @FXML
+    public void selectedSearchItem(){
+        String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
+        System.out.println(selectedItem);
+        pos = this.musicList.indexOf(getTrackURL(selectedItem)) - 1;
+        next();
+        searchResultView.setVisible(false);
+        System.out.println("Kiválasztott elem: " + selectedItem);
+    }
+
+
+    @FXML
+    public void selectedTopListItem(){
+        String selectedItem = topListView.getSelectionModel().getSelectedItem();
+        String title = selectedItem.substring(selectedItem.indexOf(" ") == 3 ? 4 : 3);
+        System.out.println(title);
+        pos = this.musicList.indexOf(getTrackURL(title)) - 1;
+        next();
+        System.out.println("Kiválasztott elem: " + selectedItem);
+    }
+
+
+    @FXML
+    public void selectedHistoryMusicItem(){
+        String selectedItem = historyListView.getSelectionModel().getSelectedItem();
+        pos = this.musicList.indexOf(getTrackURL(selectedItem)) - 1;
+        next();
+        System.out.println("Kiválasztott elem: " + selectedItem);
+    }
+
+
+    @FXML
+    public void search() {
+        String keyword = searchTextField.getText();
+        if (!keyword.isEmpty()) {
+            ObservableList<String> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
+            searchResultView.setItems(result);
+            searchResultView.setVisible(true);
+
+        } else {
+            searchResultView.setVisible(false);
+        }
+    }
+
+
+    public void displayhistory() {
+        ObservableList<String> result = FXCollections.observableArrayList(musicHistory);
+        historyListView.setItems(result);
+    }
 
     @FXML
     public void mute()
@@ -229,19 +312,11 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void changeArtist(List<String> artistsName)
+    public void changeArtist(String title)
     {
         //Function to change the label
-        StringBuilder text = new StringBuilder();
-
-        for (int i = 0; i < artistsName.size(); i++) {
-            text.append(artistsName.get(i));
-
-            if (i != artistsName.size() - 1) {
-                text.append(", ");
-            }
-        }
-        artistNameLabel.setText(text.toString());
+        String text = getArtist(title);
+        artistNameLabel.setText(text);
     }
 
     public void refreshTimeSlider()
@@ -324,7 +399,9 @@ public class MusicPlayer implements Initializable {
             this.player = new MediaPlayer(new Media(musicList.get(this.pos).getResourceUrl()));
 
             //Update the music history by appending this music to it if its not into it
-            this.musicHistory.add(musicList.get(this.pos));
+            this.musicHistory.add(getTitleFromURL(musicList.get(this.pos)));
+
+            displayhistory();
 
             displayhistory();
 
@@ -355,6 +432,8 @@ public class MusicPlayer implements Initializable {
             changeStatus( musicList.get(this.pos).getTitle());
 
             changeArtist(getArtistNameList(musicList.get(this.pos).getArtists()));
+
+            changeArtist(musicNames.get(this.pos));
 
         }
     }

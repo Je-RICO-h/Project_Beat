@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="registPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top,#E3B1EF, #86E09A);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.Regist">
+    <children>
+        <Pane layoutX="490.0" layoutY="85.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: ffffff; -fx-background-position: center;">
+            <children>
+                <Label layoutX="52.0" layoutY="25.0" prefHeight="39.0" prefWidth="196.0" style="-fx-alignment: center;" text="Regisztráció" textAlignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label layoutX="25.0" layoutY="135.0" prefHeight="30.0" prefWidth="156.0" text="Felhasználónév">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="25.0" layoutY="190.0" prefHeight="30.0" prefWidth="60.0" text="Jelszó">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Button alignment="TOP_LEFT" layoutX="25.0" layoutY="494.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: ffffff; " text="Vissza">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Label layoutX="25.0" layoutY="80.0" prefHeight="30.0" prefWidth="156.0" text="E-mail-cím">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="25.0" layoutY="245.0" prefHeight="30.0" prefWidth="156.0" text="Jelszó megerősítése ">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="25.0" layoutY="300.0" prefHeight="30.0" prefWidth="156.0" text="Születési dátum">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="25.0" layoutY="355.0" prefHeight="30.0" prefWidth="156.0" text="Nem">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label layoutX="25.0" layoutY="410.0" prefHeight="30.0" prefWidth="156.0" text="Nemzetiség">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="email" layoutX="30.0" layoutY="110.0" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="username" layoutX="30.0" layoutY="165.0" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="password" layoutX="30.0" layoutY="220.0" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="passwordAgain" layoutX="30.0" layoutY="275.0" prefHeight="24.0" prefWidth="240.0" />
+                <ChoiceBox fx:id="genderPicker" layoutX="28.0" layoutY="385.0" prefHeight="24.0" prefWidth="100.0" />
+                <ChoiceBox fx:id="nationalityPicker" layoutX="30.0" layoutY="440.0" prefHeight="24.0" prefWidth="150.0" />
+                <Button layoutX="66.0" layoutY="192.0" mnemonicParsing="false" onAction="#PasswordInfo" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" text="i" textAlignment="CENTER">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+                <Button layoutX="175.0" layoutY="490.0" mnemonicParsing="false" onAction="#tovabb" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #b552cf; -fx-alignment: center; -fx-background-radius: 20;" text="Tovább" textAlignment="CENTER" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Button>
+                <DatePicker fx:id="birthDate" layoutX="30.0" layoutY="330.0" onAction="#getDate" prefHeight="24.0" prefWidth="240.0" />
+            </children>
+            <effect>
+                <DropShadow />
+            </effect>
+        </Pane>
+        <Label fx:id="passwordInfo" alignment="TOP_LEFT" layoutX="800.0" layoutY="300.0" prefHeight="85.0" prefWidth="250.0" />
+    </children>
+</Pane>
