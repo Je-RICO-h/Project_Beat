@@ -1,9 +1,9 @@
 package com.szoftmern.beat;
 
-import lombok.Getter;
-
-import java.util.*;
-import static com.szoftmern.beat.EntityUtil.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class DatabaseManager {
     private static JpaTrackDAO trackDAO;
@@ -24,80 +24,103 @@ public class DatabaseManager {
         }
     }
 
-    // Deallocating resources
-    public void close() {
-        try {
-            trackDAO.close();
-            artistDAO.close();
+    public static Collection<Object> executeQuery(String queryStr, String column) {
+        Collection<Object> results = new ArrayList<>();
 
-        } catch (Exception e) {
+        try (Statement stmt = conn.createStatement()) {
+            try (ResultSet rs = stmt.executeQuery(queryStr)) {
+
+                // from every row, add the column we specified to the results
+                while (rs.next()) {
+                    results.add(rs.getObject(column));
+                }
+            }
+        }
+        catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        return results;
     }
 
-    // Gets the top 10 most played music
-    public static List<Track> getTopMusicList() {
-        List<Track> topMusicList = new ArrayList<>();
+    public static List<String> getEveryTitle() {
+        List<String> titleList = new ArrayList<>();
 
-        List<Track> tracks = everyTrack;
+        String query = "SELECT title " +
+                "FROM Tracks " +
+                "ORDER BY title";
+        Collection<Object> results = executeQuery(query, "title");
 
-        // sorts the tracks in descending order by their play count
-        Collections.sort(tracks, Collections.reverseOrder(Track.playCountComparator));
+        for (Object obj : results) {
+            titleList.add("" + obj);
+        }
 
-        // get the top 10 most played music
-        for (int i = 0; i < 10; i++) {
-            topMusicList.add(tracks.get(i));
+        return titleList;
+    }
+
+    public static List<String> getTopMusicList() {
+        List<String> topMusicList = new ArrayList<>();
+
+        String query = "SELECT title " +
+                "FROM Tracks ORDER " +
+                "BY play_count DESC " +
+                "LIMIT 10";
+
+        Collection<Object> results = executeQuery(query, "title");
+
+        for (Object obj : results) {
+            topMusicList.add("" + obj);
         }
 
         return topMusicList;
     }
 
+    public static String getArtist(String title) {
+        String artist = "";
 
-    // Searches the DB for any tracks or artists which contain the specified keyword
-    public static List<Track> searchDatabaseForTracks(String keyword) {
-        List<Artist> artistList;
-        List<Track> resultList;
+        String query = "SELECT name " +
+                "FROM Artists A, Tracks T, Track_Artists " +
+                "WHERE artist_id = A.id AND track_id = T.id AND title LIKE \"" + title + "\"" +
+                "GROUP BY title";
 
-        // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
-        // eredmenyet egyszer a program elejen...
-        resultList = trackDAO.entityManager
-                .createQuery("""
-                        SELECT T
-                        FROM Track T
-                        WHERE T.title LIKE :keyword
-                        """,
-                        Track.class)
-                .setParameter("keyword", "%" + keyword + "%")
-                .getResultList();
+        Collection<Object> results = executeQuery(query, "name");
 
-        artistList = trackDAO.entityManager
-                .createQuery("""
-                        SELECT A
-                        FROM Artist A
-                        WHERE A.name LIKE :keyword
-                        """,
-                        Artist.class)
-                .setParameter("keyword", "%" + keyword + "%")
-                .getResultList();
-
-        for (Artist artist:artistList) {
-            for (Track track:artist.getTracks()) {
-                if (!(resultList.equals(track))) {
-                    resultList.add(track);
-                }
-            }
+        for (Object obj : results) {
+            artist = "" + obj;
         }
 
-        return resultList;
+        return artist;
     }
 
-    public static Track getTrackFromTitle(String title) {
-        for (Track track:getEveryTrack()) {
-           if (track.getTitle().equals(title)) {
-               return track;
-           }
+    public static List<String> searchDatabaseForTracks(String keyword)
+    {
+        List<String> titleList = new ArrayList<>();
+
+        String query = "SELECT title FROM Tracks WHERE title LIKE \"%" + keyword + "%\" ORDER BY title";
+        Collection<Object> results = executeQuery(query, "title");
+
+        for (Object obj : results) {
+            titleList.add("" + obj);
         }
 
-        return null;
+        return titleList;
+    }
+
+    public static String getTrackURL(String title) {
+        String query = "SELECT resource_url " +
+                "FROM Tracks " +
+                "WHERE title = \"" + title + "\"";
+        Collection<Object> results = executeQuery(query, "resource_url");
+
+        return "" + results.toArray()[0];
+    }
+
+    public static String getTitleFromURL(String url) {
+        String query = "SELECT title " +
+                "FROM Tracks " +
+                "WHERE resource_url = \"" + url + "\"";
+        Collection<Object> results = executeQuery(query, "title");
+
+        return "" + results.toArray()[0];
     }
 }
