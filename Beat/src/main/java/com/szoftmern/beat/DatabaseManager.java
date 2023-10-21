@@ -6,17 +6,20 @@ import java.util.Collection;
 import java.util.List;
 
 public class DatabaseManager {
-    private static Connection conn;
+    private static JpaTrackDAO trackDAO;
+    private static JpaArtistDAO artistDAO;
+    // Returns every track's data in our DB
+    @Getter
+    private static List<Track> everyTrack;
 
     public DatabaseManager() {
-        String host = "jdbc:mariadb://beat-db.cunlipdvpspb.eu-north-1.rds.amazonaws.com:3306/beat-db";
-        String user = "beatdev_admin";
-        String password = "Beat_Proj10";
-
         try {
-            conn = DriverManager.getConnection(host, user, password);
+            trackDAO = new JpaTrackDAO();
+            artistDAO = new JpaArtistDAO();
 
-        } catch (SQLException e) {
+            // get every Track class via JPA from the DB
+            everyTrack = trackDAO.getEntities();
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
