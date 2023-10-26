@@ -21,6 +21,7 @@
 
 }
 
+
 .increment-button, .decrement-button,.increment-arrow,.decrement-arrow {
     -fx-background-color: transparent;
 
@@ -69,4 +70,6 @@
     -fx-font-family:" Arial Rounded MT Bold";
 
 }
+
+
 
