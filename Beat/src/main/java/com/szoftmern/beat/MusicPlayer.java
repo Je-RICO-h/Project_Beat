@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -28,8 +29,12 @@ import static com.szoftmern.beat.EntityUtil.*;
 import static java.lang.Math.round;
 
 public class MusicPlayer implements Initializable {
-
-
+    @FXML
+    private VBox colorbox;
+    @FXML
+    private Pane border;
+    @FXML
+    private VBox userbox;
     @FXML
     private VBox historylistContener;
     @FXML
@@ -564,6 +569,45 @@ public class MusicPlayer implements Initializable {
         }
         else {
             loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop1.png")));
+        }
+    }
+
+
+    boolean user=false;
+    @FXML
+    void user_selected() {
+
+        if(user==false){
+            userbox.setVisible(true);
+            userbox.setDisable(false);
+            user=true;
+        }
+        else {
+            userbox.setVisible(false);
+            userbox.setDisable(true);
+            user=false;
+
+        }
+    }
+
+    @FXML
+    void logut() throws IOException {
+        new SceneSwitch(border, "login.fxml");
+    }
+
+    boolean color=false;
+    @FXML
+    void colors() {
+        if(color==false){
+            colorbox.setVisible(true);
+            colorbox.setDisable(false);
+            color=true;
+        }
+        else {
+            colorbox.setVisible(false);
+            colorbox.setDisable(true);
+            color=false;
+
         }
     }
 
