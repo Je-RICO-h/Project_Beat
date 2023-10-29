@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
+
+<BorderPane fx:id="border" maxHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
    <left>
       <VBox prefHeight="655.0" prefWidth="198.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="198.0">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <children>
-                  <ImageView fitHeight="109.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/beat.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <VBox prefHeight="108.0" prefWidth="178.0" styleClass="gray" stylesheets="@style.css">
+            <VBox prefHeight="108.0" prefWidth="178.0" spacing="10.0" styleClass="gray" stylesheets="@style.css">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -30,59 +29,54 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
                </VBox.margin>
                <children>
-                  <Button contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" text="Button">
-                     <graphic>
-                        <HBox alignment="CENTER" prefHeight="44.0" prefWidth="178.0">
-                           <children>
-                              <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/home.png" />
-                                 </image>
-                              </ImageView>
-                              <Label prefHeight="62.0" prefWidth="75.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Kezdőlap" textAlignment="CENTER" textFill="WHITE">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </HBox>
-                     </graphic>
-                  </Button>
-                  <Button contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" text="Button">
-                     <graphic>
-                        <HBox alignment="CENTER" prefHeight="44.0" prefWidth="178.0">
-                           <children>
-                              <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/radio.png" />
-                                 </image>
-                              </ImageView>
-                              <Label prefHeight="62.0" prefWidth="75.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Rádió" textAlignment="CENTER" textFill="WHITE">
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </HBox>
-                     </graphic>
-                  </Button>
+                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="178.0">
+                     <children>
+                        <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/home.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="62.0" prefWidth="75.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Kezdőlap" textAlignment="CENTER" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="178.0">
+                     <children>
+                        <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/radio.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="62.0" prefWidth="75.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Rádió" textAlignment="CENTER" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </HBox>
                </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </VBox>
-            <VBox style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;">
+            <VBox style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;" VBox.vgrow="ALWAYS">
                <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="5.0" top="10.0" />
+                  <Insets left="10.0" right="5.0" top="10.0" />
                </VBox.margin>
                <children>
                   <Label text="Kedvencek" textFill="WHITE">
@@ -93,126 +87,58 @@
                         <Insets left="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ListView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: 20;" />
+                  <ListView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: 20;" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </children>
       </VBox>
    </left>
    <center>
-      <VBox prefHeight="494.0" prefWidth="790.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="374.0" prefWidth="985.0" spacing="5.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="776.0">
+            <VBox VBox.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="52.0" prefWidth="703.0" styleClass="search" stylesheets="@style.css" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Pane>
-                           <children>
-                              <VBox>
-                                 <children>
-                                    <TextField fx:id="searchTextField" onKeyPressed="#search" prefHeight="26.0" prefWidth="745.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
-                                       <font>
-                                          <Font size="17.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="5.0" />
-                                       </VBox.margin>
-                                    </TextField>
-                                    <ListView fx:id="searchResultView" onMouseClicked="#selectedSearchItem" prefHeight="95.0" prefWidth="746.0" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;" visible="false">
-                                       <VBox.margin>
-                                          <Insets left="5.0" />
-                                       </VBox.margin>
-                                       <padding>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </padding>
-                                    </ListView>
-                                 </children>
-                                 <padding>
-                                    <Insets top="5.0" />
-                                 </padding>
-                              </VBox>
-                           </children>
-                        </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#search" text="Button">
-                           <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/search.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
+                  <Label text="Top 10" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
                      <padding>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets bottom="5.0" left="35.0" top="5.0" />
                      </padding>
-                  </HBox>
-                  <Pane prefHeight="95.0" prefWidth="75.0" HBox.hgrow="ALWAYS" />
-                  <Button contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" text="Button">
-                     <graphic>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="50.0" styleClass="gray" stylesheets="@style.css">
-                           <children>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/person.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                     </graphic>
-                  </Button>
+                  </Label>
+                  <ScrollPane prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="toplistContener" alignment="CENTER" maxWidth="855.0" spacing="10.0" />
+                     </content>
+                     <padding>
+                        <Insets left="30.0" right="20.0" top="8.0" />
+                     </padding>
+                  </ScrollPane>
                </children>
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin>
-            </HBox>
-            <Pane prefHeight="30.0" prefWidth="1002.0" />
-            <Label text="Top 10" textFill="WHITE">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="30.0" right="20.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <ListView fx:id="topListView" onMouseClicked="#selectedTopListItem" prefHeight="158.0" prefWidth="981.0" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" top="10.0" />
-               </padding>
-            </ListView>
-            <Pane prefHeight="30.0" prefWidth="1002.0" />
-            <Label text="Utoljára lejátszott" textFill="WHITE">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets left="30.0" right="10.0" top="20.0" />
-               </VBox.margin>
-            </Label>
-            <ListView fx:id="historyListView" onMouseClicked="#selectedHistoryMusicItem" prefHeight="186.0" prefWidth="981.0" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" top="10.0" />
-               </padding>
-            </ListView>
+            </VBox>
+            <VBox VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Utoljára lejátszott" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" left="35.0" top="5.0" />
+                     </padding>
+                  </Label>
+                  <ScrollPane prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox fx:id="historylistContener" alignment="CENTER" maxWidth="855.0" spacing="10.0" />
+                     </content>
+                     <padding>
+                        <Insets left="30.0" right="20.0" top="8.0" />
+                     </padding>
+                  </ScrollPane>
+               </children>
+            </VBox>
          </children>
          <BorderPane.margin>
-            <Insets bottom="15.0" left="20.0" />
+            <Insets left="20.0" right="20.0" />
          </BorderPane.margin>
       </VBox>
    </center>
@@ -220,7 +146,7 @@
       <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
    </padding>
    <bottom>
-      <HBox alignment="CENTER_LEFT" prefHeight="199.0" prefWidth="1199.0" styleClass="gray" stylesheets="@style.css" BorderPane.alignment="CENTER_LEFT">
+      <HBox alignment="CENTER_LEFT" prefHeight="155.0" prefWidth="1199.0" styleClass="gray" stylesheets="@style.css" BorderPane.alignment="CENTER_LEFT">
          <BorderPane.margin>
             <Insets left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
@@ -322,59 +248,34 @@
                   <Insets bottom="10.0" left="10.0" right="20.0" top="10.0" />
                </HBox.margin>
             </VBox>
-            <AnchorPane>
+            <AnchorPane prefHeight="178.0" prefWidth="187.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="63.0" layoutY="132.0" mnemonicParsing="false" onAction="#like" text="Button" textAlignment="CENTER">
-                     <graphic>
-                        <ImageView fx:id="heart" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@img/heart2.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="110.0" layoutY="132.0" mnemonicParsing="false" onAction="#mute" prefHeight="43.0" prefWidth="39.0" text="Button" textAlignment="CENTER">
-                     <graphic>
-                        <ImageView fx:id="sound" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-                           <image>
-                              <Image url="@img/sound.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="205.0" layoutY="115.0" mnemonicParsing="false" onAction="#volDown" prefHeight="16.0" prefWidth="23.0" text="Button" textAlignment="CENTER">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@img/minus.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Button contentDisplay="CENTER" graphicTextGap="1.0" layoutX="205.0" mnemonicParsing="false" onAction="#volUp" prefHeight="28.0" prefWidth="21.0" text="Button">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@img/plus.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Slider fx:id="volumeSlider" layoutX="216.0" layoutY="28.0" orientation="VERTICAL" prefHeight="92.0" prefWidth="14.0" value="100.0" />
-                  <Label fx:id="Volumelabel" layoutX="160.0" layoutY="145.0" text="Volume: 100%" textFill="WHITE">
-                     <font>
-                        <Font name="System Bold Italic" size="12.0" />
-                     </font>
-                  </Label>
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="132.0" mnemonicParsing="false" onAction="#loop" text="Button">
-                     <graphic>
-                        <ImageView fx:id="loop_icon" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@img/loop1.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <ImageView fx:id="sound" fitHeight="35.0" fitWidth="35.0" layoutX="90.0" layoutY="135.0" onMouseClicked="#mute" pickOnBounds="true" preserveRatio="true" smooth="false">
+                     <image>
+                        <Image url="@img/sound.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="heart" fitHeight="35.0" fitWidth="109.0" layoutX="45.0" layoutY="135.0" onMouseClicked="#like" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/heart2.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="loop_icon" fitHeight="35.0" fitWidth="35.0" layoutY="135.0" onMouseClicked="#loop" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/loop1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="137.0" layoutY="143.0" onMouseClicked="#volDown" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/minus.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="136.0" layoutY="4.0" onMouseClicked="#volUp" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/plus.png" />
+                     </image>
+                  </ImageView>
+                  <Slider fx:id="volumeSlider" layoutX="139.0" layoutY="31.0" orientation="VERTICAL" prefHeight="104.0" prefWidth="14.0" value="100.0" />
                </children>
             </AnchorPane>
          </children>
@@ -383,4 +284,117 @@
          </padding>
       </HBox>
    </bottom>
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="966.0" spacing="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="109.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/beat.png" />
+               </image>
+            </ImageView>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="52.0" prefWidth="765.0" styleClass="search" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+               <children>
+                  <Pane>
+                     <children>
+                        <VBox fx:id="searccontener" minWidth="-Infinity" prefHeight="138.0" prefWidth="681.0">
+                           <children>
+                              <TextField fx:id="searchTextField" onKeyPressed="#search" prefHeight="38.0" prefWidth="778.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
+                                 <font>
+                                    <Font size="17.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="5.0" />
+                                 </VBox.margin>
+                              </TextField>
+                              <ListView fx:id="searchResultView" onMouseClicked="#selectedSearchItem" prefHeight="95.0" prefWidth="746.0" style="-fx-background-color: #7FB68D; -fx-background-radius: 20;" visible="false">
+                                 <VBox.margin>
+                                    <Insets left="5.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </padding>
+                              </ListView>
+                           </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="52.0" prefWidth="41.0" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#search" text="Button">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/search.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="110.0" prefWidth="155.0">
+               <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="userbox" alignment="CENTER" disable="true" layoutX="33.0" layoutY="64.0" prefHeight="165.0" prefWidth="115.0" spacing="20.0" styleClass="user" visible="false">
+                           <children>
+                              <Label onMouseClicked="#colors" text="Szinek" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Nyelv" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label onMouseClicked="#logut" text="Kilépés" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="colorbox" alignment="CENTER" disable="true" layoutX="-54.0" layoutY="105.0" prefHeight="168.0" prefWidth="112.0" spacing="10.0" styleClass="user" visible="false">
+                           <children>
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: red;" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: blue;" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: green;" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: yellow;" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: black;" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="CENTER" layoutX="90.0" layoutY="20.0" onMouseClicked="#user_selected" prefHeight="69.0" prefWidth="58.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="55.0" prefWidth="34.0" styleClass="gray" stylesheets="@style.css">
+                                 <children>
+                                    <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/person.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets left="45.0" />
+         </padding>
+      </HBox>
+   </top>
 </BorderPane>
