@@ -218,6 +218,7 @@ public class MusicPlayer implements Initializable {
         ObservableList<Track> result = FXCollections.observableArrayList(musicHistory);
 
         Platform.runLater(() -> {
+          
             /*topListView.getItems().clear();
             int count = 1;
             for (Track track : top) {
@@ -253,7 +254,6 @@ public class MusicPlayer implements Initializable {
 
 
                 historylistContener.getChildren().add(hBox);
-
             }
         });
     }

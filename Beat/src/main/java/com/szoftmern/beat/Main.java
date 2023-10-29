@@ -22,7 +22,7 @@ public class Main extends Application {
         DatabaseManager manager = new DatabaseManager();
 
         //Start JavaFX and load login scene
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("screen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 1280,720 );
 
