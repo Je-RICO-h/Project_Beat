@@ -65,11 +65,13 @@ public class MusicPlayer implements Initializable {
     //List for the musics
     private List<Track> musicList = new ArrayList<>();
 
-
     //List for previously played music
     private Set<Track> musicHistory = new HashSet<>();
 
-    public boolean liked = false;
+    private Timer searchTimer;
+    private String currentKeyword = "";
+
+    boolean liked = false;
     boolean loop = false;
 
     //Constructor
@@ -79,6 +81,8 @@ public class MusicPlayer implements Initializable {
         }
 
         this.pos = 0;
+
+        searchTimer = new Timer();
     }
 
 
@@ -192,11 +196,33 @@ public class MusicPlayer implements Initializable {
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
 
+    @FXML
+    public void onActionSearchButton() {
+        search();
+    }
 
     @FXML
+    public void onKeyPressedSearchTextField() {
+        searchTimer.cancel();
+        searchTimer = new Timer();
+        searchTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                search();
+            }
+        }, 1500); // 1500 ms = 1.5 másodperc késleltetés
+    }
+
     public void search() {
         String keyword = searchTextField.getText();
+        currentKeyword = keyword;
+
         if (!keyword.isEmpty()) {
+            // Ellenőrizd, hogy a keresett kulcsszó megegyezik-e a jelenlegi kulcsszóval
+            if (!currentKeyword.equals(searchTextField.getText())) {
+                return; // Ha nem, ne végezd el a keresést
+            }
+
             ObservableList<Track> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
 
             Platform.runLater(() -> {

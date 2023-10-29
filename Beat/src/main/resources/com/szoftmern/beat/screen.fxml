@@ -98,10 +98,49 @@
          <children>
             <VBox VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Top 10" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="52.0" prefWidth="703.0" styleClass="search" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Pane>
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <TextField fx:id="searchTextField" onKeyPressed="#onKeyPressedSearchTextField" prefHeight="26.0" prefWidth="745.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
+                                       <font>
+                                          <Font size="17.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="5.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                    <ListView fx:id="searchResultView" onMouseClicked="#selectedSearchItem" prefHeight="95.0" prefWidth="746.0" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;" visible="false">
+                                       <VBox.margin>
+                                          <Insets left="5.0" />
+                                       </VBox.margin>
+                                       <padding>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </padding>
+                                    </ListView>
+                                 </children>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onActionSearchButton" text="Button">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/search.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                      <padding>
                         <Insets bottom="5.0" left="35.0" top="5.0" />
                      </padding>
