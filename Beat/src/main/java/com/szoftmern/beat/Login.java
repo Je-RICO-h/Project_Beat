@@ -22,6 +22,7 @@ public class Login {
         if(username.getText().toString().equals("username") && password.getText().toString().equals("password")) {
             welcomeText.setText("Bejelentkezés...");
             new SceneSwitch(loginPanel, "screen.fxml");
+
         }
         else if(username.getText().isEmpty() && password.getText().isEmpty()) {
             welcomeText.setText("Add meg az adataid!");

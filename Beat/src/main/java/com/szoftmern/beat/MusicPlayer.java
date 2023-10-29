@@ -6,14 +6,19 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -22,6 +27,16 @@ import static com.szoftmern.beat.EntityUtil.*;
 import static java.lang.Math.round;
 
 public class MusicPlayer implements Initializable {
+    @FXML
+    private VBox colorbox;
+    @FXML
+    private BorderPane border;
+    @FXML
+    private VBox userbox;
+    @FXML
+    private VBox historylistContener;
+    @FXML
+    private VBox toplistContener;
     @FXML
     private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
@@ -37,7 +52,7 @@ public class MusicPlayer implements Initializable {
     public ListView<String> searchResultView;
     public ListView<String> topListView;
     public ListView<String> historyListView;
-    public Label Volumelabel;
+
     public Button playbutton;
     public Slider volumeSlider;
     public Label musicDuration;
@@ -87,16 +102,65 @@ public class MusicPlayer implements Initializable {
         timer.schedule(task, 0, 300000);
     }
 
+    public Song songmaker(Track s){
+        Song song=new Song();
+        song.setCover("img/zene.png");
+        song.setName(s.getTitle());
+        String artist=String.valueOf(getArtistNameList(s.getArtists()));
+        song.setArtist_name(artist.substring(1, artist.length() - 1));
+        return song;
+    }
 
     public void updateTopList() {
         ObservableList<Track> top = FXCollections.observableArrayList(getTopMusicList());
 
         Platform.runLater(() -> {
-            topListView.getItems().clear();
+            /*topListView.getItems().clear();
             int count = 1;
             for (Track track : top) {
                 topListView.getItems().add(count + ". " + track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
                 count++;
+            }*/
+
+            int counter=1;
+            toplistContener.getChildren().clear();
+            for(Track s:top) {
+                String img="img/numbers/"+String.valueOf(counter)+".png";
+
+                HBox hBox1=new HBox();
+                ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream(img)));
+                imageView.setFitWidth(45);
+                imageView.setFitHeight(45);
+
+                Song song = songmaker(s);
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("song.fxml"));
+                HBox hBox = null;
+                try {
+                    hBox = fxmlLoader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                SongController songController = fxmlLoader.getController();
+                songController.SetData(song);
+                hBox.setOnMouseClicked(mouseEvent -> {
+                    System.out.println(song.getName());
+                    String title = song.getName();
+                    pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
+                    next();
+                    System.out.println("Kiválasztott elem: " + title);
+                    play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
+
+
+                });
+
+                hBox1.getChildren().addAll(imageView,hBox);
+                toplistContener.getChildren().add(hBox1);
+                hBox1.setSpacing(15);
+                counter++;
+                if (counter>10){
+                    img="img/numbers/10.png";
+                }
             }
         });
     }
@@ -113,7 +177,7 @@ public class MusicPlayer implements Initializable {
     }
 
 
-    @FXML
+    /*@FXML
     public void selectedTopListItem(){
         String selectedItem = topListView.getSelectionModel().getSelectedItem();
         String title = selectedItem.split("\n")[0].substring(selectedItem.split("\n")[0].indexOf(" ") == 3 ? 4 : 3);
@@ -121,7 +185,7 @@ public class MusicPlayer implements Initializable {
         pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
         next();
         System.out.println("Kiválasztott elem: " + selectedItem);
-    }
+    }*/
 
 
     @FXML
@@ -169,6 +233,7 @@ public class MusicPlayer implements Initializable {
             });
 
             searchResultView.setVisible(true);
+            searchResultView.toFront();
         } else {
             searchResultView.setVisible(false);
         }
@@ -179,9 +244,42 @@ public class MusicPlayer implements Initializable {
         ObservableList<Track> result = FXCollections.observableArrayList(musicHistory);
 
         Platform.runLater(() -> {
-            historyListView.getItems().clear();
-            for (Track track : result) {
-                historyListView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
+          
+            /*topListView.getItems().clear();
+            int count = 1;
+            for (Track track : top) {
+                topListView.getItems().add(count + ". " + track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
+                count++;
+            }*/
+
+
+            historylistContener.getChildren().clear();
+            for(Track s:result) {
+
+                Song song = songmaker(s);
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("song.fxml"));
+                HBox hBox = null;
+                try {
+                    hBox = fxmlLoader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                SongController songController = fxmlLoader.getController();
+                songController.SetData(song);
+                hBox.setOnMouseClicked(mouseEvent -> {
+                    System.out.println(song.getName());
+                    String title = song.getName();
+                    pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
+                    next();
+                    System.out.println("Kiválasztott elem: " + title);
+                    play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
+
+
+                });
+
+
+                historylistContener.getChildren().add(hBox);
             }
         });
     }
@@ -203,18 +301,18 @@ public class MusicPlayer implements Initializable {
         //Set the volume status text
 
         if(player.isMute() && player.getVolume() != 0.0) {
-            Volumelabel.setText("Volume: 0 %");
+            //Volumelabel.setText("Volume: 0 %");
             sound.setImage(new Image(getClass().getResourceAsStream("img/mute.png")));
 
         }
         else
         {
             //Formatting the text and convert it into percentage
-            String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
+            //String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
             sound.setImage(new Image(getClass().getResourceAsStream("img/sound.png")));
 
             //Write out Volume
-            Volumelabel.setText(text);
+            //Volumelabel.setText(text);
         }
     }
 
@@ -342,7 +440,7 @@ public class MusicPlayer implements Initializable {
                         String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
 
                         //Write out Volume
-                        Volumelabel.setText(text);
+                        //Volumelabel.setText(text);
                     }
                 });
             }
@@ -402,11 +500,11 @@ public class MusicPlayer implements Initializable {
             if (!player.isMute())
             {
                 //Formatting the text and convert it into percentage
-                String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
+                //String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
                 volumeSlider.setValue(player.getVolume()*100);
 
                 //Write out Volume
-                Volumelabel.setText(text);
+                //Volumelabel.setText(text);
             }
         }
     }
@@ -428,12 +526,12 @@ public class MusicPlayer implements Initializable {
             if (!player.isMute())
             {
                 //Formatting the text and convert it into percentage
-                String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
+                //String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
 
                 volumeSlider.setValue(player.getVolume()*100);
 
                 //Write out Volume
-                Volumelabel.setText(text);
+                //Volumelabel.setText(text);
             }
         }
     }
@@ -497,5 +595,45 @@ public class MusicPlayer implements Initializable {
             loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop1.png")));
         }
     }
+
+
+    boolean user=false;
+    @FXML
+    void user_selected() {
+
+        if(user==false){
+            userbox.setVisible(true);
+            userbox.setDisable(false);
+            user=true;
+        }
+        else {
+            userbox.setVisible(false);
+            userbox.setDisable(true);
+            user=false;
+
+        }
+    }
+
+    @FXML
+    void logut() throws IOException {
+        new SceneSwitch(border, "login.fxml");
+    }
+
+    boolean color=false;
+    @FXML
+    void colors() {
+        if(color==false){
+            colorbox.setVisible(true);
+            colorbox.setDisable(false);
+            color=true;
+        }
+        else {
+            colorbox.setVisible(false);
+            colorbox.setDisable(true);
+            color=false;
+
+        }
+    }
+
 
 }

@@ -21,6 +21,7 @@
 
 }
 
+
 .increment-button, .decrement-button,.increment-arrow,.decrement-arrow {
     -fx-background-color: transparent;
 
@@ -69,4 +70,13 @@
     -fx-font-family:" Arial Rounded MT Bold";
 
 }
+
+.user{
+    -fx-background-color: linear-gradient(to bottom,#8AD49D, #8FAE9B);
+    -fx-background-radius: 20 0 20 20;
+
+
+}
+
+
 
