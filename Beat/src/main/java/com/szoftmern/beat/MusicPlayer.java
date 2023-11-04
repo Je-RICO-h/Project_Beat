@@ -8,14 +8,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -595,11 +593,12 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-   void logout() throws IOException{
+    void logut() throws IOException {
+
         //Stop the player
         this.player.stop();
 
-        new SceneSwitch(border, "login.fxml");
+        SceneSwitcher.switchScene(border, "login.fxml");
     }
 
     boolean color=false;
