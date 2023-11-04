@@ -11,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -33,55 +32,53 @@ public class MusicPlayer implements Initializable {
     @FXML
     private VBox userbox;
     @FXML
-    private VBox historylistContener;
+    protected VBox historylistContener;
     @FXML
-    private VBox toplistContener;
+    protected VBox toplistContener;
     @FXML
     private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
     @FXML
     private ImageView heart;
     @FXML
-    private ImageView play_pause;
+    protected ImageView play_pause;
     @FXML
     private ImageView sound;
     public Label statuslabel;
     public Label artistNameLabel;
     public TextField searchTextField;
     public ListView<String> searchResultView;
-    public ListView<String> topListView;
-    public ListView<String> historyListView;
 
     public Button playbutton;
     public Slider volumeSlider;
-    public Label musicDuration;
     public Label starttime;
     public Label endtime;
     private MediaPlayer player;
     public Slider timeSlider;
-    private int pos = -1;
+    public int pos = -1;
 
-    //List for the musics
-    private List<Track> musicList = new ArrayList<>();
+    //List for the musicsList<Track> musicList
+    public List<Track> musicList = new ArrayList<>();
 
     //List for previously played music
-    private Set<Track> musicHistory = new HashSet<>();
-
-    private Timer searchTimer;
-    private String currentKeyword = "";
+    public Set<Track> musicHistory = new HashSet<>();
 
     boolean liked = false;
     boolean loop = false;
 
+    private SearchManager searchManager;
+    private TopMusicManager topMusicManager;
+    private HistoryManager historyManager;
+
     //Constructor
     public MusicPlayer() {
-        for (Track track: getEveryTrack()) {
-            this.musicList.add(track);
-        }
+        this.searchManager = new SearchManager(this);
+        this.topMusicManager = new TopMusicManager(this);
+        this.historyManager = new HistoryManager(this);
+
+       this.musicList = getEveryTrack();
 
         this.pos = 0;
-
-        searchTimer = new Timer();
 
         //Dummy init to access the property
         Media media = new Media(musicList.get(this.pos).getResourceUrl());
@@ -101,7 +98,6 @@ public class MusicPlayer implements Initializable {
         });
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Timer timer = new Timer();
@@ -110,7 +106,7 @@ public class MusicPlayer implements Initializable {
             @Override
             public void run() {
                 // Frissítési feladat végrehajtása (toplista frissítése)
-                updateTopList();
+                topMusicManager.updateTopList();
             }
         };
 
@@ -118,186 +114,20 @@ public class MusicPlayer implements Initializable {
         timer.schedule(task, 0, 300000);
     }
 
-    public Song songmaker(Track s){
-        Song song=new Song();
-        song.setCover("img/zene.png");
-        song.setName(s.getTitle());
-        String artist=String.valueOf(getArtistNameList(s.getArtists()));
-        song.setArtist_name(artist.substring(1, artist.length() - 1));
-        return song;
-    }
-
-    public void updateTopList() {
-        ObservableList<Track> top = FXCollections.observableArrayList(getTopMusicList());
-
-        Platform.runLater(() -> {
-            /*topListView.getItems().clear();
-            int count = 1;
-            for (Track track : top) {
-                topListView.getItems().add(count + ". " + track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
-                count++;
-            }*/
-
-            int counter=1;
-            toplistContener.getChildren().clear();
-            for(Track s:top) {
-                String img="img/numbers/"+String.valueOf(counter)+".png";
-
-                HBox hBox1=new HBox();
-                ImageView imageView=new ImageView(new Image(getClass().getResourceAsStream(img)));
-                imageView.setFitWidth(45);
-                imageView.setFitHeight(45);
-
-                Song song = songmaker(s);
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("song.fxml"));
-                HBox hBox = null;
-                try {
-                    hBox = fxmlLoader.load();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                SongController songController = fxmlLoader.getController();
-                songController.SetData(song);
-                hBox.setOnMouseClicked(mouseEvent -> {
-                    System.out.println(song.getName());
-                    String title = song.getName();
-                    pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
-                    next();
-                    System.out.println("Kiválasztott elem: " + title);
-                    play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
-
-
-                });
-
-                hBox1.getChildren().addAll(imageView,hBox);
-                toplistContener.getChildren().add(hBox1);
-                hBox1.setSpacing(15);
-                counter++;
-                if (counter>10){
-                    img="img/numbers/10.png";
-                }
-            }
-        });
-    }
-
-
     @FXML
-    public void selectedSearchItem(){
-        String selectedItem = searchResultView.getSelectionModel().getSelectedItem();
-        System.out.println(selectedItem);
-        pos = this.musicList.indexOf(getTrackFromTitle(selectedItem.split("\n")[0])) - 1;
-        next();
-        searchResultView.setVisible(false);
-        System.out.println("Kiválasztott elem: " + selectedItem);
-    }
-
-
-    /*@FXML
-    public void selectedTopListItem(){
-        String selectedItem = topListView.getSelectionModel().getSelectedItem();
-        String title = selectedItem.split("\n")[0].substring(selectedItem.split("\n")[0].indexOf(" ") == 3 ? 4 : 3);
-        System.out.println(title);
-        pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
-        next();
-        System.out.println("Kiválasztott elem: " + selectedItem);
-    }*/
-
-
-    @FXML
-    public void selectedHistoryMusicItem(){
-        String selectedItem = historyListView.getSelectionModel().getSelectedItem();
-        pos = this.musicList.indexOf(getTrackFromTitle(selectedItem.split("\n")[0])) - 1;
-        next();
-        System.out.println("Kiválasztott elem: " + selectedItem);
+    public void selectedSearchItem() {
+        searchManager.selectedSearchItem();
     }
 
     @FXML
     public void onActionSearchButton() {
-        search();
-    }
+        searchManager.onActionSearchButton();
+   }
 
     @FXML
     public void onKeyPressedSearchTextField() {
-        searchTimer.cancel();
-        searchTimer = new Timer();
-        searchTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                search();
-            }
-        }, 1500); // 1500 ms = 1.5 másodperc késleltetés
+        searchManager.onKeyPressedSearchTextField();
     }
-
-    public void search() {
-        String keyword = searchTextField.getText();
-        currentKeyword = keyword;
-
-        if (!keyword.isEmpty()) {
-            // Ellenőrizd, hogy a keresett kulcsszó megegyezik-e a jelenlegi kulcsszóval
-            if (!currentKeyword.equals(searchTextField.getText())) {
-                return; // Ha nem, ne végezd el a keresést
-            }
-
-            ObservableList<Track> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
-
-            Platform.runLater(() -> {
-                searchResultView.getItems().clear();
-                for (Track track : result) {
-                    searchResultView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
-                }
-            });
-
-            searchResultView.setVisible(true);
-            searchResultView.toFront();
-        } else {
-            searchResultView.setVisible(false);
-        }
-    }
-
-
-    public void displayhistory() {
-        ObservableList<Track> result = FXCollections.observableArrayList(musicHistory);
-
-        Platform.runLater(() -> {
-          
-            /*topListView.getItems().clear();
-            int count = 1;
-            for (Track track : top) {
-                topListView.getItems().add(count + ". " + track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
-                count++;
-            }*/
-
-
-            historylistContener.getChildren().clear();
-            for(Track s:result) {
-
-                Song song = songmaker(s);
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("song.fxml"));
-                HBox hBox = null;
-                try {
-                    hBox = fxmlLoader.load();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                SongController songController = fxmlLoader.getController();
-                songController.SetData(song);
-                hBox.setOnMouseClicked(mouseEvent -> {
-                    System.out.println(song.getName());
-                    String title = song.getName();
-                    pos = this.musicList.indexOf(getTrackFromTitle(title)) - 1;
-                    next();
-                    System.out.println("Kiválasztott elem: " + title);
-                    play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
-
-
-                });
-                historylistContener.getChildren().add(hBox);
-            }
-        });
-    }
-
 
     @FXML
     public void mute()
@@ -319,7 +149,6 @@ public class MusicPlayer implements Initializable {
         else
             sound.setImage(new Image(getClass().getResourceAsStream("img/sound.png")));
     }
-
 
     @FXML void pausePlay()
     {
@@ -430,7 +259,7 @@ public class MusicPlayer implements Initializable {
             //Update the music history by appending this music to it if its not into it
             this.musicHistory.add(musicList.get(this.pos));
 
-            displayhistory();
+            historyManager.displayhistory();
 
             //Set the volume
             player.setVolume(volumeSlider.getValue() / 100);
