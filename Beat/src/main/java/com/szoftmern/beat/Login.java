@@ -11,6 +11,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import static com.szoftmern.beat.UIController.*;
+
 
 public class Login {
     @FXML
@@ -39,7 +41,7 @@ public class Login {
 
         // every info is correct, log the user in...
         welcomeText.setText("Bejelentkezés...");
-        SceneSwitcher.switchScene(loginPanel, "screen.fxml");
+        switchScene(loginPanel, "screen.fxml");
     }
 
     private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{
@@ -81,7 +83,7 @@ public class Login {
     }
     @FXML
     protected void switchToRegistrationScene(){
-        SceneSwitcher.switchScene(loginPanel, "registration.fxml");
+        switchScene(loginPanel, "registration.fxml");
     }
 
     @FXML

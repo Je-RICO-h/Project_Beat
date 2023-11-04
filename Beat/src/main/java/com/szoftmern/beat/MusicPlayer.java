@@ -73,7 +73,7 @@ public class MusicPlayer implements Initializable {
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
 
-       this.musicList = getEveryTrack().stream().sorted(Track.titleComparator).collect(Collectors.toList());
+        this.musicList = getEveryTrack().stream().sorted(Track.titleComparator).collect(Collectors.toList());
 
         this.pos = 0;
 
@@ -81,7 +81,7 @@ public class MusicPlayer implements Initializable {
         Media media = new Media(musicList.get(this.pos).getResourceUrl());
         this.player = new MediaPlayer(media);
 
-        this.volumeSlider = new Slider(0,100,50); //NEEDS TO BE FIXED
+        this.volumeSlider = new Slider(0, 100, 50); //NEEDS TO BE FIXED
 
         // Volume Control
         this.volumeSlider.setValue(100);
@@ -119,7 +119,7 @@ public class MusicPlayer implements Initializable {
     @FXML
     public void onActionSearchButton() {
         searchManager.onActionSearchButton();
-   }
+    }
 
     @FXML
     public void onKeyPressedSearchTextField() {
@@ -127,36 +127,31 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void mute()
-    {
+    public void mute() {
         //If volume is 0 percent and muting, get it to 50%
         if (player.getVolume() == 0.0) {
             player.setVolume(0.5);
             volumeSlider.setValue(50);
-        }
-        else
+        } else
             //Not logic on the mute button
             player.setMute(!player.isMute());
 
 
         //Set the volume status text
 
-        if(player.isMute() && player.getVolume() != 0.0)
+        if (player.isMute() && player.getVolume() != 0.0)
             sound.setImage(new Image(getClass().getResourceAsStream("img/mute.png")));
         else
             sound.setImage(new Image(getClass().getResourceAsStream("img/sound.png")));
     }
 
-    @FXML void pausePlay()
-    {
+    @FXML
+    void pausePlay() {
         //If status of the player is playing, pause the music, else play it
-        if(player.getStatus() == MediaPlayer.Status.PLAYING)
-        {
+        if (player.getStatus() == MediaPlayer.Status.PLAYING) {
             player.pause();
             play_pause.setImage(new Image(getClass().getResourceAsStream("img/play.png")));
-        }
-        else
-        {
+        } else {
             player.play();
             changeStatus(musicList.get(this.pos).getTitle());
             play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
@@ -164,22 +159,19 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void changeStatus(String text)
-    {
+    public void changeStatus(String text) {
         //Function to change the label
         statuslabel.setText(text);
     }
 
     @FXML
-    public void changeArtist()
-    {
+    public void changeArtist() {
         List<String> artistsName = getArtistNameList(musicList.get(pos).getArtists());
         String text = artistsName.toString();
         artistNameLabel.setText(text.substring(1, text.length() - 1));
     }
 
-    public void refreshTimeSlider()
-    {
+    public void refreshTimeSlider() {
         //Set the sliders max value to the duration
         timeSlider.setMax(player.getTotalDuration().toSeconds());
 
@@ -191,7 +183,7 @@ public class MusicPlayer implements Initializable {
         //Update the sliders time
         player.currentTimeProperty().addListener((obs2, oldTime, newTime) -> {
             //If it is not being dragged, update the time
-            if (! timeSlider.isValueChanging()) {
+            if (!timeSlider.isValueChanging()) {
                 timeSlider.setValue(newTime.toSeconds());
             }
 
@@ -224,11 +216,10 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void playMusic()
-    {
+    public void playMusic() {
 
         //If the folder was empty, there is nothing to play
-        if(this.pos == -1)
+        if (this.pos == -1)
             changeStatus("No music is available!");
         else {
             //Get Volume
@@ -257,8 +248,7 @@ public class MusicPlayer implements Initializable {
                         //Update the slider
                         refreshTimeSlider();
                 });
-            }
-            else
+            } else
                 //Update the slider
                 refreshTimeSlider();
 
@@ -266,34 +256,27 @@ public class MusicPlayer implements Initializable {
             player.play();
 
             //Update the status label
-            changeStatus( musicList.get(this.pos).getTitle());
+            changeStatus(musicList.get(this.pos).getTitle());
 
             changeArtist();
-
-            incrementListenCount(musicList.get(this.pos));
-            System.out.println(musicList.get(this.pos).getPlayCount());
         }
     }
 
     @FXML
-    public void volUp()
-    {
+    public void volUp() {
         //If volume is not at max, increase the volume
-        if(player.getVolume() != 1.0)
-        {
+        if (player.getVolume() != 1.0) {
             player.setVolume(player.getVolume() + 0.1);
-            if (player.getVolume()>=1.0)
-            {
+            if (player.getVolume() >= 1.0) {
                 player.setVolume(1.0);
             }
 
             //Only display if its not muted
 
-            if (!player.isMute())
-            {
+            if (!player.isMute()) {
                 //Formatting the text and convert it into percentage
                 //String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
-                volumeSlider.setValue(player.getVolume()*100);
+                volumeSlider.setValue(player.getVolume() * 100);
 
                 //Write out Volume
                 //Volumelabel.setText(text);
@@ -302,25 +285,21 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void volDown()
-    {
+    public void volDown() {
         //If music is not at 0 volume, decrease it
-        if(player.getVolume() >= 0.0)
-        {
+        if (player.getVolume() >= 0.0) {
             player.setVolume(player.getVolume() - 0.1);
-            if (player.getVolume()<=0.1)
-            {
+            if (player.getVolume() <= 0.1) {
                 player.setVolume(0.0);
             }
 
             //Only display if its not muted
 
-            if (!player.isMute())
-            {
+            if (!player.isMute()) {
                 //Formatting the text and convert it into percentage
                 //String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
 
-                volumeSlider.setValue(player.getVolume()*100);
+                volumeSlider.setValue(player.getVolume() * 100);
 
                 //Write out Volume
                 //Volumelabel.setText(text);
@@ -330,14 +309,13 @@ public class MusicPlayer implements Initializable {
 
 
     @FXML
-    public void next()
-    {
+    public void next() {
         //If the music list reached the end, restart it
-        if (pos == musicList.size()-1)
+        if (pos == musicList.size() - 1)
             pos = 0;
         else
             //If the music is set to loop, replay the music, else go to the next
-            if(!loop)
+            if (!loop)
                 pos += 1;
 
         //Play the next music
@@ -346,8 +324,7 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void prev()
-    {
+    public void prev() {
         //If the list reached the beginning, start from behind
         if (pos == 0)
             pos = musicList.size() - 1;
@@ -361,47 +338,43 @@ public class MusicPlayer implements Initializable {
 
     @FXML
     void like() {
-        if(liked==false)
-        {
+        if (liked == false) {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
-            liked=true;
+            liked = true;
 
-        }
-        else
-        {
+        } else {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
-            liked=false;
+            liked = false;
 
         }
     }
 
     @FXML
-    void loop(){
+    void loop() {
         //Set loop with button
         loop = !loop;
 
-        if(loop){
+        if (loop) {
             loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop2.png")));
-        }
-        else {
+        } else {
             loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop1.png")));
         }
     }
 
 
-    boolean user=false;
+    boolean user = false;
+
     @FXML
     void user_selected() {
 
-        if(user==false){
+        if (user == false) {
             userbox.setVisible(true);
             userbox.setDisable(false);
-            user=true;
-        }
-        else {
+            user = true;
+        } else {
             userbox.setVisible(false);
             userbox.setDisable(true);
-            user=false;
+            user = false;
         }
     }
 
@@ -411,21 +384,21 @@ public class MusicPlayer implements Initializable {
         //Stop the player
         this.player.stop();
 
-        SceneSwitcher.switchScene(border, "login.fxml");
+        UIController.switchScene(border, "login.fxml");
     }
 
-    boolean color=false;
+    boolean color = false;
+
     @FXML
     void colors() {
-        if(color==false){
+        if (color == false) {
             colorbox.setVisible(true);
             colorbox.setDisable(false);
-            color=true;
-        }
-        else {
+            color = true;
+        } else {
             colorbox.setVisible(false);
             colorbox.setDisable(true);
-            color=false;
+            color = false;
 
         }
     }

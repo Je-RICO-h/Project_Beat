@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.mindrot.jbcrypt.BCrypt;
 
+import static com.szoftmern.beat.UIController.*;
+
 public class Registration {
     @FXML
     private Pane registrationPanel;
@@ -32,7 +34,7 @@ public class Registration {
 
     @FXML
     protected void switchBackToLoginScene() {
-        SceneSwitcher.switchScene(registrationPanel, "login.fxml");
+        switchScene(registrationPanel, "login.fxml");
     }
 
     @FXML
@@ -50,7 +52,7 @@ public class Registration {
             DatabaseManager.userDAO.saveEntity(newUser);
 
             System.out.println("New user successfully added to the database");
-            SceneSwitcher.switchScene(registrationPanel, "login.fxml");
+            switchScene(registrationPanel, "login.fxml");
         }
     }
 
