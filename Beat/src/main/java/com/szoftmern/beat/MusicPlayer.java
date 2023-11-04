@@ -1,12 +1,8 @@
 package com.szoftmern.beat;
 
-import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -19,6 +15,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.EntityUtil.*;
@@ -76,7 +73,7 @@ public class MusicPlayer implements Initializable {
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
 
-       this.musicList = getEveryTrack();
+       this.musicList = getEveryTrack().stream().sorted(Track.titleComparator).collect(Collectors.toList());
 
         this.pos = 0;
 
@@ -152,13 +149,6 @@ public class MusicPlayer implements Initializable {
 
     @FXML void pausePlay()
     {
-//        //If player is not initialized, initialize it
-//        if(player == null)
-//        {
-//            playMusic();
-//            play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
-//
-//        }
         //If status of the player is playing, pause the music, else play it
         if(player.getStatus() == MediaPlayer.Status.PLAYING)
         {
@@ -168,10 +158,9 @@ public class MusicPlayer implements Initializable {
         else
         {
             player.play();
-            changeStatus( musicList.get(this.pos).getTitle());
+            changeStatus(musicList.get(this.pos).getTitle());
             play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
         }
-
     }
 
     @FXML
@@ -182,19 +171,11 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    public void changeArtist(List<String> artistsName)
+    public void changeArtist()
     {
-        //Function to change the label
-        StringBuilder text = new StringBuilder();
-
-        for (int i = 0; i < artistsName.size(); i++) {
-            text.append(artistsName.get(i));
-
-            if (i != artistsName.size() - 1) {
-                text.append(", ");
-            }
-        }
-        artistNameLabel.setText(text.toString());
+        List<String> artistsName = getArtistNameList(musicList.get(pos).getArtists());
+        String text = artistsName.toString();
+        artistNameLabel.setText(text.substring(1, text.length() - 1));
     }
 
     public void refreshTimeSlider()
@@ -287,8 +268,10 @@ public class MusicPlayer implements Initializable {
             //Update the status label
             changeStatus( musicList.get(this.pos).getTitle());
 
-            changeArtist(getArtistNameList(musicList.get(this.pos).getArtists()));
+            changeArtist();
 
+            incrementListenCount(musicList.get(this.pos));
+            System.out.println(musicList.get(this.pos).getPlayCount());
         }
     }
 

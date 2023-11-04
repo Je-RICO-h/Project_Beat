@@ -9,7 +9,9 @@ public class JpaTrackDAO implements AutoCloseable, EntityDAO {
 
     @Override
     public void saveEntity(Object t) {
-        System.out.println("Meg nem mentunk semmit sehova...");
+        entityManager.getTransaction().begin();
+        entityManager.persist(t);
+        entityManager.getTransaction().commit();
     }
 
     @Override
@@ -22,8 +24,10 @@ public class JpaTrackDAO implements AutoCloseable, EntityDAO {
     }
 
     @Override
-    public void updateEntity(Object a) {
-        System.out.println("Meg nem mentunk semmit sehova...");
+    public void updateEntity(Object t) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(t);
+        entityManager.getTransaction().commit();
     }
 
     @Override

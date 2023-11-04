@@ -60,4 +60,11 @@ public class Track {
             return o1.playCount - o2.playCount;
         }
     };
+
+    public static Comparator<Track> titleComparator = new Comparator<Track>() {
+        @Override
+        public int compare(Track o1, Track o2) {
+            return o1.title.compareTo(o2.title);
+        }
+    };
 }

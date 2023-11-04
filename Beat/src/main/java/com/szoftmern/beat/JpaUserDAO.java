@@ -23,8 +23,10 @@ public class JpaUserDAO implements AutoCloseable, EntityDAO {
     }
 
     @Override
-    public void updateEntity(Object a) {
-        System.out.println("Meg nem mentunk semmit sehova...");
+    public void updateEntity(Object t) {
+        entityManager.getTransaction().begin();
+        entityManager.persist(t);
+        entityManager.getTransaction().commit();
     }
 
     @Override
