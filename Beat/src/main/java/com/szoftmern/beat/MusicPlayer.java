@@ -75,7 +75,7 @@ public class MusicPlayer implements Initializable {
 
     //Constructor
     public MusicPlayer() {
-        for (Track track: getEveryTrack().stream().sorted().toList()) {
+        for (Track track: getEveryTrack()) {
             this.musicList.add(track);
         }
 
