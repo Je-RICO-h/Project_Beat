@@ -1,4 +1,7 @@
 package com.szoftmern.beat;
 
-public class IncorrectInformationException {
+public class IncorrectInformationException extends Exception {
+    public IncorrectInformationException(String errorMessage) {
+        super(errorMessage);
+    }
 }
