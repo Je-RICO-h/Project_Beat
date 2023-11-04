@@ -8,12 +8,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -81,6 +83,23 @@ public class MusicPlayer implements Initializable {
         this.pos = 0;
 
         searchTimer = new Timer();
+
+        //Dummy init to access the property
+        Media media = new Media(musicList.get(this.pos).getResourceUrl());
+        this.player = new MediaPlayer(media);
+
+        this.volumeSlider = new Slider(0,100,50); //NEEDS TO BE FIXED
+
+        // Volume Control
+        this.volumeSlider.setValue(100);
+
+        //Volume slider init
+        this.volumeSlider.valueProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable) {
+                player.setVolume(volumeSlider.getValue() / 100);
+            }
+        });
     }
 
 
@@ -275,8 +294,6 @@ public class MusicPlayer implements Initializable {
 
 
                 });
-
-
                 historylistContener.getChildren().add(hBox);
             }
         });
@@ -298,46 +315,32 @@ public class MusicPlayer implements Initializable {
 
         //Set the volume status text
 
-        if(player.isMute() && player.getVolume() != 0.0) {
-            //Volumelabel.setText("Volume: 0 %");
+        if(player.isMute() && player.getVolume() != 0.0)
             sound.setImage(new Image(getClass().getResourceAsStream("img/mute.png")));
-
-        }
         else
-        {
-            //Formatting the text and convert it into percentage
-            //String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
             sound.setImage(new Image(getClass().getResourceAsStream("img/sound.png")));
-
-            //Write out Volume
-            //Volumelabel.setText(text);
-        }
     }
 
 
     @FXML void pausePlay()
     {
-        //If player is not initialized, initialize it
-        if(player == null)
-        {
-            playMusic();
-            //playbutton.setText("Pause");
-            play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
-
-        }
+//        //If player is not initialized, initialize it
+//        if(player == null)
+//        {
+//            playMusic();
+//            play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
+//
+//        }
         //If status of the player is playing, pause the music, else play it
-        else if(player.getStatus() == MediaPlayer.Status.PLAYING)
+        if(player.getStatus() == MediaPlayer.Status.PLAYING)
         {
             player.pause();
-            //changeStatus("Music Paused");
-            //playbutton.setText("Play");
             play_pause.setImage(new Image(getClass().getResourceAsStream("img/play.png")));
         }
         else
         {
             player.play();
             changeStatus( musicList.get(this.pos).getTitle());
-            //playbutton.setText("Pause");
             play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
         }
 
@@ -419,29 +422,9 @@ public class MusicPlayer implements Initializable {
         if(this.pos == -1)
             changeStatus("No music is available!");
         else {
-            //If the player can't get the volume, then it's the first initialization stage
-            try{
-                player.getVolume();
-            } catch(Exception e) {
+            //Get Volume
+            player.getVolume();
 
-                //Dummy init to access the property
-                Media media = new Media(musicList.get(this.pos).getResourceUrl());
-                this.player = new MediaPlayer(media);
-
-                // Volume Control
-                volumeSlider.setValue(100);
-                volumeSlider.valueProperty().addListener(new InvalidationListener() {
-                    @Override
-                    public void invalidated(Observable observable) {
-                        player.setVolume(volumeSlider.getValue() / 100);
-                        //Formatting the text and convert it into percentage
-                        String text = String.format("Volume: %.0f %%", player.getVolume() * 100);
-
-                        //Write out Volume
-                        //Volumelabel.setText(text);
-                    }
-                });
-            }
             //Create a new player with the new music and set the previous volume for it
             this.player = new MediaPlayer(new Media(musicList.get(this.pos).getResourceUrl()));
 
@@ -608,13 +591,15 @@ public class MusicPlayer implements Initializable {
             userbox.setVisible(false);
             userbox.setDisable(true);
             user=false;
-
         }
     }
 
     @FXML
-    void logout() {
-        SceneSwitcher.switchScene(border, "login.fxml");
+   void logout() throws IOException{
+        //Stop the player
+        this.player.stop();
+
+        new SceneSwitch(border, "login.fxml");
     }
 
     boolean color=false;
@@ -632,6 +617,4 @@ public class MusicPlayer implements Initializable {
 
         }
     }
-
-
 }
