@@ -28,25 +28,25 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Button fx:id="buttonLogin" layoutX="64.0" layoutY="281.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="39.0" prefWidth="174.0" style="-fx-background-color: #b552cf; -fx-background-radius: 20px;" text="Bejelentkezés " textAlignment="CENTER" textFill="WHITE">
+                <Button fx:id="buttonLogin" layoutX="64.0" layoutY="281.0" mnemonicParsing="false" onAction="#loginUser" prefHeight="39.0" prefWidth="174.0" style="-fx-background-color: #b552cf; -fx-background-radius: 20px;" text="Bejelentkezés " textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Button>
-                <TextField fx:id="username" layoutX="25.0" layoutY="125.0" prefHeight="14.0" prefWidth="250.0" promptText="Felhasználónév" />
-                <PasswordField fx:id="password" layoutX="25.0" layoutY="202.0" prefHeight="14.0" prefWidth="250.0" promptText="Jelszó" />
+                <TextField fx:id="usernameField" layoutX="25.0" layoutY="125.0" prefHeight="14.0" prefWidth="250.0" promptText="Felhasználónév" />
+                <PasswordField fx:id="passwordField" layoutX="25.0" layoutY="202.0" prefHeight="14.0" prefWidth="250.0" promptText="Jelszó" />
                 <Label layoutX="12.0" layoutY="342.0" text="Nincs még fiókod?">
                     <font>
                         <Font size="11.0" />
                     </font>
                 </Label>
                 <Label fx:id="welcomeText" alignment="CENTER" layoutX="26.0" layoutY="255.0" prefHeight="16.0" prefWidth="250.0" textAlignment="CENTER" textFill="RED" />
-                <Button fx:id="Registration" layoutX="200.0" layoutY="338.0" mnemonicParsing="false" onAction="#onRegistButtonClick" style="-fx-background-color: ffffff;" text="Regisztráció" textAlignment="CENTER" underline="true">
+                <Button fx:id="Registration" layoutX="200.0" layoutY="338.0" mnemonicParsing="false" onAction="#switchToRegistrationScene" style="-fx-background-color: ffffff;" text="Regisztráció" textAlignment="CENTER" underline="true">
                     <font>
                         <Font size="12.0" />
                     </font>
                 </Button>
-                <Button layoutX="145.0" layoutY="226.0" mnemonicParsing="false" onAction="#onPasswordButtonClick" style="-fx-background-color: ffffff;" text="Elfelejtetted a jelszót?">
+                <Button layoutX="145.0" layoutY="226.0" mnemonicParsing="false" onAction="#onForgottenPasswordButtonClicked" style="-fx-background-color: ffffff;" text="Elfelejtetted a jelszót?">
                     <font>
                         <Font size="11.0" />
                     </font>
