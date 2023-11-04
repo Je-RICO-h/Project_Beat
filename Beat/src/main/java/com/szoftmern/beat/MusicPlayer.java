@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -593,7 +594,7 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    void logut() throws IOException {
+    void logout() throws IOException {
 
         //Stop the player
         this.player.stop();
