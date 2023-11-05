@@ -12,9 +12,21 @@ import static com.szoftmern.beat.UIController.*;
 
 public class HistoryManager {
     private final MusicPlayer musicPlayer;
+    private HBox hBox;
 
     public HistoryManager(MusicPlayer musicPlayer) {
         this.musicPlayer = musicPlayer;
+    }
+
+    public void addTrackToHistoryList(Track track) {
+        if (musicPlayer.musicHistory.size() <= 20) {
+            musicPlayer.musicHistory.remove(track);
+            musicPlayer.musicHistory.add(track);
+        } else {
+            musicPlayer.musicHistory.remove(0);
+            musicPlayer.musicHistory.remove(track);
+            musicPlayer.musicHistory.add(track);
+        }
     }
 
     public void displayhistory() {
@@ -23,9 +35,8 @@ public class HistoryManager {
         Platform.runLater(() -> {
             musicPlayer.historylistContener.getChildren().clear();
 
-            for(Track track : result) {
-
-                HBox hBox = loadAndSetHBox(track, musicPlayer);
+            for (int i = result.size() - 1; i >= 0 ; i--) {
+                hBox = loadAndSetHBox(result.get(i), musicPlayer);
 
                 musicPlayer.historylistContener.getChildren().add(hBox);
             }

@@ -11,6 +11,8 @@ import java.util.Objects;
 import static com.szoftmern.beat.DatabaseManager.*;
 
 public class UIController {
+    private static HBox hBox = null;
+
     public static void switchScene(Pane currentPane, String fxml) {
         try {
             Pane nextPane = FXMLLoader.load(Main.class.getResource(fxml));
@@ -42,8 +44,6 @@ public class UIController {
     public static HBox loadAndSetHBox(Track track, MusicPlayer musicPlayer) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(UIController.class.getResource("song.fxml"));
-
-        HBox hBox = null;
 
         try {
             hBox = fxmlLoader.load();

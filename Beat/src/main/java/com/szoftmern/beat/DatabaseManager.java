@@ -87,9 +87,7 @@ public class DatabaseManager {
                 .getResultList();
 
         for (Artist artist : artistList) {
-            for (Track track : artist.getTracks()) {
-                resultList.add(track);
-            }
+            resultList.addAll(artist.getTracks());
         }
 
         System.out.println(resultList);

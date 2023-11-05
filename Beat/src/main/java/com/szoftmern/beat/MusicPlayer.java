@@ -15,7 +15,6 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.EntityUtil.*;
@@ -58,11 +57,12 @@ public class MusicPlayer implements Initializable {
     public List<Track> musicList = new ArrayList<>();
 
     //List for previously played music
-    public Set<Track> musicHistory = new HashSet<>();
+    public List<Track> musicHistory = new ArrayList<>();
 
     boolean liked = false;
     boolean loop = false;
 
+    private boolean inFirstPreriod = true;
     private SearchManager searchManager;
     private TopMusicManager topMusicManager;
     private HistoryManager historyManager;
@@ -73,7 +73,7 @@ public class MusicPlayer implements Initializable {
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
 
-        this.musicList = getEveryTrack().stream().sorted(Track.titleComparator).collect(Collectors.toList());
+        this.musicList = getEveryTrack();
 
         this.pos = 0;
 
@@ -102,6 +102,14 @@ public class MusicPlayer implements Initializable {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
+                if (!inFirstPreriod) {
+                    for (Track track : musicList) {
+                        trackDAO.updateEntity(track);
+                    }
+                }
+
+                inFirstPreriod = false;
+
                 // Frissítési feladat végrehajtása (toplista frissítése)
                 topMusicManager.updateTopList();
             }
@@ -109,6 +117,7 @@ public class MusicPlayer implements Initializable {
 
         // Időzítő beállítása 5 perces periódussal
         timer.schedule(task, 0, 300000);
+
     }
 
     @FXML
@@ -140,9 +149,9 @@ public class MusicPlayer implements Initializable {
         //Set the volume status text
 
         if (player.isMute() && player.getVolume() != 0.0)
-            sound.setImage(new Image(getClass().getResourceAsStream("img/mute.png")));
+            sound.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/mute.png"))));
         else
-            sound.setImage(new Image(getClass().getResourceAsStream("img/sound.png")));
+            sound.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/sound.png"))));
     }
 
     @FXML
@@ -150,11 +159,11 @@ public class MusicPlayer implements Initializable {
         //If status of the player is playing, pause the music, else play it
         if (player.getStatus() == MediaPlayer.Status.PLAYING) {
             player.pause();
-            play_pause.setImage(new Image(getClass().getResourceAsStream("img/play.png")));
+            play_pause.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/play.png"))));
         } else {
             player.play();
-            changeStatus(musicList.get(this.pos).getTitle());
-            play_pause.setImage(new Image(getClass().getResourceAsStream("img/pause.png")));
+//            changeStatus(musicList.get(this.pos).getTitle());
+            play_pause.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/pause.png"))));
         }
     }
 
@@ -222,6 +231,7 @@ public class MusicPlayer implements Initializable {
         if (this.pos == -1)
             changeStatus("No music is available!");
         else {
+
             //Get Volume
             player.getVolume();
 
@@ -229,8 +239,7 @@ public class MusicPlayer implements Initializable {
             this.player = new MediaPlayer(new Media(musicList.get(this.pos).getResourceUrl()));
 
             //Update the music history by appending this music to it if its not into it
-            this.musicHistory.add(musicList.get(this.pos));
-
+            historyManager.addTrackToHistoryList(musicList.get(this.pos));
             historyManager.displayhistory();
 
             //Set the volume
@@ -259,6 +268,10 @@ public class MusicPlayer implements Initializable {
             changeStatus(musicList.get(this.pos).getTitle());
 
             changeArtist();
+
+            System.out.println(musicList.get(this.pos).getPlayCount());
+            incrementListenCount(musicList.get(this.pos));
+            System.out.println(musicList.get(this.pos).getPlayCount());
         }
     }
 
