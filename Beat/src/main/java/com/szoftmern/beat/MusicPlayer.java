@@ -62,7 +62,7 @@ public class MusicPlayer implements Initializable {
     boolean liked = false;
     boolean loop = false;
 
-    private boolean inFirstPreriod = true;
+    private boolean inFirstPeriod = true;
     private SearchManager searchManager;
     private TopMusicManager topMusicManager;
     private HistoryManager historyManager;
@@ -102,21 +102,25 @@ public class MusicPlayer implements Initializable {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                if (!inFirstPreriod) {
+                /*
+                az első periódusnál még nem kell frissíteni az adatbázist,
+                de utána az adatbázist updatelni kell a toplista kiiratása miatt
+                 */
+                if (!inFirstPeriod) {
                     for (Track track : musicList) {
                         trackDAO.updateEntity(track);
                     }
                 }
 
-                inFirstPreriod = false;
+                inFirstPeriod = false;
 
                 // Frissítési feladat végrehajtása (toplista frissítése)
                 topMusicManager.updateTopList();
             }
         };
 
-        // Időzítő beállítása 5 perces periódussal
-        timer.schedule(task, 0, 300000);
+        // Időzítő beállítása 1 napos periódussal
+        timer.schedule(task, 0, 86400000);
 
     }
 
