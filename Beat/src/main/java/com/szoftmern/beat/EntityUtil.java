@@ -1,8 +1,5 @@
 package com.szoftmern.beat;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.util.*;
 
 public class EntityUtil {
@@ -15,6 +12,12 @@ public class EntityUtil {
         }
 
         return artistNameList.stream().sorted().toList();
+    }
+
+    public static void incrementListenCount(Track track) {
+        int playCount = track.getPlayCount();
+        playCount++;
+        track.setPlayCount(playCount);
     }
 }
 

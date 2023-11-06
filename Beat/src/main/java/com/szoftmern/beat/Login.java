@@ -5,8 +5,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import lombok.Data;
+import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 
 public class Login {
     @FXML
@@ -14,30 +18,74 @@ public class Login {
     @FXML
     private Label welcomeText;
     @FXML
-    private TextField username;
+    private TextField usernameField;
     @FXML
-    private PasswordField password;
-    @FXML
-    protected void onLoginButtonClick() throws IOException {
-        if(username.getText().toString().equals("username") && password.getText().toString().equals("password")) {
-            welcomeText.setText("Bejelentkezés...");
-            new SceneSwitch(loginPanel, "screen.fxml");
+    private PasswordField passwordField;
 
+    // Validate the given user info and try to log in the user
+    @FXML
+    protected void loginUser() {
+        try {
+            checkIfEveryInfoIsEntered();
+
+            String username = returnUserIfItExists();
+            validatePassword(username);
+
+        } catch (IncorrectInformationException e) {
+            welcomeText.setText(e.getMessage());
+
+            return;
         }
-        else if(username.getText().isEmpty() && password.getText().isEmpty()) {
-            welcomeText.setText("Add meg az adataid!");
+
+        // every info is correct, log the user in...
+        welcomeText.setText("Bejelentkezés...");
+        SceneSwitcher.switchScene(loginPanel, "screen.fxml");
+    }
+
+    private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{
+        if ( usernameField.getText().isEmpty() || passwordField.getText().isEmpty() ) {
+            throw new IncorrectInformationException("Add meg az adataid!");
         }
-        else {
-            welcomeText.setText("Hibás felhasználónév vagy jelszó!");
+    }
+
+    // Returns the username if it exists, otherwise it throws an exception
+    private String returnUserIfItExists() throws IncorrectInformationException{
+        String username = usernameField.getText();
+
+        // return the username if it exists
+        for (User user : DatabaseManager.userDAO.getEntities()) {
+            if (user.getName().equals(username)) {
+                return username;
+            }
+        }
+
+        // if the user doesn't exist...
+        throw new IncorrectInformationException("Ez a felhasználó nem létezik!");
+    }
+
+    private void validatePassword(String username) throws IncorrectInformationException{
+        String enteredPass = passwordField.getText();
+        String passHashOfValidUser = "";
+
+        // get the password hash for the user trying to log in
+        for (User user : DatabaseManager.userDAO.getEntities()) {
+            if (user.getName().equals(username)) {
+                passHashOfValidUser = new String(user.getPassHash(), StandardCharsets.UTF_8);
+            }
+        }
+
+        // compares the entered password to the one in the db
+        if ( !BCrypt.checkpw(enteredPass, passHashOfValidUser)) {
+            throw new IncorrectInformationException("Hibás jelszó!");
         }
     }
     @FXML
-    protected void onRegistButtonClick() throws IOException {
-        new SceneSwitch(loginPanel, "registration.fxml");
+    protected void switchToRegistrationScene(){
+        SceneSwitcher.switchScene(loginPanel, "registration.fxml");
     }
 
     @FXML
-    protected void onPasswordButtonClick() throws IOException {
+    protected void onForgottenPasswordButtonClicked() {
         welcomeText.setText("Elfelejtett jelszó.");
     }
 }

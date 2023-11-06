@@ -355,7 +355,7 @@
                                     <Font name="Arial Rounded MT Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Label onMouseClicked="#logut" text="Kilépés" textFill="WHITE">
+                              <Label onMouseClicked="#logout" text="Kilépés" textFill="WHITE">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="18.0" />
                                  </font>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
@@ -9,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="registPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top,#E3B1EF, #86E09A);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.Regist">
+<Pane fx:id="registrationPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top,#E3B1EF, #86E09A);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.Registration">
     <children>
         <Pane layoutX="490.0" layoutY="85.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: ffffff; -fx-background-position: center;">
             <children>
@@ -18,7 +21,7 @@
                         <Font name="System Bold" size="24.0" />
                     </font>
                 </Label>
-                <Label layoutX="25.0" layoutY="135.0" prefHeight="30.0" prefWidth="156.0" text="Felhasználónév">
+                <Label layoutX="25.0" layoutY="79.0" prefHeight="30.0" prefWidth="156.0" text="Felhasználónév">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -28,12 +31,12 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Button alignment="TOP_LEFT" layoutX="25.0" layoutY="494.0" mnemonicParsing="false" onAction="#onLoginButtonClick" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: ffffff; " text="Vissza">
+                <Button alignment="TOP_LEFT" layoutX="25.0" layoutY="494.0" mnemonicParsing="false" onAction="#switchBackToLoginScene" prefHeight="30.0" prefWidth="75.0" style="-fx-background-color: ffffff; " text="Vissza">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Label layoutX="25.0" layoutY="80.0" prefHeight="30.0" prefWidth="156.0" text="E-mail-cím">
+                <Label layoutX="25.0" layoutY="134.0" prefHeight="30.0" prefWidth="156.0" text="E-mail-cím">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -53,33 +56,221 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Label layoutX="25.0" layoutY="410.0" prefHeight="30.0" prefWidth="156.0" text="Nemzetiség">
+                <Label layoutX="25.0" layoutY="410.0" prefHeight="30.0" prefWidth="156.0" text="Ország">
                     <font>
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="email" layoutX="30.0" layoutY="110.0" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="username" layoutX="30.0" layoutY="165.0" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="password" layoutX="30.0" layoutY="220.0" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="passwordAgain" layoutX="30.0" layoutY="275.0" prefHeight="24.0" prefWidth="240.0" />
-                <ChoiceBox fx:id="genderPicker" layoutX="28.0" layoutY="385.0" prefHeight="24.0" prefWidth="100.0" />
-                <ChoiceBox fx:id="nationalityPicker" layoutX="30.0" layoutY="440.0" prefHeight="24.0" prefWidth="150.0" />
-                <Button layoutX="66.0" layoutY="192.0" mnemonicParsing="false" onAction="#PasswordInfo" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" text="i" textAlignment="CENTER">
+                <TextField fx:id="emailField" layoutX="30.0" layoutY="164.0" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="usernameField" layoutX="30.0" layoutY="109.0" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="passwordField" layoutX="30.0" layoutY="220.0" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="passwordAgainField" layoutX="30.0" layoutY="275.0" prefHeight="24.0" prefWidth="240.0" />
+                <DatePicker fx:id="birthDatePicker" layoutX="30.0" layoutY="330.0" prefHeight="24.0" prefWidth="240.0"/>
+                <ComboBox fx:id="genderPicker" layoutX="28.0" layoutY="385.0" prefHeight="24.0" prefWidth="100.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Férfi" />
+                            <String fx:value="Nő" />
+                            <String fx:value="Egyéb" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <ComboBox fx:id="countryPicker" layoutX="30.0" layoutY="440.0" prefWidth="150.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Afganisztán" />
+                            <String fx:value="Albánia" />
+                            <String fx:value="Algéria" />
+                            <String fx:value="Andorra" />
+                            <String fx:value="Angola" />
+                            <String fx:value="Antigua és Barbuda" />
+                            <String fx:value="Argentína" />
+                            <String fx:value="Armenia" />
+                            <String fx:value="Ausztrália" />
+                            <String fx:value="Ausztria" />
+                            <String fx:value="Azerbajdzsán" />
+                            <String fx:value="Bahama-szigetek" />
+                            <String fx:value="Bahrein" />
+                            <String fx:value="Banglades" />
+                            <String fx:value="Barbados" />
+                            <String fx:value="Belgium" />
+                            <String fx:value="Belize" />
+                            <String fx:value="Benin" />
+                            <String fx:value="Bhután" />
+                            <String fx:value="Bielorusszia" />
+                            <String fx:value="Bolívia" />
+                            <String fx:value="Bosznia-Hercegovina" />
+                            <String fx:value="Botswana" />
+                            <String fx:value="Brazília" />
+                            <String fx:value="Brunei" />
+                            <String fx:value="Bulgária" />
+                            <String fx:value="Burkina Faso" />
+                            <String fx:value="Burundi" />
+                            <String fx:value="Chile" />
+                            <String fx:value="Csehország" />
+                            <String fx:value="Csád" />
+                            <String fx:value="Dánia" />
+                            <String fx:value="Dél-Afrika" />
+                            <String fx:value="Dél-Korea" />
+                            <String fx:value="Djibouti" />
+                            <String fx:value="Dominikai Köztársaság" />
+                            <String fx:value="Dominikai Közösség" />
+                            <String fx:value="Egyenlítői-Guinea" />
+                            <String fx:value="Egyesült Arab Emírségek" />
+                            <String fx:value="Egyesült Királyság" />
+                            <String fx:value="Egyesült Államok" />
+                            <String fx:value="Egyiptom" />
+                            <String fx:value="Eritrea" />
+                            <String fx:value="Észtország" />
+                            <String fx:value="Eswatini" />
+                            <String fx:value="Északi-Ciprus" />
+                            <String fx:value="Északi-Macedónia" />
+                            <String fx:value="Észtország" />
+                            <String fx:value="Etiópia" />
+                            <String fx:value="Fehéroroszország" />
+                            <String fx:value="Fidzsi" />
+                            <String fx:value="Fülöp-szigetek" />
+                            <String fx:value="Finnország" />
+                            <String fx:value="Franciaország" />
+                            <String fx:value="Gabon" />
+                            <String fx:value="Gambia" />
+                            <String fx:value="Ghána" />
+                            <String fx:value="Grenada" />
+                            <String fx:value="Grúzia" />
+                            <String fx:value="Guatemala" />
+                            <String fx:value="Guinea" />
+                            <String fx:value="Guinea-Bissau" />
+                            <String fx:value="Guyana" />
+                            <String fx:value="Haiti" />
+                            <String fx:value="Hollandia" />
+                            <String fx:value="Honduras" />
+                            <String fx:value="Horvátország" />
+                            <String fx:value="India" />
+                            <String fx:value="Indonézia" />
+                            <String fx:value="Irak" />
+                            <String fx:value="Irán" />
+                            <String fx:value="Írország" />
+                            <String fx:value="Izland" />
+                            <String fx:value="Izrael" />
+                            <String fx:value="Jamaica" />
+                            <String fx:value="Japán" />
+                            <String fx:value="Jemen" />
+                            <String fx:value="Jordánia" />
+                            <String fx:value="Kambodzsa" />
+                            <String fx:value="Kamerun" />
+                            <String fx:value="Kanada" />
+                            <String fx:value="Katar" />
+                            <String fx:value="Kazahsztán" />
+                            <String fx:value="Kenya" />
+                            <String fx:value="Kína" />
+                            <String fx:value="Kirgizisztán" />
+                            <String fx:value="Kolumbia" />
+                            <String fx:value="Kongói Demokratikus Köztársaság" />
+                            <String fx:value="Kongói Köztársaság" />
+                            <String fx:value="Közép-afrikai Köztársaság" />
+                            <String fx:value="Kuba" />
+                            <String fx:value="Kuvait" />
+                            <String fx:value="Laosz" />
+                            <String fx:value="Lengyelország" />
+                            <String fx:value="Lesotho" />
+                            <String fx:value="Lettország" />
+                            <String fx:value="Libanon" />
+                            <String fx:value="Libéria" />
+                            <String fx:value="Líbia" />
+                            <String fx:value="Liechtenstein" />
+                            <String fx:value="Litvánia" />
+                            <String fx:value="Luxemburg" />
+                            <String fx:value="Madagaszkár" />
+                            <String fx:value="Magyarország" />
+                            <String fx:value="Málta" />
+                            <String fx:value="Malajzia" />
+                            <String fx:value="Malawi" />
+                            <String fx:value="Maldív-szigetek" />
+                            <String fx:value="Mali" />
+                            <String fx:value="Marokkó" />
+                            <String fx:value="Marshall-szigetek" />
+                            <String fx:value="Mauritánia" />
+                            <String fx:value="Mauritius" />
+                            <String fx:value="Mexikó" />
+                            <String fx:value="Moldova" />
+                            <String fx:value="Monaco" />
+                            <String fx:value="Mongólia" />
+                            <String fx:value="Montenegró" />
+                            <String fx:value="Mozambik" />
+                            <String fx:value="Namíbia" />
+                            <String fx:value="Nauru" />
+                            <String fx:value="Németország" />
+                            <String fx:value="Nepál" />
+                            <String fx:value="Nicaragua" />
+                            <String fx:value="Niger" />
+                            <String fx:value="Nigéria" />
+                            <String fx:value="Norvégia" />
+                            <String fx:value="Olaszország" />
+                            <String fx:value="Omán" />
+                            <String fx:value="Oroszország" />
+                            <String fx:value="Örményország" />
+                            <String fx:value="Pakisztán" />
+                            <String fx:value="Palau" />
+                            <String fx:value="Panama" />
+                            <String fx:value="Pápua Új-Guinea" />
+                            <String fx:value="Paraguay" />
+                            <String fx:value="Peru" />
+                            <String fx:value="Portugália" />
+                            <String fx:value="Puerto Rico" />
+                            <String fx:value="Románia" />
+                            <String fx:value="Ruanda" />
+                            <String fx:value="Saint Kitts és Nevis" />
+                            <String fx:value="Saint Lucia" />
+                            <String fx:value="Saint Vincent és a Grenadine-szigetek" />
+                            <String fx:value="Salomon-szigetek" />
+                            <String fx:value="Szaúd-Arábia" />
+                            <String fx:value="Szenegál" />
+                            <String fx:value="Szerbia" />
+                            <String fx:value="Szingapúr" />
+                            <String fx:value="Szíria" />
+                            <String fx:value="Szlovákia" />
+                            <String fx:value="Szlovénia" />
+                            <String fx:value="Szomália" />
+                            <String fx:value="Szudán" />
+                            <String fx:value="Szváziföld" />
+                            <String fx:value="Tadzsikisztán" />
+                            <String fx:value="Tanzánia" />
+                            <String fx:value="Thaiföld" />
+                            <String fx:value="Togo" />
+                            <String fx:value="Tonga" />
+                            <String fx:value="Trinidad és Tobago" />
+                            <String fx:value="Tunézia" />
+                            <String fx:value="Törökország" />
+                            <String fx:value="Tuvalu" />
+                            <String fx:value="Uganda" />
+                            <String fx:value="Ukrajna" />
+                            <String fx:value="Uruguay" />
+                            <String fx:value="Üzbegisztán" />
+                            <String fx:value="Vanuatu" />
+                            <String fx:value="Vatikán" />
+                            <String fx:value="Venezuela" />
+                            <String fx:value="Vietnám" />
+                            <String fx:value="Zambia" />
+                            <String fx:value="Zimbabwe" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+
+                <Button layoutX="66.0" layoutY="192.0" mnemonicParsing="false" onAction="#showPasswordRequirements" prefHeight="16.0" prefWidth="16.0" style="-fx-background-radius: 20; -fx-background-color: #ffffff;" text="i" textAlignment="CENTER">
                     <font>
                         <Font size="12.0" />
                     </font>
                 </Button>
-                <Button layoutX="175.0" layoutY="490.0" mnemonicParsing="false" onAction="#tovabb" prefHeight="39.0" prefWidth="106.0" style="-fx-background-color: #b552cf; -fx-alignment: center; -fx-background-radius: 20;" text="Tovább" textAlignment="CENTER" textFill="WHITE">
+                <Button layoutX="120.0" layoutY="490.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="39.0" prefWidth="170.0" style="-fx-background-color: #b552cf; -fx-alignment: center; -fx-background-radius: 20;" text="Regisztráció" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Button>
-                <DatePicker fx:id="birthDate" layoutX="30.0" layoutY="330.0" onAction="#getDate" prefHeight="24.0" prefWidth="240.0" />
             </children>
             <effect>
                 <DropShadow />
             </effect>
         </Pane>
-        <Label fx:id="passwordInfo" alignment="TOP_LEFT" layoutX="800.0" layoutY="300.0" prefHeight="85.0" prefWidth="250.0" />
+        <Label fx:id="info" alignment="TOP_LEFT" layoutX="800.0" layoutY="300.0" prefHeight="85.0" prefWidth="250.0" />
     </children>
 </Pane>

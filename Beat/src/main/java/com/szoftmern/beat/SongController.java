@@ -6,8 +6,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 
-public class SongController {
+import static com.szoftmern.beat.EntityUtil.getArtistNameList;
 
+public class SongController {
 
     @FXML
     private Label song_artist;
@@ -18,16 +19,10 @@ public class SongController {
     @FXML
     private Label song_name;
 
-
-
-
-    public  void  SetData(Song song){
-        song_img.setImage(new Image(getClass().getResourceAsStream(song.getCover())));
-        song_name.setText(song.getName());
-        song_artist.setText(song.getArtist_name());
-
+    public void SetData(Track track){
+        song_img.setImage(new Image(getClass().getResourceAsStream("img/zene.png")));
+        song_name.setText(track.getTitle());
+        String artist = String.valueOf(getArtistNameList(track.getArtists()));
+        song_artist.setText(artist.substring(1, artist.length() - 1));
     }
-
-
-
 }

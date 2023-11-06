@@ -13,6 +13,8 @@ module com.szoftmern.beat {
     requires lombok;
     requires jakarta.persistence;
     requires org.hibernate.orm.core;
+    requires commons.validator;
+    requires jbcrypt;
 
     opens com.szoftmern.beat to javafx.fxml, org.hibernate.orm.core;
     exports com.szoftmern.beat;
