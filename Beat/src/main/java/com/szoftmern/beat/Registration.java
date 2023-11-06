@@ -3,8 +3,10 @@ package com.szoftmern.beat;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+
 import java.sql.Date;
 import java.time.LocalDate;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -13,6 +15,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import static com.szoftmern.beat.UIController.*;
 
 public class Registration {
+
     @FXML
     private Pane registrationPanel;
     @FXML
@@ -31,6 +34,11 @@ public class Registration {
     private ComboBox<String> genderPicker;
     @FXML
     private ComboBox<String> countryPicker;
+
+    @FXML
+    public void initialize() {
+        loadCountriesIntoCombobox(countryPicker);
+    }
 
     @FXML
     protected void switchBackToLoginScene() {

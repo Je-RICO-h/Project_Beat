@@ -5,10 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import lombok.Data;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import static com.szoftmern.beat.UIController.*;
@@ -81,8 +79,9 @@ public class Login {
             throw new IncorrectInformationException("Hibás jelszó!");
         }
     }
+
     @FXML
-    protected void switchToRegistrationScene(){
+    protected void switchToRegistrationScene() {
         switchScene(loginPanel, "registration.fxml");
     }
 

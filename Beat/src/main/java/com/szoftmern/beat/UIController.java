@@ -1,17 +1,26 @@
 package com.szoftmern.beat;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
+
+
 
 import static com.szoftmern.beat.DatabaseManager.*;
 
 public class UIController {
-    private static HBox hBox = null;
+    private static HBox hBox;
 
     public static void switchScene(Pane currentPane, String fxml) {
         try {
@@ -58,4 +67,19 @@ public class UIController {
 
         return hBox;
     }
+
+    public static void loadCountriesIntoCombobox(ComboBox<String> countryPicker) {
+        Path countryListPath = Paths.get("src/main/resources/com/szoftmern/beat/countries.txt");
+        ObservableList<String> countries = FXCollections.observableArrayList();
+
+        try {
+            List<String> lines = Files.readAllLines(countryListPath);
+            countries.addAll(lines);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        countryPicker.setItems(countries);
+    }
+
 }
