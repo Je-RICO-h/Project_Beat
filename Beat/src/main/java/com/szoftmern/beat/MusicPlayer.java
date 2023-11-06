@@ -3,7 +3,6 @@ package com.szoftmern.beat;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,16 +10,13 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.EntityUtil.*;
 import static java.lang.Math.round;
 
-public class MusicPlayer implements Initializable {
+public class MusicPlayer {
     @FXML
     private VBox colorbox;
     @FXML
@@ -62,7 +58,6 @@ public class MusicPlayer implements Initializable {
     boolean liked = false;
     boolean loop = false;
 
-    private boolean inFirstPeriod = true;
     private SearchManager searchManager;
     private TopMusicManager topMusicManager;
     private HistoryManager historyManager;
@@ -76,6 +71,8 @@ public class MusicPlayer implements Initializable {
         this.musicList = getEveryTrack();
 
         this.pos = 0;
+
+        topMusicManager.updateTopList();
 
         //Dummy init to access the property
         Media media = new Media(musicList.get(this.pos).getResourceUrl());
@@ -93,35 +90,6 @@ public class MusicPlayer implements Initializable {
                 player.setVolume(volumeSlider.getValue() / 100);
             }
         });
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        Timer timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                /*
-                az első periódusnál még nem kell frissíteni az adatbázist,
-                de utána az adatbázist updatelni kell a toplista kiiratása miatt
-                 */
-                if (!inFirstPeriod) {
-                    for (Track track : musicList) {
-                        trackDAO.updateEntity(track);
-                    }
-                }
-
-                inFirstPeriod = false;
-
-                // Frissítési feladat végrehajtása (toplista frissítése)
-                topMusicManager.updateTopList();
-            }
-        };
-
-        // Időzítő beállítása 1 napos periódussal
-        timer.schedule(task, 0, 86400000);
-
     }
 
     @FXML
@@ -396,10 +364,12 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
-    void logout() throws IOException {
+    void logout() {
 
         //Stop the player
         this.player.stop();
+
+        updateDatabaseTrackPlayCount();
 
         UIController.switchScene(border, "login.fxml");
     }
