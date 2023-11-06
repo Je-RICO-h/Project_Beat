@@ -187,7 +187,7 @@ public class MusicPlayer implements Initializable {
     public void refreshTimeSlider()
     {
         //Set the sliders max value to the duration
-        timeSlider.setMax(player.getTotalDuration().toSeconds());
+        timeSlider.setMax(player.getTotalDuration().toSeconds() - 0.3);
 
         //Update end time label
         String smax = String.format("%02d:%02d", round((timeSlider.getMax() / 60) % 60), round(timeSlider.getMax() % 60));
