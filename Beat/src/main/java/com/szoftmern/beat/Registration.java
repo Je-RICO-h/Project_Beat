@@ -37,12 +37,21 @@ public class Registration {
 
     @FXML
     public void initialize() {
-        loadCountriesIntoCombobox(countryPicker);
+        UIController.loadCountriesIntoCombobox(countryPicker);
+
+        // set triggers for changing the focus when the user
+        // presses the ENTER key
+        UIController.setFocusOnEnterKeyPressed(usernameField, emailField);
+        UIController.setFocusOnEnterKeyPressed(emailField, passwordField);
+        UIController.setFocusOnEnterKeyPressed(passwordField, passwordAgainField);
+        UIController.setFocusOnEnterKeyPressed(passwordAgainField, birthDatePicker);
+//      UIController.moveFocusOnEnter(birthDatePicker, genderPicker);
+//      UIController.moveFocusOnEnter(genderPicker, countryPicker);
     }
 
     @FXML
     protected void switchBackToLoginScene() {
-        switchScene(registrationPanel, "login.fxml");
+        UIController.switchScene(registrationPanel, "login.fxml");
     }
 
     @FXML
@@ -60,7 +69,7 @@ public class Registration {
             DatabaseManager.userDAO.saveEntity(newUser);
 
             System.out.println("New user successfully added to the database");
-            switchScene(registrationPanel, "login.fxml");
+            UIController.switchScene(registrationPanel, "login.fxml");
         }
     }
 

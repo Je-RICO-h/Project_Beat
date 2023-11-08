@@ -1,10 +1,12 @@
 package com.szoftmern.beat;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,18 +71,32 @@ public class UIController {
         return hBox;
     }
 
+    // Fills a ComboBox with the countries listed in countries.txt
     public static void loadCountriesIntoCombobox(ComboBox<String> countryPicker) {
         Path countryListPath = Paths.get("src/main/resources/com/szoftmern/beat/countries.txt");
-        ObservableList<String> countries = FXCollections.observableArrayList();
+        List<String> countries = new ArrayList<>();
 
         try {
             List<String> lines = Files.readAllLines(countryListPath);
+
             countries.addAll(lines);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        countryPicker.setItems(countries);
+        countryPicker.getItems().addAll(countries);
     }
 
+    // Sets the focus from one Control to another when the ENTER
+    // key is pressed. The key event handler is set on the sender.
+    public static void setFocusOnEnterKeyPressed(Control sender, Control receiver) {
+        sender.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    receiver.requestFocus();
+                }
+            }
+        });
+    }
 }

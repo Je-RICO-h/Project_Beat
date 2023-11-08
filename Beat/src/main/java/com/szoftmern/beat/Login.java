@@ -1,9 +1,12 @@
 package com.szoftmern.beat;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -22,6 +25,24 @@ public class Login {
     @FXML
     private PasswordField passwordField;
 
+    @FXML
+    public void initialize() {
+        // log the user in if they press ENTER while
+        // the password field has focus
+        passwordField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    loginUser();
+                }
+            }
+        });
+
+        // set the focus on the password field if the user
+        // presses ENTER while the username field has focus
+        UIController.setFocusOnEnterKeyPressed(usernameField, passwordField);
+    }
+
     // Validate the given user info and try to log in the user
     @FXML
     protected void loginUser() {
@@ -39,7 +60,7 @@ public class Login {
 
         // every info is correct, log the user in...
         welcomeText.setText("Bejelentkezés...");
-        switchScene(loginPanel, "screen.fxml");
+        UIController.switchScene(loginPanel, "screen.fxml");
     }
 
     private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{
@@ -82,7 +103,7 @@ public class Login {
 
     @FXML
     protected void switchToRegistrationScene() {
-        switchScene(loginPanel, "registration.fxml");
+        UIController.switchScene(loginPanel, "registration.fxml");
     }
 
     @FXML
