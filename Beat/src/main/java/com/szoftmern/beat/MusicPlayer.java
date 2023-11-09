@@ -3,8 +3,12 @@ package com.szoftmern.beat;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+<<<<<<< Updated upstream
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+=======
+import javafx.event.ActionEvent;
+>>>>>>> Stashed changes
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,24 +23,30 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.io.IOException;
+<<<<<<< Updated upstream
 import java.net.URL;
+=======
+>>>>>>> Stashed changes
 import java.util.*;
 
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.EntityUtil.*;
+import static com.szoftmern.beat.UIController.loadCountriesIntoCombobox;
 import static java.lang.Math.round;
 
 public class MusicPlayer implements Initializable {
     @FXML
-    private VBox colorbox;
-    @FXML
-    private BorderPane border;
+    public BorderPane border;
     @FXML
     private VBox userbox;
     @FXML
     private VBox historylistContener;
     @FXML
     private VBox toplistContener;
+    @FXML
+    protected VBox searchResultView;
+    @FXML
+    protected ScrollPane searchcontener;
     @FXML
     private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
@@ -49,9 +59,12 @@ public class MusicPlayer implements Initializable {
     public Label statuslabel;
     public Label artistNameLabel;
     public TextField searchTextField;
+<<<<<<< Updated upstream
     public ListView<String> searchResultView;
     public ListView<String> topListView;
     public ListView<String> historyListView;
+=======
+>>>>>>> Stashed changes
 
     public Button playbutton;
     public Slider volumeSlider;
@@ -161,6 +174,13 @@ public class MusicPlayer implements Initializable {
         });
     }
 
+<<<<<<< Updated upstream
+=======
+   /* @FXML
+    public void selectedSearchItem() {
+        searchManager.selectedSearchItem();
+    }*/
+>>>>>>> Stashed changes
 
     @FXML
     public void selectedSearchItem(){
@@ -571,6 +591,7 @@ public class MusicPlayer implements Initializable {
     }
 
 
+<<<<<<< Updated upstream
     boolean user=false;
     @FXML
     void user_selected() {
@@ -579,6 +600,16 @@ public class MusicPlayer implements Initializable {
             userbox.setVisible(true);
             userbox.setDisable(false);
             user=true;
+=======
+    boolean user = false;
+    @FXML
+    void user_selected() {
+
+        if(user == false){
+            userbox.setVisible(true);
+            userbox.setDisable(false);
+            user = true;
+>>>>>>> Stashed changes
         }
         else {
             userbox.setVisible(false);
@@ -589,6 +620,7 @@ public class MusicPlayer implements Initializable {
     }
 
     @FXML
+<<<<<<< Updated upstream
     void logut() throws IOException {
         new SceneSwitch(border, "login.fxml");
     }
@@ -605,9 +637,82 @@ public class MusicPlayer implements Initializable {
             colorbox.setVisible(false);
             colorbox.setDisable(true);
             color=false;
+=======
+    void logout(ActionEvent event) throws IOException {
 
-        }
+        //Stop the player
+        this.player.stop();
+
+        //UIController.switchScene(border, "login.fxml");
+        UIController.makeNewStage(event,"login.fxml");
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user=false;
     }
 
 
+    @FXML
+    private Pane homebox;
+    @FXML
+    private Pane settingsbox;
+    @FXML
+    private Pane artistbox;
+    @FXML
+    private Pane favouritebox;
+    @FXML
+    public TextField username_settings;
+    @FXML
+    public TextField password_settings;
+    @FXML
+    public TextField email_settings;
+    @FXML
+    private ComboBox<String> country_setting;
+    @FXML
+    private ComboBox<String> gender_settings;
+    @FXML
+    private ComboBox<String> color_settings;
+>>>>>>> Stashed changes
+
+    @FXML
+    public void initialize() {
+        //set homepage firs
+        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
+
+        //set the country list
+        loadCountriesIntoCombobox(country_setting);
+
+        //set the original data from database
+        SettingsManager.originalTexts(username_settings,email_settings,password_settings,country_setting,gender_settings);
+
+        SettingsManager.setColorPickerBox(color_settings);
+    }
+
+
+<<<<<<< Updated upstream
+=======
+
+    @FXML
+    void settings_selected() {
+        UIController.setMiddlePain(settingsbox,homebox,artistbox,favouritebox);
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user = false;
+
+    }
+
+    @FXML
+    void home_selected() {UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);}
+    @FXML
+    void artist_selected() {UIController.setMiddlePain(artistbox,homebox,settingsbox,favouritebox);}
+    @FXML
+    void favourite_selected() {UIController.setMiddlePain(favouritebox,artistbox,homebox,settingsbox);}
+    @FXML
+    void logo_selected() {home_selected();}
+
+    //Save the new settings data
+    @FXML
+    void save_newData(){SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);};
+
+
+>>>>>>> Stashed changes
 }

@@ -38,7 +38,7 @@
 
 
 
-    }
+}
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
@@ -58,8 +58,8 @@
 }
 
 .search_field{
-       -fx-text-fill: white;
-       -fx-prompt-text-fill: white;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: white;
 }
 
 .list-cell {
@@ -76,6 +76,18 @@
     -fx-background-radius: 20 0 20 20;
 
 
+}
+
+.combo-box{
+    -fx-background-color:  #2f2b2b33;
+    -fx-background-radius-radius: 20;
+
+}
+.combo-box-popup .list-view{
+    -fx-background-color:  #2f2b2b33
+}
+.combo-box .arrow{
+    -fx-background-color:white;
 }
 
 

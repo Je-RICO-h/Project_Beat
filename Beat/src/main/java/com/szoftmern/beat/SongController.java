@@ -13,11 +13,9 @@ public class SongController {
     private Label song_artist;
 
     @FXML
-    private ImageView song_img;
-
-    @FXML
     private Label song_name;
 
+<<<<<<< Updated upstream
 
 
 
@@ -26,6 +24,12 @@ public class SongController {
         song_name.setText(song.getName());
         song_artist.setText(song.getArtist_name());
 
+=======
+    public void SetData(Track track){
+        song_name.setText(track.getTitle());
+        String artist = String.valueOf(getArtistNameList(track.getArtists()));
+        song_artist.setText(artist.substring(1, artist.length() - 1));
+>>>>>>> Stashed changes
     }
 
 
