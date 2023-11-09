@@ -81,3 +81,18 @@
 .backToLoginButton:hover{
     -fx-text-fill: #3d85c6;
 }
+
+.newPwdButton{
+    -fx-background-color: #b552cf;
+    -fx-background-radius: 10px;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-family:"System Bold ";
+}
+.newPwdButton:focused{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+.newPwdButton:hover{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+

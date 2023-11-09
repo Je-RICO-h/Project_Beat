@@ -113,6 +113,6 @@ public class Login {
 
     @FXML
     protected void onForgottenPasswordButtonClicked() {
-        welcomeText.setText("Elfelejtett jelszó.");
+        UIController.switchScene(loginPanel, "forgottenPassword.fxml");
     }
 }
