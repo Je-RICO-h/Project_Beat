@@ -431,22 +431,6 @@
                <children>
                   <Pane prefHeight="52.0" prefWidth="806.0" HBox.hgrow="ALWAYS">
                      <children>
-<<<<<<< Updated upstream
-                        <VBox fx:id="searccontener" minWidth="-Infinity" prefHeight="138.0" prefWidth="681.0">
-                           <children>
-                              <TextField fx:id="searchTextField" onKeyPressed="#search" prefHeight="38.0" prefWidth="778.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </TextField>
-                              <ListView fx:id="searchResultView" onMouseClicked="#selectedSearchItem" prefHeight="95.0" prefWidth="746.0" style="-fx-background-color: #7FB68D; -fx-background-radius: 20;" visible="false">
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-=======
                         <TextField fx:id="searchTextField" layoutX="5.0" layoutY="5.0" onKeyPressed="#onKeyPressedSearchTextField" prefHeight="38.0" prefWidth="740.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
                            <font>
                               <Font size="17.0" />
@@ -455,7 +439,6 @@
                         <ScrollPane fx:id="searchcontener" disable="true" layoutY="46.0" prefHeight="154.0" prefWidth="833.0" style="-fx-background-color: #7FB68D; -fx-background-radius: 20;" visible="false">
                            <content>
                               <VBox fx:id="searchResultView" prefHeight="147.0" prefWidth="770.0" spacing="10.0">
->>>>>>> Stashed changes
                                  <padding>
                                     <Insets left="10.0" right="5.0" top="10.0" />
                                  </padding>
@@ -464,13 +447,8 @@
                         </ScrollPane>
                      </children>
                   </Pane>
-<<<<<<< Updated upstream
-                  <Pane prefHeight="52.0" prefWidth="41.0" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#search" text="Button">
-=======
                   <Pane prefHeight="52.0" prefWidth="42.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onActionSearchButton" text="Button">
->>>>>>> Stashed changes
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -493,21 +471,7 @@
                      <children>
                         <VBox fx:id="userbox" alignment="CENTER" disable="true" layoutX="-73.0" layoutY="64.0" prefHeight="142.0" prefWidth="117.0" spacing="20.0" styleClass="user" visible="false">
                            <children>
-<<<<<<< Updated upstream
-                              <Label onMouseClicked="#colors" text="Szinek" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Nyelv" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label onMouseClicked="#logut" text="Kilépés" textFill="WHITE">
-=======
                               <Label onMouseClicked="#settings_selected" text="Beállítások" textFill="WHITE">
->>>>>>> Stashed changes
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="18.0" />
                                  </font>

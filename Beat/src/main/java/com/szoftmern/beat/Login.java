@@ -1,27 +1,22 @@
 package com.szoftmern.beat;
 
-<<<<<<< Updated upstream
-=======
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
->>>>>>> Stashed changes
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-<<<<<<< Updated upstream
-=======
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.szoftmern.beat.UIController.*;
->>>>>>> Stashed changes
 
-import java.io.IOException;
 
 public class Login {
     @FXML
@@ -29,16 +24,11 @@ public class Login {
     @FXML
     private Label welcomeText;
     @FXML
-    private TextField username;
+    private TextField usernameField;
     @FXML
-    private PasswordField password;
+    private PasswordField passwordField;
+
     @FXML
-<<<<<<< Updated upstream
-    protected void onLoginButtonClick() throws IOException {
-        if(username.getText().toString().equals("username") && password.getText().toString().equals("password")) {
-            welcomeText.setText("Bejelentkezés...");
-            new SceneSwitch(loginPanel, "screen.fxml");
-=======
     public void initialize() {
         // log the user in if they press ENTER while
         // the password field has focus
@@ -54,21 +44,14 @@ public class Login {
                 }
             }
         });
->>>>>>> Stashed changes
 
-        }
-        else if(username.getText().isEmpty() && password.getText().isEmpty()) {
-            welcomeText.setText("Add meg az adataid!");
-        }
-        else {
-            welcomeText.setText("Hibás felhasználónév vagy jelszó!");
-        }
+        // set the focus on the password field if the user
+        // presses ENTER while the username field has focus
+        UIController.setFocusOnEnterKeyPressed(usernameField, passwordField);
     }
+
+    // Validate the given user info and try to log in the user
     @FXML
-<<<<<<< Updated upstream
-    protected void onRegistButtonClick() throws IOException {
-        new SceneSwitch(loginPanel, "registration.fxml");
-=======
     protected void loginUser(Event event) throws IOException {
         try {
             checkIfEveryInfoIsEntered();
@@ -123,11 +106,15 @@ public class Login {
         if ( !BCrypt.checkpw(enteredPass, passHashOfValidUser)) {
             throw new IncorrectInformationException("Hibás jelszó!");
         }
->>>>>>> Stashed changes
     }
 
     @FXML
-    protected void onPasswordButtonClick() throws IOException {
+    protected void switchToRegistrationScene() {
+        UIController.switchScene(loginPanel, "registration.fxml");
+    }
+
+    @FXML
+    protected void onForgottenPasswordButtonClicked() {
         welcomeText.setText("Elfelejtett jelszó.");
     }
 }

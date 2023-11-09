@@ -3,7 +3,7 @@ package com.szoftmern.beat;
 import jakarta.persistence.*;
 import java.util.List;
 
-public class JpaTrackDAO implements AutoCloseable, EntityDAO {
+public class JpaUserDAO implements AutoCloseable, EntityDAO {
     final EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.szoftmern.beat");
     final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
@@ -15,12 +15,11 @@ public class JpaTrackDAO implements AutoCloseable, EntityDAO {
     }
 
     @Override
-    public List<Track> getEntities() {
-        TypedQuery query =
-                entityManager.createQuery("SELECT T FROM Track T", Track.class);
-        List<Track> tracks = query.getResultList();
+    public List<User> getEntities() {
+        TypedQuery query = entityManager.createQuery("SELECT U FROM User U", User.class);
+        List<User> users = query.getResultList();
 
-        return tracks;
+        return users;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class JpaTrackDAO implements AutoCloseable, EntityDAO {
     }
 
     @Override
-    public void deleteEntity(Object t) {
+    public void deleteEntity(Object a) {
         System.out.println("Meg nem torlunk semmit sehonnan...");
     }
 

@@ -3,15 +3,11 @@ package com.szoftmern.beat;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import static com.szoftmern.beat.EntityUtil.updateDatabaseTrackPlayCount;
 
 public class Main extends Application {
 
@@ -34,6 +30,7 @@ public class Main extends Application {
 
         //If window is closed, do cleanup
         stage.setOnCloseRequest(windowevent -> {
+            updateDatabaseTrackPlayCount();
             System.out.println("App is closing");
             manager.close();
             stage.close();
@@ -45,8 +42,6 @@ public class Main extends Application {
         //Start Logging
         try {
             Logging.startLogging();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
