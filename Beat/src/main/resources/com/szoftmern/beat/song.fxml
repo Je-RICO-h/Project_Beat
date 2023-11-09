@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox alignment="CENTER_LEFT" fillHeight="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" styleClass="gray" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.SongController">
+<HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="668.0" styleClass="gray" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.SongController">
    <children>
-      <ImageView fx:id="song_img" fitHeight="28.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="43.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/zene.png" />
+            <Image url="@img/musical.png" />
          </image>
       </ImageView>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="47.0" prefWidth="224.0" spacing="3.0" HBox.hgrow="ALWAYS">
@@ -18,17 +18,17 @@
             <Insets left="20.0" />
          </HBox.margin>
          <children>
-            <Label fx:id="song_artist" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="591.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Előadó" textFill="WHITE" VBox.vgrow="ALWAYS">
+            <Label fx:id="song_name" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="591.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Cím" textFill="WHITE" VBox.vgrow="ALWAYS">
                <font>
-                  <Font size="17.0" />
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Label>
-            <Label fx:id="song_name" alignment="TOP_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="587.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Cím" textFill="WHITE">
+            <Label fx:id="song_artist" alignment="TOP_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="587.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Előadó" textFill="WHITE">
                <font>
-                  <Font size="17.0" />
+                  <Font name="Arial Rounded MT Bold" size="15.0" />
                </font>
             </Label>
          </children>

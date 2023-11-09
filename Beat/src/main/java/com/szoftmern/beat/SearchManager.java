@@ -3,17 +3,20 @@ package com.szoftmern.beat;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.HBox;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.EntityUtil.*;
+import static com.szoftmern.beat.UIController.loadAndSetHBox;
 
 public class SearchManager{
     private static Timer searchTimer;
     private static String currentKeyword = "";
     private final MusicPlayer musicPlayer;
+    private HBox hBox;
 
     public SearchManager(MusicPlayer musicPlayer) {
         this.musicPlayer = musicPlayer;
@@ -48,21 +51,35 @@ public class SearchManager{
             ObservableList<Track> result = FXCollections.observableArrayList(searchDatabaseForTracks(keyword));
 
             Platform.runLater(() -> {
-                musicPlayer.searchResultView.getItems().clear();
+                musicPlayer.searchResultView.getChildren().clear();
 
-                for (Track track : result) {
-                    musicPlayer.searchResultView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
+                for (int i = result.size() - 1; i >= 0 ; i--) {
+                    hBox = loadAndSetHBox(result.get(i), musicPlayer);
+
+                    musicPlayer.searchResultView.getChildren().add(hBox);
                 }
+
             });
 
-            musicPlayer.searchResultView.setVisible(true);
-            musicPlayer.searchResultView.toFront();
+            //ha kiválasztottam a keresett zenét akkor ismét tünjön el blokk
+            musicPlayer.border.setOnMouseClicked(event -> {
+
+                        musicPlayer.searchcontener.setVisible(false);
+                        musicPlayer.searchcontener.setDisable(true);
+                        musicPlayer.searchTextField.setText("");
+
+                    }
+            );
+
+            musicPlayer.searchcontener.setVisible(true);
+            musicPlayer.searchcontener.setDisable(false);
         } else {
-            musicPlayer.searchResultView.setVisible(false);
+            musicPlayer.searchcontener.setVisible(false);
+            musicPlayer.searchcontener.setDisable(true);
         }
     }
 
-    public void selectedSearchItem() {
+    /*public void selectedSearchItem() {
         String selectedItem = musicPlayer.searchResultView.getSelectionModel().getSelectedItem();
 
         System.out.println(selectedItem);
@@ -74,6 +91,6 @@ public class SearchManager{
         musicPlayer.searchResultView.setVisible(false);
 
         System.out.println("Kiválasztott elem: " + selectedItem);
-    }
+    }*/
 }
 

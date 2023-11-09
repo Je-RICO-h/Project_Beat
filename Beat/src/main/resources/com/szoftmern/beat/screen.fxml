@@ -2,8 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
@@ -13,134 +13,269 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane fx:id="border" maxHeight="720.0" prefWidth="1280.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
-   <left>
-      <VBox prefHeight="655.0" prefWidth="198.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="108.0" prefWidth="178.0" spacing="10.0" styleClass="gray" stylesheets="@style.css">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
-               </VBox.margin>
-               <children>
-                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="178.0">
-                     <children>
-                        <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@img/home.png" />
-                           </image>
-                        </ImageView>
-                        <Label prefHeight="62.0" prefWidth="75.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Kezdőlap" textAlignment="CENTER" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="178.0">
-                     <children>
-                        <ImageView fitHeight="37.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@img/radio.png" />
-                           </image>
-                        </ImageView>
-                        <Label prefHeight="62.0" prefWidth="75.0" style="-fx-font-family: Arial Rounded MT Bold;" text="Rádió" textAlignment="CENTER" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
-            <VBox style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets left="10.0" right="5.0" top="10.0" />
-               </VBox.margin>
-               <children>
-                  <Label text="Kedvencek" textFill="WHITE">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ListView prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: 20;" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-         </children>
-      </VBox>
-   </left>
+<BorderPane fx:id="border" prefHeight="720.0" prefWidth="1284.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
    <center>
-      <VBox alignment="CENTER" prefHeight="374.0" prefWidth="985.0" spacing="5.0">
+      <StackPane prefHeight="395.0" prefWidth="1026.0">
          <children>
-            <VBox VBox.vgrow="ALWAYS">
+            <Pane fx:id="homebox" disable="true" visible="false">
                <children>
-                  <Label text="Top 10" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
+                  <VBox alignment="CENTER" prefHeight="364.0" prefWidth="985.0">
+                     <children>
+                        <VBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Top 10" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="35.0" top="5.0" />
+                                 </padding>
+                              </Label>
+                              <ScrollPane prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <VBox fx:id="toplistContener" alignment="CENTER" maxWidth="855.0" spacing="10.0" />
+                                 </content>
+                                 <padding>
+                                    <Insets left="30.0" right="20.0" top="8.0" />
+                                 </padding>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                        <VBox VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Utoljára lejátszott" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="5.0" left="35.0" top="5.0" />
+                                 </padding>
+                              </Label>
+                              <ScrollPane prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <VBox fx:id="historylistContener" alignment="CENTER" maxWidth="855.0" spacing="10.0" />
+                                 </content>
+                                 <padding>
+                                    <Insets left="30.0" right="20.0" top="8.0" />
+                                 </padding>
+                              </ScrollPane>
+                           </children>
+                        </VBox>
+                     </children>
                      <padding>
-                        <Insets bottom="5.0" left="35.0" top="5.0" />
+                        <Insets left="50.0" right="50.0" />
                      </padding>
-                  </Label>
-                  <ScrollPane prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" VBox.vgrow="ALWAYS">
-                     <content>
-                        <VBox fx:id="toplistContener" alignment="CENTER" maxWidth="855.0" spacing="10.0" />
-                     </content>
-                     <padding>
-                        <Insets left="30.0" right="20.0" top="8.0" />
-                     </padding>
-                  </ScrollPane>
+                  </VBox>
                </children>
-            </VBox>
-            <VBox VBox.vgrow="ALWAYS">
+            </Pane>
+            <Pane fx:id="artistbox" disable="true" prefHeight="368.0" prefWidth="978.0" visible="false">
                <children>
-                  <Label text="Utoljára lejátszott" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="5.0" left="35.0" top="5.0" />
-                     </padding>
-                  </Label>
-                  <ScrollPane prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" VBox.vgrow="ALWAYS">
-                     <content>
-                        <VBox fx:id="historylistContener" alignment="CENTER" maxWidth="855.0" spacing="10.0" />
-                     </content>
-                     <padding>
-                        <Insets left="30.0" right="20.0" top="8.0" />
-                     </padding>
-                  </ScrollPane>
+                  <VBox prefHeight="362.0" prefWidth="927.0">
+                     <children>
+                        <Label prefHeight="76.0" prefWidth="322.0" text="Előadók" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="36.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane prefHeight="297.0" prefWidth="883.0" style="-fx-background-color: transparent;">
+                           <content>
+                              <VBox prefHeight="390.0" prefWidth="850.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
                </children>
-            </VBox>
+               <StackPane.margin>
+                  <Insets left="50.0" />
+               </StackPane.margin></Pane>
+            <Pane fx:id="favouritebox" disable="true" layoutX="60.0" layoutY="10.0" prefHeight="368.0" prefWidth="918.0" visible="false">
+               <children>
+                  <VBox prefHeight="362.0" prefWidth="927.0">
+                     <children>
+                        <Label prefHeight="76.0" prefWidth="322.0" text="Kedvencek" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="36.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane prefHeight="297.0" prefWidth="883.0" style="-fx-background-color: transparent;">
+                           <content>
+                              <VBox prefHeight="390.0" prefWidth="850.0" />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Pane fx:id="settingsbox" prefHeight="363.0" prefWidth="906.0">
+               <children>
+                  <VBox alignment="TOP_CENTER">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label prefHeight="58.0" prefWidth="383.0" text="Beállítások" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="36.0" />
+                                 </font>
+                              </Label>
+                              <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#save_newData" prefHeight="46.0" prefWidth="214.0" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 50;">
+                                 <graphic>
+                                    <HBox alignment="CENTER" spacing="5.0">
+                                       <children>
+                                          <ImageView fitHeight="39.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@img/save.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label text="Mentés" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Rounded MT Bold" size="20.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="298.0" prefWidth="930.0" style="-fx-background-color: transparent;">
+                           <padding>
+                              <Insets left="10.0" right="25.0" top="10.0" />
+                           </padding>
+                           <content>
+                              <VBox alignment="CENTER_LEFT" prefHeight="368.0" prefWidth="881.0" spacing="30.0">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="98.0" prefWidth="943.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Label prefHeight="58.0" prefWidth="264.0" text="Profil szerkesztése" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Rounded MT Bold" size="20.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <VBox spacing="10.0">
+                                             <children>
+                                                <Label prefHeight="20.0" prefWidth="240.0" text="Felhasználónév" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="16.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets left="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <TextField fx:id="username_settings" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;" styleClass="search_field">
+                                                   <VBox.margin>
+                                                      <Insets bottom="5.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="14.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </TextField>
+                                                <Label text="Email" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="16.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets left="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <TextField fx:id="email_settings" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;" styleClass="search_field">
+                                                   <VBox.margin>
+                                                      <Insets bottom="5.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="14.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </TextField>
+                                                <Label text="Jelszó" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="16.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets left="5.0" />
+                                                   </padding>
+                                                </Label>
+                                                <TextField fx:id="password_settings" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 20;" styleClass="search_field">
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="14.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </TextField>
+                                                <HBox spacing="35.0">
+                                                   <children>
+                                                      <Label text="Ország" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ComboBox fx:id="country_setting" prefWidth="150.0" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <HBox spacing="50.0">
+                                                   <children>
+                                                      <Label text="Nem" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Arial Rounded MT Bold" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ComboBox fx:id="gender_settings" prefWidth="150.0" />
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets left="100.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </VBox>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <Label text="Színek" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Rounded MT Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="color_settings" prefWidth="150.0" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="20.0" />
+                                       </padding>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+               </children>
+               <StackPane.margin>
+                  <Insets left="50.0" />
+               </StackPane.margin>
+            </Pane>
          </children>
-         <BorderPane.margin>
-            <Insets left="20.0" right="20.0" />
-         </BorderPane.margin>
-      </VBox>
+      </StackPane>
    </center>
    <padding>
       <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
@@ -164,9 +299,9 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="119.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@img/zene.png" />
+                        <Image url="@img/giphy.gif" />
                      </image>
                   </ImageView>
                </children>
@@ -287,41 +422,32 @@
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="966.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="109.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="109.0" fitWidth="122.0" onMouseClicked="#logo_selected" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/beat.png" />
                </image>
             </ImageView>
-            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="52.0" prefWidth="765.0" styleClass="search" stylesheets="@style.css" HBox.hgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="52.0" prefWidth="980.0" styleClass="search" stylesheets="@style.css" HBox.hgrow="ALWAYS">
                <children>
-                  <Pane>
+                  <Pane prefHeight="52.0" prefWidth="806.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="searccontener" minWidth="-Infinity" prefHeight="138.0" prefWidth="681.0">
-                           <children>
-                              <TextField fx:id="searchTextField" onKeyPressed="#onKeyPressedSearchTextField" prefHeight="38.0" prefWidth="778.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
-                                 <font>
-                                    <Font size="17.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
-                              </TextField>
-                              <ListView fx:id="searchResultView" onMouseClicked="#selectedSearchItem" prefHeight="95.0" prefWidth="746.0" style="-fx-background-color: #7FB68D; -fx-background-radius: 20;" visible="false">
-                                 <VBox.margin>
-                                    <Insets left="5.0" />
-                                 </VBox.margin>
+                        <TextField fx:id="searchTextField" layoutX="5.0" layoutY="5.0" onKeyPressed="#onKeyPressedSearchTextField" prefHeight="38.0" prefWidth="740.0" promptText="Keresés" style="-fx-background-color: transparent;" styleClass="search_field">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </TextField>
+                        <ScrollPane fx:id="searchcontener" disable="true" layoutY="46.0" prefHeight="154.0" prefWidth="833.0" style="-fx-background-color: #7FB68D; -fx-background-radius: 20;" visible="false">
+                           <content>
+                              <VBox fx:id="searchResultView" prefHeight="147.0" prefWidth="770.0" spacing="10.0">
                                  <padding>
-                                    <Insets bottom="10.0" top="10.0" />
+                                    <Insets left="10.0" right="5.0" top="10.0" />
                                  </padding>
-                              </ListView>
-                           </children>
-                           <padding>
-                              <Insets top="5.0" />
-                           </padding>
-                        </VBox>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
                      </children>
                   </Pane>
-                  <Pane prefHeight="52.0" prefWidth="41.0" HBox.hgrow="ALWAYS" />
+                  <Pane prefHeight="52.0" prefWidth="42.0" HBox.hgrow="ALWAYS" />
                   <Button fx:id="searchButton" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onActionSearchButton" text="Button">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -333,50 +459,37 @@
                   </Button>
                </children>
                <HBox.margin>
-                  <Insets />
+                  <Insets left="50.0" />
                </HBox.margin>
                <padding>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets left="20.0" right="10.0" />
                </padding>
             </HBox>
             <HBox alignment="CENTER" prefHeight="110.0" prefWidth="155.0">
                <children>
-                  <Pane prefHeight="200.0" prefWidth="200.0">
+                  <Pane prefHeight="110.0" prefWidth="77.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <VBox fx:id="userbox" alignment="CENTER" disable="true" layoutX="33.0" layoutY="64.0" prefHeight="165.0" prefWidth="115.0" spacing="20.0" styleClass="user" visible="false">
+                        <VBox fx:id="userbox" alignment="CENTER" disable="true" layoutX="-73.0" layoutY="64.0" prefHeight="142.0" prefWidth="117.0" spacing="20.0" styleClass="user" visible="false">
                            <children>
-                              <Label onMouseClicked="#colors" text="Szinek" textFill="WHITE">
+                              <Label onMouseClicked="#settings_selected" text="Beállítások" textFill="WHITE">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Nyelv" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label onMouseClicked="#logout" text="Kilépés" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Rounded MT Bold" size="18.0" />
-                                 </font>
-                              </Label>
+                              <Button mnemonicParsing="false" onAction="#logout" text="Button">
+                                 <graphic>
+                                    <Label text="Kilépés" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </graphic>
+                              </Button>
                            </children>
                         </VBox>
-                        <VBox fx:id="colorbox" alignment="CENTER" disable="true" layoutX="-54.0" layoutY="105.0" prefHeight="168.0" prefWidth="112.0" spacing="10.0" styleClass="user" visible="false">
+                        <VBox alignment="CENTER" layoutX="-16.0" layoutY="20.0" onMouseClicked="#user_selected" prefHeight="69.0" prefWidth="60.0">
                            <children>
-                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: red;" />
-                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: blue;" />
-                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: green;" />
-                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: yellow;" />
-                              <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: black;" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </VBox>
-                        <VBox alignment="CENTER" layoutX="90.0" layoutY="20.0" onMouseClicked="#user_selected" prefHeight="69.0" prefWidth="58.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="55.0" prefWidth="34.0" styleClass="gray" stylesheets="@style.css">
+                              <HBox alignment="CENTER" prefHeight="55.0" prefWidth="56.0" styleClass="gray" stylesheets="@style.css">
                                  <children>
                                     <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -397,4 +510,66 @@
          </padding>
       </HBox>
    </top>
+   <left>
+      <Pane prefHeight="308.0" prefWidth="184.0" styleClass="gray" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="30.0" left="10.0" right="20.0" top="30.0" />
+         </BorderPane.margin>
+         <children>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="35.0" onMouseClicked="#home_selected" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/home.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="61.0" layoutY="40.0" onMouseClicked="#home_selected" prefHeight="32.0" prefWidth="112.0" text="Kezdőlap" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="8.0" layoutY="84.0" onMouseClicked="#artist_selected" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/artist.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="62.0" layoutY="85.0" onMouseClicked="#artist_selected" prefHeight="38.0" prefWidth="87.0" text="Előadók" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="7.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/radio.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="61.0" layoutY="142.0" text="Rádió" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="8.0" layoutY="182.0" onMouseClicked="#favourite_selected" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/heart1.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="62.0" layoutY="189.0" onMouseClicked="#favourite_selected" text="Kedvencek" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="8.0" layoutY="232.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/diagram.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="62.0" layoutY="235.0" prefHeight="39.0" prefWidth="128.0" text="Statisztika" textFill="WHITE">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </Pane>
+   </left>
 </BorderPane>

@@ -2,6 +2,7 @@ package com.szoftmern.beat;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -10,23 +11,28 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+
+import java.io.IOException;
 import java.util.*;
 
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.EntityUtil.*;
+import static com.szoftmern.beat.UIController.loadCountriesIntoCombobox;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
     @FXML
-    private VBox colorbox;
-    @FXML
-    private BorderPane border;
+    public BorderPane border;
     @FXML
     private VBox userbox;
     @FXML
     protected VBox historylistContener;
     @FXML
     protected VBox toplistContener;
+    @FXML
+    protected VBox searchResultView;
+    @FXML
+    protected ScrollPane searchcontener;
     @FXML
     private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
@@ -39,7 +45,6 @@ public class MusicPlayer {
     public Label statuslabel;
     public Label artistNameLabel;
     public TextField searchTextField;
-    public ListView<String> searchResultView;
 
     public Button playbutton;
     public Slider volumeSlider;
@@ -68,7 +73,6 @@ public class MusicPlayer {
         this.searchManager = new SearchManager(this);
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
-
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -96,10 +100,10 @@ public class MusicPlayer {
         });
     }
 
-    @FXML
+   /* @FXML
     public void selectedSearchItem() {
         searchManager.selectedSearchItem();
-    }
+    }*/
 
     @FXML
     public void onActionSearchButton() {
@@ -355,15 +359,15 @@ public class MusicPlayer {
 
 
     boolean user = false;
-
     @FXML
     void user_selected() {
 
-        if (user == false) {
+        if(user == false){
             userbox.setVisible(true);
             userbox.setDisable(false);
             user = true;
-        } else {
+        }
+        else {
             userbox.setVisible(false);
             userbox.setDisable(true);
             user = false;
@@ -371,29 +375,74 @@ public class MusicPlayer {
     }
 
     @FXML
-    void logout() {
+    void logout(ActionEvent event) throws IOException {
 
         //Stop the player
         this.player.stop();
 
-        updateDatabaseTrackPlayCount();
-
-        UIController.switchScene(border, "login.fxml");
+        //UIController.switchScene(border, "login.fxml");
+        UIController.makeNewStage(event,"login.fxml");
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user=false;
     }
 
-    boolean color = false;
 
     @FXML
-    void colors() {
-        if (color == false) {
-            colorbox.setVisible(true);
-            colorbox.setDisable(false);
-            color = true;
-        } else {
-            colorbox.setVisible(false);
-            colorbox.setDisable(true);
-            color = false;
+    private Pane homebox;
+    @FXML
+    private Pane settingsbox;
+    @FXML
+    private Pane artistbox;
+    @FXML
+    private Pane favouritebox;
+    @FXML
+    public TextField username_settings;
+    @FXML
+    public TextField password_settings;
+    @FXML
+    public TextField email_settings;
+    @FXML
+    private ComboBox<String> country_setting;
+    @FXML
+    private ComboBox<String> gender_settings;
+    @FXML
+    private ComboBox<String> color_settings;
 
-        }
+    @FXML
+    public void initialize() {
+        //set homepage firs
+        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
+
+        //set the country list
+        loadCountriesIntoCombobox(country_setting);
+
+        //set the original data from database
+        SettingsManager.originalTexts(username_settings,email_settings,password_settings,country_setting,gender_settings);
+
+        SettingsManager.setColorPickerBox(color_settings);
     }
+
+
+
+    @FXML
+    void settings_selected() {
+        UIController.setMiddlePain(settingsbox,homebox,artistbox,favouritebox);
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user = false;
+    }
+
+    @FXML
+    void home_selected() {UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);}
+    @FXML
+    void artist_selected() {UIController.setMiddlePain(artistbox,homebox,settingsbox,favouritebox);}
+    @FXML
+    void favourite_selected() {UIController.setMiddlePain(favouritebox,artistbox,homebox,settingsbox);}
+    @FXML
+    void logo_selected() {home_selected();}
+
+    //Save the new settings data
+    @FXML
+    void save_newData(){SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);};
 }

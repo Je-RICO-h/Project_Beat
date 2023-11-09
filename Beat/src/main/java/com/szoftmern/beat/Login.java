@@ -1,5 +1,7 @@
 package com.szoftmern.beat;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,11 +11,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import org.mindrot.jbcrypt.BCrypt;
-
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.szoftmern.beat.UIController.*;
-
 
 public class Login {
     @FXML
@@ -33,7 +34,11 @@ public class Login {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    loginUser();
+                    try {
+                        loginUser(ke);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
@@ -45,7 +50,7 @@ public class Login {
 
     // Validate the given user info and try to log in the user
     @FXML
-    protected void loginUser() {
+    protected void loginUser(Event event) throws IOException {
         try {
             checkIfEveryInfoIsEntered();
 
@@ -60,7 +65,7 @@ public class Login {
 
         // every info is correct, log the user in...
         welcomeText.setText("Bejelentkezés...");
-        UIController.switchScene(loginPanel, "screen.fxml");
+        UIController.makeNewStage(event,"screen.fxml");
     }
 
     private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{

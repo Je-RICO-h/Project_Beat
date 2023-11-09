@@ -14,13 +14,9 @@ public class SongController {
     private Label song_artist;
 
     @FXML
-    private ImageView song_img;
-
-    @FXML
     private Label song_name;
 
     public void SetData(Track track){
-        song_img.setImage(new Image(getClass().getResourceAsStream("img/zene.png")));
         song_name.setText(track.getTitle());
         String artist = String.valueOf(getArtistNameList(track.getArtists()));
         song_artist.setText(artist.substring(1, artist.length() - 1));
