@@ -73,7 +73,6 @@ public class MusicPlayer {
         this.searchManager = new SearchManager(this);
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
-
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -432,7 +431,6 @@ public class MusicPlayer {
         userbox.setVisible(false);
         userbox.setDisable(true);
         user = false;
-
     }
 
     @FXML
@@ -447,6 +445,4 @@ public class MusicPlayer {
     //Save the new settings data
     @FXML
     void save_newData(){SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);};
-
-
 }

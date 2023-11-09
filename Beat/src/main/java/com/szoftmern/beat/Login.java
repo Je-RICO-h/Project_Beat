@@ -11,12 +11,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.szoftmern.beat.UIController.*;
-
 
 public class Login {
     @FXML
