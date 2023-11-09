@@ -5,8 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import static com.szoftmern.beat.EntityUtil.updateDatabaseTrackPlayCount;
 
 public class Main extends Application {
 
@@ -29,6 +30,7 @@ public class Main extends Application {
 
         //If window is closed, do cleanup
         stage.setOnCloseRequest(windowevent -> {
+            updateDatabaseTrackPlayCount();
             System.out.println("App is closing");
             manager.close();
             stage.close();

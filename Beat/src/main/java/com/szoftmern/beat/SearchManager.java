@@ -7,9 +7,8 @@ import javafx.collections.ObservableList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.szoftmern.beat.DatabaseManager.getTrackFromTitle;
-import static com.szoftmern.beat.DatabaseManager.searchDatabaseForTracks;
-import static com.szoftmern.beat.EntityUtil.getArtistNameList;
+import static com.szoftmern.beat.DatabaseManager.*;
+import static com.szoftmern.beat.EntityUtil.*;
 
 public class SearchManager{
     private static Timer searchTimer;
@@ -50,6 +49,7 @@ public class SearchManager{
 
             Platform.runLater(() -> {
                 musicPlayer.searchResultView.getItems().clear();
+
                 for (Track track : result) {
                     musicPlayer.searchResultView.getItems().add(track.getTitle() + "\n" + getArtistNameList(track.getArtists()));
                 }
@@ -64,10 +64,15 @@ public class SearchManager{
 
     public void selectedSearchItem() {
         String selectedItem = musicPlayer.searchResultView.getSelectionModel().getSelectedItem();
+
         System.out.println(selectedItem);
+
         musicPlayer.pos = musicPlayer.musicList.indexOf(getTrackFromTitle(selectedItem.split("\n")[0])) - 1;
+
         musicPlayer.next();
+
         musicPlayer.searchResultView.setVisible(false);
+
         System.out.println("Kiválasztott elem: " + selectedItem);
     }
 }

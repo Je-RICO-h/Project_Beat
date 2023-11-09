@@ -3,14 +3,19 @@ package com.szoftmern.beat;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+
 import java.sql.Date;
 import java.time.LocalDate;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.mindrot.jbcrypt.BCrypt;
 
+import static com.szoftmern.beat.UIController.*;
+
 public class Registration {
+
     @FXML
     private Pane registrationPanel;
     @FXML
@@ -31,8 +36,22 @@ public class Registration {
     private ComboBox<String> countryPicker;
 
     @FXML
+    public void initialize() {
+        UIController.loadCountriesIntoCombobox(countryPicker);
+
+        // set triggers for changing the focus when the user
+        // presses the ENTER key
+        UIController.setFocusOnEnterKeyPressed(usernameField, emailField);
+        UIController.setFocusOnEnterKeyPressed(emailField, passwordField);
+        UIController.setFocusOnEnterKeyPressed(passwordField, passwordAgainField);
+        UIController.setFocusOnEnterKeyPressed(passwordAgainField, birthDatePicker);
+//      UIController.moveFocusOnEnter(birthDatePicker, genderPicker);
+//      UIController.moveFocusOnEnter(genderPicker, countryPicker);
+    }
+
+    @FXML
     protected void switchBackToLoginScene() {
-        SceneSwitcher.switchScene(registrationPanel, "login.fxml");
+        UIController.switchScene(registrationPanel, "login.fxml");
     }
 
     @FXML
@@ -50,7 +69,7 @@ public class Registration {
             DatabaseManager.userDAO.saveEntity(newUser);
 
             System.out.println("New user successfully added to the database");
-            SceneSwitcher.switchScene(registrationPanel, "login.fxml");
+            UIController.switchScene(registrationPanel, "login.fxml");
         }
     }
 

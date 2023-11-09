@@ -3,7 +3,6 @@ package com.szoftmern.beat;
 import lombok.Getter;
 
 import java.util.*;
-import static com.szoftmern.beat.EntityUtil.*;
 
 public class DatabaseManager {
     public static JpaTrackDAO trackDAO;
@@ -87,9 +86,7 @@ public class DatabaseManager {
                 .getResultList();
 
         for (Artist artist : artistList) {
-            for (Track track : artist.getTracks()) {
-                resultList.add(track);
-            }
+            resultList.addAll(artist.getTracks());
         }
 
         System.out.println(resultList);
@@ -104,5 +101,20 @@ public class DatabaseManager {
         }
 
         return null;
+    }
+
+    public static Track getTrackFromId(Long id) {
+        Track track = trackDAO.entityManager
+                .createQuery("""
+                        SELECT T
+                        FROM Track T
+                        WHERE T.id = :id
+                        """,
+                        Track.class)
+                .setParameter("id", id)
+                .getResultList()
+                .get(0);
+
+        return track;
     }
 }
