@@ -26,11 +26,9 @@ public class Login {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
-    @FXML
-    private Button adminLoginButton;
 
     @FXML
-    public void skipChecksAndLogin(Event event) throws IOException {
+    public void skipChecksAndLogin(Event event) {
         UIController.makeNewStage(event,"screen.fxml");
     }
 
@@ -42,11 +40,7 @@ public class Login {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    try {
-                        loginUser(ke);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    loginUser(ke);
                 }
             }
         });
@@ -58,7 +52,7 @@ public class Login {
 
     // Validate the given user info and try to log in the user
     @FXML
-    protected void loginUser(Event event) throws IOException {
+    protected void loginUser(Event event) {
         try {
             checkIfEveryInfoIsEntered();
 

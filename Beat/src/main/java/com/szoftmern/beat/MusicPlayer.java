@@ -448,7 +448,7 @@ public class MusicPlayer {
     }
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
+    void logout(ActionEvent event) {
 
         //Stop the player
         this.player.stop();
