@@ -61,6 +61,7 @@ public class MusicPlayer {
     private SearchManager searchManager;
     private TopMusicManager topMusicManager;
     private HistoryManager historyManager;
+    private boolean volumeInit = false;
 
     //Constructor
     public MusicPlayer() {
@@ -77,11 +78,14 @@ public class MusicPlayer {
         //Dummy init to access the property
         Media media = new Media(musicList.get(this.pos).getResourceUrl());
         this.player = new MediaPlayer(media);
+    }
 
-        this.volumeSlider = new Slider(0, 100, 50); //NEEDS TO BE FIXED
+    //Init for the volume slider
+    public void initVolumeSlider(){
 
         // Volume Control
-        this.volumeSlider.setValue(100);
+        this.volumeSlider.setValue(50);
+        this.volumeSlider.setValue(50);
 
         //Volume slider init
         this.volumeSlider.valueProperty().addListener(new InvalidationListener() {
@@ -154,7 +158,7 @@ public class MusicPlayer {
 
     public void refreshTimeSlider() {
         //Set the sliders max value to the duration
-        timeSlider.setMax(player.getTotalDuration().toSeconds());
+        timeSlider.setMax(player.getTotalDuration().toSeconds() - 0.3);
 
         //Update end time label
         String smax = String.format("%02d:%02d", round((timeSlider.getMax() / 60) % 60), round(timeSlider.getMax() % 60));
@@ -204,9 +208,6 @@ public class MusicPlayer {
             changeStatus("No music is available!");
         else {
 
-            //Get Volume
-            player.getVolume();
-
             //Create a new player with the new music and set the previous volume for it
             this.player = new MediaPlayer(new Media(musicList.get(this.pos).getResourceUrl()));
 
@@ -214,8 +215,14 @@ public class MusicPlayer {
             historyManager.addTrackToHistoryList(musicList.get(this.pos));
             historyManager.displayhistory();
 
-            //Set the volume
+            //If volume not initialized, initialize it
+            if(!volumeInit) {
+                initVolumeSlider();
+                volumeInit = true;
+            }
+
             player.setVolume(volumeSlider.getValue() / 100);
+
 
             //Initialize Music slider
 
