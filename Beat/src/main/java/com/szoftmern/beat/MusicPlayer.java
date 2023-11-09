@@ -252,9 +252,7 @@ public class MusicPlayer {
 
             changeArtist();
 
-            System.out.println(musicList.get(this.pos).getPlayCount());
             incrementListenCount(musicList.get(this.pos));
-            System.out.println(musicList.get(this.pos).getPlayCount());
         }
     }
 
