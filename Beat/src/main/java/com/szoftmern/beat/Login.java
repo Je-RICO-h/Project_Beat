@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -25,6 +26,13 @@ public class Login {
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private Button adminLoginButton;
+
+    @FXML
+    public void skipChecksAndLogin(Event event) throws IOException {
+        UIController.makeNewStage(event,"screen.fxml");
+    }
 
     @FXML
     public void initialize() {
