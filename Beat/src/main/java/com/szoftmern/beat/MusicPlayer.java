@@ -68,6 +68,48 @@ public class MusicPlayer {
     private HistoryManager historyManager;
     private boolean volumeInit = false;
 
+    @FXML
+    private Pane homebox;
+    @FXML
+    private Pane settingsbox;
+    @FXML
+    protected Pane artistbox;
+    @FXML
+    private Pane favouritebox;
+    @FXML
+    protected ListView<String> artistlist;
+    @FXML
+    protected VBox artistVBox;
+    @FXML
+    protected Label artistLabel;
+    @FXML
+    public TextField username_settings;
+    @FXML
+    public TextField password_settings;
+    @FXML
+    public TextField email_settings;
+    @FXML
+    private ComboBox<String> country_setting;
+    @FXML
+    private ComboBox<String> gender_settings;
+    @FXML
+    private ComboBox<String> color_settings;
+
+    @FXML
+    public void initialize() {
+        //set homepage firs
+        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
+
+        //set the country list
+        loadCountriesIntoCombobox(country_setting);
+
+        //set the original data from database
+        SettingsManager.originalTexts(username_settings,email_settings,password_settings,country_setting,gender_settings);
+
+        SettingsManager.setColorPickerBox(color_settings);
+    }
+
+
     //Constructor
     public MusicPlayer() {
         this.searchManager = new SearchManager(this);
@@ -84,8 +126,41 @@ public class MusicPlayer {
         this.player = new MediaPlayer(media);
     }
 
+
+    @FXML
+    void settings_selected() {
+        UIController.setMiddlePain(settingsbox,homebox,artistbox,favouritebox);
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user = false;
+    }
+
+    @FXML
+    void home_selected() {
+        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
+    }
+    @FXML
+    void artist_selected() {
+        UIController.writeArtistsToScreen(this);
+        UIController.setMiddlePain(artistbox,homebox,settingsbox,favouritebox);
+    }
+    @FXML
+    void favourite_selected() {
+        UIController.setMiddlePain(favouritebox,artistbox,homebox,settingsbox);
+    }
+    @FXML
+    void logo_selected() {
+        home_selected();
+    }
+
+    //Save the new settings data
+    @FXML
+    void save_newData(){
+        SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);
+    }
+
     //Init for the volume slider
-    public void initVolumeSlider(){
+    public void initVolumeSlider() {
 
         // Volume Control
         this.volumeSlider.setValue(50);
@@ -384,63 +459,5 @@ public class MusicPlayer {
         userbox.setDisable(true);
         user=false;
     }
-
-
-    @FXML
-    private Pane homebox;
-    @FXML
-    private Pane settingsbox;
-    @FXML
-    private Pane artistbox;
-    @FXML
-    private Pane favouritebox;
-    @FXML
-    public TextField username_settings;
-    @FXML
-    public TextField password_settings;
-    @FXML
-    public TextField email_settings;
-    @FXML
-    private ComboBox<String> country_setting;
-    @FXML
-    private ComboBox<String> gender_settings;
-    @FXML
-    private ComboBox<String> color_settings;
-
-    @FXML
-    public void initialize() {
-        //set homepage firs
-        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
-
-        //set the country list
-        loadCountriesIntoCombobox(country_setting);
-
-        //set the original data from database
-        SettingsManager.originalTexts(username_settings,email_settings,password_settings,country_setting,gender_settings);
-
-        SettingsManager.setColorPickerBox(color_settings);
-    }
-
-
-
-    @FXML
-    void settings_selected() {
-        UIController.setMiddlePain(settingsbox,homebox,artistbox,favouritebox);
-        userbox.setVisible(false);
-        userbox.setDisable(true);
-        user = false;
-    }
-
-    @FXML
-    void home_selected() {UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);}
-    @FXML
-    void artist_selected() {UIController.setMiddlePain(artistbox,homebox,settingsbox,favouritebox);}
-    @FXML
-    void favourite_selected() {UIController.setMiddlePain(favouritebox,artistbox,homebox,settingsbox);}
-    @FXML
-    void logo_selected() {home_selected();}
-
-    //Save the new settings data
-    @FXML
-    void save_newData(){SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);};
 }
+

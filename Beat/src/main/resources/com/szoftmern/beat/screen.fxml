@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ListView?>
 <BorderPane fx:id="border" prefHeight="720.0" prefWidth="1284.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.MusicPlayer">
    <center>
       <StackPane prefHeight="395.0" prefWidth="1026.0">
@@ -76,14 +77,15 @@
                <children>
                   <VBox prefHeight="362.0" prefWidth="927.0">
                      <children>
-                        <Label prefHeight="76.0" prefWidth="322.0" text="Előadók" textFill="WHITE">
+                        <Label fx:id="artistLabel" prefHeight="76.0" prefWidth="322.0" text="Előadók" textFill="WHITE">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="36.0" />
                            </font>
                         </Label>
                         <ScrollPane prefHeight="297.0" prefWidth="883.0" style="-fx-background-color: transparent;">
                            <content>
-                              <VBox prefHeight="390.0" prefWidth="850.0" />
+                              <VBox prefHeight="390.0" prefWidth="850.0"/>
+                              <ListView fx:id="artistlist" prefHeight="390.0" prefWidth="850.0" style="-fx-background-color: transparent;"/>
                            </content>
                         </ScrollPane>
                      </children>
