@@ -2,6 +2,7 @@ package com.szoftmern.beat;
 
 import lombok.Getter;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DatabaseManager {
@@ -118,5 +119,18 @@ public class DatabaseManager {
                 .get(0);
 
         return track;
+    }
+
+    // Gets the password hash of a user
+    public static String getPassHashFromUsername(String username) {
+        String hash = "";
+
+        for (User user : userDAO.getEntities()) {
+            if (user.getName().equals(username)) {
+                hash = new String(user.getPassHash(), StandardCharsets.UTF_8);
+            }
+        }
+
+        return hash;
     }
 }
