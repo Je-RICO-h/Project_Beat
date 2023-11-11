@@ -22,7 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.szoftmern.beat.DatabaseManager.*;
@@ -156,7 +155,8 @@ public class UIController {
         }
     }
 
-    public static void makeNewStage(Event event, String file) {
+
+    public static void makeNewStage(Event event, String file) throws IOException {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
         Parent root1 = null;
