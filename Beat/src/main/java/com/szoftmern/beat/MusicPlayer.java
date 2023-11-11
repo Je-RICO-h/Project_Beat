@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import lombok.Data;
 
 import java.io.IOException;
 import java.util.*;
@@ -395,31 +396,52 @@ public class MusicPlayer {
     private Pane artistbox;
     @FXML
     private Pane favouritebox;
+
     @FXML
-    public TextField username_settings;
+    public Button saveButton;
     @FXML
-    public TextField password_settings;
+    public TextField usernameField;
     @FXML
-    public TextField email_settings;
+    public TextField emailField;
     @FXML
-    private ComboBox<String> country_setting;
+    public TextField oldPasswordField;
     @FXML
-    private ComboBox<String> gender_settings;
+    public TextField newPasswordField;
+    @FXML
+    public TextField newPasswordConfirmationField;
+    @FXML
+    private ComboBox<String> countryPicker;
+    @FXML
+    private ComboBox<String> genderPicker;
     @FXML
     private ComboBox<String> color_settings;
 
+    private SettingsManager settingsManager;
+
     @FXML
     public void initialize() {
+        settingsManager = new SettingsManager(
+                DatabaseManager.loggedInUser,
+                saveButton,
+                usernameField,
+                emailField,
+                oldPasswordField,
+                newPasswordField,
+                newPasswordConfirmationField,
+                genderPicker,
+                countryPicker
+        );
+
         //set homepage firs
         UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
 
         //set the country list
-        loadCountriesIntoCombobox(country_setting);
+        loadCountriesIntoCombobox(countryPicker);
 
         //set the original data from database
-        SettingsManager.originalTexts(username_settings,email_settings,password_settings,country_setting,gender_settings);
+        settingsManager.displayCurrentAccountInfo();
 
-        SettingsManager.setColorPickerBox(color_settings);
+        settingsManager.setColorPickerBox(color_settings);
     }
 
 
@@ -443,5 +465,12 @@ public class MusicPlayer {
 
     //Save the new settings data
     @FXML
-    void save_newData(){SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);};
+    void save_newData() {
+        try {
+            settingsManager.uploadNewUserAccountInfoToDatabase();
+
+        } catch (IncorrectInformationException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
