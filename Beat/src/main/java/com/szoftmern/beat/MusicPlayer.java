@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import lombok.Data;
 
 import java.io.IOException;
 import java.util.*;
@@ -448,16 +449,103 @@ public class MusicPlayer {
     }
 
     @FXML
-    void logout(ActionEvent event) {
-
+    void logout(ActionEvent event) throws IOException {
         //Stop the player
         this.player.stop();
 
-        //UIController.switchScene(border, "login.fxml");
         UIController.makeNewStage(event,"login.fxml");
         userbox.setVisible(false);
         userbox.setDisable(true);
         user=false;
+
+        System.out.println("User " + DatabaseManager.loggedInUser.getName() + " logged out successfully");
+        DatabaseManager.loggedInUser = null;
     }
 }
 
+    @FXML
+    private Pane homebox;
+    @FXML
+    private Pane settingsbox;
+    @FXML
+    private Pane artistbox;
+    @FXML
+    private Pane favouritebox;
+
+    @FXML
+    public Button saveButton;
+    @FXML
+    public TextField usernameField;
+    @FXML
+    public TextField emailField;
+    @FXML
+    public TextField oldPasswordField;
+    @FXML
+    public TextField newPasswordField;
+    @FXML
+    public TextField newPasswordConfirmationField;
+    @FXML
+    private ComboBox<String> countryPicker;
+    @FXML
+    private ComboBox<String> genderPicker;
+    @FXML
+    private ComboBox<String> color_settings;
+
+    private SettingsManager settingsManager;
+
+    @FXML
+    public void initialize() {
+        settingsManager = new SettingsManager(
+                DatabaseManager.loggedInUser,
+                saveButton,
+                usernameField,
+                emailField,
+                oldPasswordField,
+                newPasswordField,
+                newPasswordConfirmationField,
+                genderPicker,
+                countryPicker
+        );
+
+        //set homepage firs
+        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
+
+        //set the country list
+        loadCountriesIntoCombobox(countryPicker);
+
+        //set the original data from database
+        settingsManager.displayCurrentAccountInfo();
+
+        settingsManager.setColorPickerBox(color_settings);
+    }
+
+
+
+    @FXML
+    void settings_selected() {
+        UIController.setMiddlePain(settingsbox,homebox,artistbox,favouritebox);
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user = false;
+    }
+
+    @FXML
+    void home_selected() {UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);}
+    @FXML
+    void artist_selected() {UIController.setMiddlePain(artistbox,homebox,settingsbox,favouritebox);}
+    @FXML
+    void favourite_selected() {UIController.setMiddlePain(favouritebox,artistbox,homebox,settingsbox);}
+    @FXML
+    void logo_selected() {home_selected();}
+
+    //Save the new settings data
+    @FXML
+    void save_newData() {
+        try {
+            settingsManager.uploadNewUserAccountInfoToDatabase();
+
+        } catch (IncorrectInformationException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}

@@ -6,7 +6,7 @@ import static com.szoftmern.beat.DatabaseManager.*;
 
 public class EntityUtil {
     private static final List<String> artistNameList = new ArrayList<>();
-    private static Map<Long, Integer> tarckPlayCount = new HashMap<>();
+    private static Map<Long, Integer> trackPlayCount = new HashMap<>();
 
     public static List<String> getArtistNameList(List<Artist> artists) {
         artistNameList.clear();
@@ -21,21 +21,21 @@ public class EntityUtil {
     public static void incrementListenCount(Track track) {
         int playCount = 1;
 
-        if (tarckPlayCount.containsKey(track.getId())) {
-            playCount = tarckPlayCount.get(track.getId());
+        if (trackPlayCount.containsKey(track.getId())) {
+            playCount = trackPlayCount.get(track.getId());
             playCount++;
         }
 
-        tarckPlayCount.put(track.getId(), playCount);
+        trackPlayCount.put(track.getId(), playCount);
    }
 
    public static List<Track> updateTrack() {
         List<Track> trackList = new ArrayList<>();
         Track track;
 
-        for (Long id : tarckPlayCount.keySet()) {
+        for (Long id : trackPlayCount.keySet()) {
              track = getTrackFromId(id);
-             track.setPlayCount(track.getPlayCount() + tarckPlayCount.get(id));
+             track.setPlayCount(track.getPlayCount() + trackPlayCount.get(id));
 
              trackList.add(track);
         }
@@ -50,5 +50,29 @@ public class EntityUtil {
            trackDAO.updateEntity(track);
        }
    }
+
+    public static boolean doesUserAlreadyExist(String username) {
+        try {
+            returnUserIfItExists(username);
+
+        } catch (IncorrectInformationException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // Returns the username if it exists, otherwise it throws an exception
+    public static User returnUserIfItExists(String username) throws IncorrectInformationException {
+        for (User user : DatabaseManager.userDAO.getEntities()) {
+            if (user.getName().equals(username)) {
+                // return the username if it exists
+                return user;
+            }
+        }
+
+        // the user doesn't exist
+        throw new IncorrectInformationException("Ez a felhasználó nem létezik!\n");
+    }
 }
 
