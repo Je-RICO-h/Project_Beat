@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -145,8 +146,24 @@ public class UIController {
         });
     }
 
+    // Shows or hides password
+    // changes password field to text field to show password
+    public static void showAndHidePassword(PasswordField password, TextField visiblepassword, Label text){
+        if (password.isVisible()) {
+            password.setVisible(false);
+            visiblepassword.setVisible(true);
+            visiblepassword.setText(password.getText());
+            text.setText("hide");
+        }
+        else {
+            visiblepassword.setVisible(false);
+            password.setVisible(true);
+            password.setText(visiblepassword.getText());
+            text.setText("show");
+        }
+    }
 
-    public static void makeNewStage(Event event, String file) {
+    public static void makeNewStage(Event event, String file) throws IOException {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
         Parent root1 = null;
