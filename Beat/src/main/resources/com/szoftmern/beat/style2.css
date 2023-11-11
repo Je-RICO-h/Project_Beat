@@ -1,0 +1,98 @@
+.background{
+    -fx-background-color: linear-gradient(to top,#E3B1EF, #86E09A);
+}
+
+.loginButton{
+    -fx-background-color: #b552cf;
+    -fx-background-radius: 20px;
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+    -fx-font-family:"System Bold ";
+}
+.loginButton:focused{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+.loginButton:hover{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+
+.toRegistrationButton{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 13;
+    -fx-font-family:"System";
+}
+.toRegistrationButton:focused{
+    -fx-text-fill: #3d85c6;
+}
+.toRegistrationButton:hover{
+    -fx-text-fill: #3d85c6;
+}
+
+.forgottenPwdButton{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 11;
+    -fx-font-family:"System";
+}
+.forgottenPwdButton:focused{
+    -fx-text-fill: #3d85c6;
+}
+.forgottenPwdButton:hover{
+    -fx-text-fill: #3d85c6;
+}
+
+.infoButton{
+    -fx-background-radius: 20;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 11;
+    -fx-font-family:"DejaVu Sans Mono";
+}
+.infoButton:focused{
+    -fx-text-fill: #3d85c6;
+}
+.infoButton:hover{
+    -fx-text-fill: #3d85c6;
+}
+.registrationButton{
+    -fx-background-color: #b552cf;
+    -fx-background-radius: 20px;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+    -fx-font-family:"System Bold ";
+}
+.registrationButton:focused{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+.registrationButton:hover{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+.backToLoginButton{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 14;
+    -fx-font-family:"System";
+}
+.backToLoginButton:focused{
+    -fx-text-fill: #3d85c6;
+}
+.backToLoginButton:hover{
+    -fx-text-fill: #3d85c6;
+}
+
+.newPwdButton{
+    -fx-background-color: #b552cf;
+    -fx-background-radius: 10px;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-family:"System Bold ";
+}
+.newPwdButton:focused{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+.newPwdButton:hover{
+    -fx-effect: InnerShadow( gaussian, rgba(0, 0, 100 ,0.7), 20,0,0,0);
+}
+
