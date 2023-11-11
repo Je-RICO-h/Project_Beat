@@ -45,6 +45,7 @@ public class Login {
                 }
             }
         });
+
         // log the user in if they press ENTER while
         // the password field has focus AND password is visible
         visiblePassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
