@@ -26,8 +26,6 @@ public class TopMusicManager {
         Platform.runLater(() -> {
             int counter = 1;
 
-            musicPlayer.toplistContener.getChildren().clear();
-
             for(Track track : top) {
                 String img = "img/numbers/"  + String.valueOf(counter) + ".png";
 

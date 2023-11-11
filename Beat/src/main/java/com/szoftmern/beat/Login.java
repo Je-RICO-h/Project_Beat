@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -27,6 +28,11 @@ public class Login {
     private PasswordField passwordField;
 
     @FXML
+    public void skipChecksAndLogin(Event event) {
+        UIController.makeNewStage(event,"screen.fxml");
+    }
+
+    @FXML
     public void initialize() {
         // log the user in if they press ENTER while
         // the password field has focus
@@ -34,11 +40,7 @@ public class Login {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    try {
-                        loginUser(ke);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    loginUser(ke);
                 }
             }
         });
@@ -50,7 +52,7 @@ public class Login {
 
     // Validate the given user info and try to log in the user
     @FXML
-    protected void loginUser(Event event) throws IOException {
+    protected void loginUser(Event event) {
         try {
             checkIfEveryInfoIsEntered();
 
