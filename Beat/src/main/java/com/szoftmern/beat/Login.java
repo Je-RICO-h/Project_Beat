@@ -39,7 +39,6 @@ public class Login {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
                     try {
                         loginUser(ke);
-
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
