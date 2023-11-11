@@ -179,16 +179,24 @@ public class Registration {
 
         // regex pattern for validating the password
         Pattern passPattern = Pattern.compile(
-                "^(?=\\S*[0-9])" +    // at least one digit
-                "(?=\\S*[a-z])" +     // at least one lowercase character
-                "(?=\\S*[A-Z])" +     // at least one uppercase character
-                "\\S{8,30}$"          // length is between 8 and 30 characters
+                "^(?=\\S*[0-9])" +         // at least one digit
+                "(?=\\S*[a-z])" +          // at least one lowercase character
+                "(?=\\S*[A-Z])" +          // at least one uppercase character
+                "[a-zA-Z0-9!#$%&@+_-]" +   // optionally allow ONLY these special characters: ! # $ % & @ + _ -
+                "{8,30}$"                  // length is between 8 and 30 characters
         );
         Matcher matcher = passPattern.matcher(pass);
 
         // if the password is not valid, bail
         if (!matcher.matches()) {
-            throw new IncorrectInformationException("A jelszónak minimum 8 karakterből \nkell állnia, tartalmaznia kell \nkisbetűt, nagybetűt, és számot!");
+            throw new IncorrectInformationException(
+                    "A jelszónak minimum 8 karakterből " +
+                    "\nkell állnia, tartalmaznia kell " +
+                    "\nkisbetűt, nagybetűt, és számot! " +
+                    "\nEzen kívül csak a következő speciális " +
+                    "\nkaraktereket tartalmazhatja: " +
+                    "\n!#$%&@+_-"
+            );
         }
 
         return pass;
