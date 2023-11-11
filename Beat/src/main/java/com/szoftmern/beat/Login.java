@@ -54,7 +54,10 @@ public class Login {
         try {
             checkIfEveryInfoIsEntered();
 
-            String username = returnUserIfItExists();
+            // save the currently logged-in user
+            DatabaseManager.loggedInUser = returnUserIfItExists();
+
+            String username = DatabaseManager.loggedInUser.getName();
             validatePassword(username);
 
         } catch (IncorrectInformationException e) {
@@ -66,6 +69,8 @@ public class Login {
         // every info is correct, log the user in...
         welcomeText.setText("Bejelentkezés...");
         UIController.makeNewStage(event,"screen.fxml");
+
+        System.out.println("User " + DatabaseManager.loggedInUser.getName() + " logged in successfully");
     }
 
     private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{
@@ -75,13 +80,13 @@ public class Login {
     }
 
     // Returns the username if it exists, otherwise it throws an exception
-    private String returnUserIfItExists() throws IncorrectInformationException{
+    private User returnUserIfItExists() throws IncorrectInformationException{
         String username = usernameField.getText();
 
         // return the username if it exists
         for (User user : DatabaseManager.userDAO.getEntities()) {
             if (user.getName().equals(username)) {
-                return username;
+                return user;
             }
         }
 

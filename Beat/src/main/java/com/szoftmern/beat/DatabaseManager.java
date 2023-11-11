@@ -9,6 +9,8 @@ public class DatabaseManager {
     public static JpaArtistDAO artistDAO;
     public static JpaUserDAO userDAO;
 
+    public static User loggedInUser = null;
+
     // Returns every track's data in our DB
     @Getter
     private static List<Track> everyTrack;

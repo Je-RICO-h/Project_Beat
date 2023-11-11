@@ -374,15 +374,16 @@ public class MusicPlayer {
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-
         //Stop the player
         this.player.stop();
 
-        //UIController.switchScene(border, "login.fxml");
         UIController.makeNewStage(event,"login.fxml");
         userbox.setVisible(false);
         userbox.setDisable(true);
         user=false;
+
+        System.out.println("User " + DatabaseManager.loggedInUser.getName() + " logged out successfully");
+        DatabaseManager.loggedInUser = null;
     }
 
 
