@@ -7,14 +7,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static com.szoftmern.beat.EntityUtil.updateDatabaseTrackPlayCount;
-
 public class Main extends Application {
     public static DatabaseManager manager;
     @Override
     public void start(Stage stage) throws IOException {
 
         //Start Database
+
        manager = new DatabaseManager();
 
         //Start JavaFX and load login scene

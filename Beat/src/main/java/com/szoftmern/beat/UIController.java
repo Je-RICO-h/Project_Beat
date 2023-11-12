@@ -220,6 +220,7 @@ public class UIController {
         timeline.play();
 
     }
+
     public static void scrollText(Label label) {
         // Get the current text and create a new text with shifted characters
         String currentText =label.getText();
