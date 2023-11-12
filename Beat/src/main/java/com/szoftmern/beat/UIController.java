@@ -238,6 +238,7 @@ public class UIController {
         timeline.play();
     }
 
+
     public static void stopTimeLine() {
         if (timeline != null) {
             timeline.stop();
@@ -291,16 +292,5 @@ public class UIController {
         barChart.setCategoryGap(30);
 
         return barChart;
-    }
-
-    public static void setOnCloseRequestForStage(Stage stage) {
-        //If window is closed, do cleanup
-        stage.setOnCloseRequest(windowevent -> {
-            EntityUtil.updateDatabaseTrackPlayCount();
-            System.out.println("App is closing");
-            Main.manager.close();
-            stage.close();
-            System.exit(0);
-        });
     }
 }
