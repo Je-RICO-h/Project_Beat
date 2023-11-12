@@ -11,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import lombok.Data;
 
 import java.io.IOException;
 import java.util.*;
@@ -159,11 +158,6 @@ public class MusicPlayer {
             }
         });
     }
-
-   /* @FXML
-    public void selectedSearchItem() {
-        searchManager.selectedSearchItem();
-    }*/
 
     @FXML
     public void onActionSearchButton() {
@@ -392,14 +386,12 @@ public class MusicPlayer {
 
     @FXML
     void like() {
-        if (liked == false) {
-            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
-            liked = true;
-
-        } else {
+        if (liked) {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
             liked = false;
-
+        } else {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
+            liked = true;
         }
     }
 
