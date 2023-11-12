@@ -24,11 +24,6 @@ public class Login {
     private PasswordField passwordField;
 
     @FXML
-    public void skipChecksAndLogin(Event event) {
-        UIController.makeNewStage(event,"screen.fxml");
-    }
-
-    @FXML
     public void initialize() {
         // log the user in if they press ENTER while
         // the password field has focus

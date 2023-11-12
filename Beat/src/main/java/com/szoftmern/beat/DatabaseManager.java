@@ -133,4 +133,26 @@ public class DatabaseManager {
 
         return hash;
     }
+
+    public static  List<Artist> getEveryArtist() {
+        List<Artist> artists = trackDAO.entityManager
+                .createQuery("""
+                        SELECT A
+                        FROM Artist A
+                        """,
+                        Artist.class)
+                .getResultList();
+
+        return  artists;
+    }
+
+    public static List<Track> getTracksFromArtist(String name) {
+        for (Artist artist : getEveryArtist()) {
+            if (artist.getName().equals(name)) {
+                return artist.getTracks();
+            }
+        }
+
+        return null;
+    }
 }
