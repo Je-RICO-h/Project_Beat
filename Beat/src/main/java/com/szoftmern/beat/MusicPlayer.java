@@ -11,7 +11,6 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import lombok.Data;
 
 import java.io.IOException;
 import java.util.*;
