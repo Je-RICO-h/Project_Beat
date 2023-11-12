@@ -412,10 +412,6 @@ public class MusicPlayer {
 
     @FXML
     void like() {
-<<<<<<< HEAD
-=======
-
->>>>>>> 02f6bfe (bugfix stage close and database track plyacount update and database close)
         if (liked) {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
             liked = false;
