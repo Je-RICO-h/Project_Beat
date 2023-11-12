@@ -199,19 +199,6 @@ public class UIController {
         }
     }
 
-    public static void setOnCloseRequestForStage(Stage stage) {
-        //If window is closed, do cleanup
-        stage.setOnCloseRequest(windowevent -> {
-            EntityUtil.updateDatabaseTrackPlayCount();
-
-            System.out.println("App is closing");
-
-            Main.manager.close();
-            stage.close();
-            System.exit(0);
-        });
-    }
-
 
     public static void movingLabel(Label newsFeedText) {
         Timeline timeline = new Timeline(new KeyFrame(
@@ -222,6 +209,7 @@ public class UIController {
         timeline.play();
 
     }
+
     public static void scrollText(Label label) {
         // Get the current text and create a new text with shifted characters
         String currentText =label.getText();
@@ -231,4 +219,14 @@ public class UIController {
         label.setText(shiftedText);
     }
 
+    public static void setOnCloseRequestForStage(Stage stage) {
+        //If window is closed, do cleanup
+        stage.setOnCloseRequest(windowevent -> {
+            EntityUtil.updateDatabaseTrackPlayCount();
+            System.out.println("App is closing");
+            Main.manager.close();
+            stage.close();
+            System.exit(0);
+        });
+    }
 }
