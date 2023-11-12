@@ -181,7 +181,6 @@ public class MusicPlayer {
         });
     }
 
-
     @FXML
     public void onActionSearchButton() {
         searchManager.onActionSearchButton();
