@@ -189,6 +189,7 @@ public class UIController {
         }
     }
 
+
     public static void movingLabel(Label newsFeedText) {
         stopTimeLine();
 
@@ -215,6 +216,7 @@ public class UIController {
         // Update the label with the shifted text
         label.setText(shiftedText);
     }
+
 
     public static void setOnCloseRequestForStage(Stage stage) {
         //If window is closed, do cleanup
