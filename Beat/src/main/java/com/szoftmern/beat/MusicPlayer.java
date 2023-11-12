@@ -493,7 +493,6 @@ public class MusicPlayer {
         //Stop the player
         this.player.stop();
 
-        updateDatabaseCountryPlayCount();
         updateDatabaseTrackPlayCount();
 
         UIController.makeNewStage(event,"login.fxml");

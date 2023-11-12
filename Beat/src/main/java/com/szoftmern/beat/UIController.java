@@ -260,30 +260,6 @@ public class UIController {
         }
     }
 
-    public static void setOnCloseRequestForStage(Stage stage) {
-        //If window is closed, do cleanup
-        stage.setOnCloseRequest(windowevent -> {
-
-            if (DatabaseManager.loggedInUser != null)
-                EntityUtil.updateDatabaseCountryPlayCount();
-
-            EntityUtil.updateDatabaseTrackPlayCount();
-
-            if (loggedInUser != null) {
-                DatabaseManager.loggedInUser.setLoggedIn(false);
-                DatabaseManager.userDAO.saveEntity(DatabaseManager.loggedInUser);
-
-                System.out.println("User " + DatabaseManager.loggedInUser.getName() + " has been logged out.");
-            }
-
-            System.out.println("App is closing");
-
-            Main.manager.close();
-            stage.close();
-            System.exit(0);
-        });
-    }
-
 
     public static BarChart<String, Number> createBarChar(Map<Object, Object> dataMap, String title, String xAxisLabel, String yAxisLabel) {
         XYChart.Series dataSeries = new XYChart.Series();
@@ -313,5 +289,16 @@ public class UIController {
         barChart.setCategoryGap(30);
 
         return barChart;
+    }
+
+    public static void setOnCloseRequestForStage(Stage stage) {
+        //If window is closed, do cleanup
+        stage.setOnCloseRequest(windowevent -> {
+            EntityUtil.updateDatabaseTrackPlayCount();
+            System.out.println("App is closing");
+            Main.manager.close();
+            stage.close();
+            System.exit(0);
+        });
     }
 }
