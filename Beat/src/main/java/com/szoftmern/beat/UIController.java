@@ -166,12 +166,7 @@ public class UIController {
         Stage s = (Stage) ((Node)event.getSource()).getScene().getWindow();
         s.close();
 
-        //If window is closed, do cleanup
-        stage2.setOnCloseRequest(windowevent -> {
-            System.out.println("App is closing");
-            stage2.close();
-            System.exit(0);
-        });
+        UIController.setOnCloseRequestForStage(stage2);
     }
 
     public static void setMiddlePain(Pane first,Pane other1,Pane other2,Pane other3){
@@ -185,5 +180,16 @@ public class UIController {
         other2.setVisible(false);
         other3.setDisable(true);
         other3.setVisible(false);
+    }
+
+    public static void setOnCloseRequestForStage(Stage stage) {
+        //If window is closed, do cleanup
+        stage.setOnCloseRequest(windowevent -> {
+            EntityUtil.updateDatabaseTrackPlayCount();
+            System.out.println("App is closing");
+            Main.manager.close();
+            stage.close();
+            System.exit(0);
+        });
     }
 }

@@ -7,15 +7,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import static com.szoftmern.beat.EntityUtil.updateDatabaseTrackPlayCount;
-
 public class Main extends Application {
+    public static DatabaseManager manager;
 
     @Override
     public void start(Stage stage) throws IOException {
 
         //Start Database
-        DatabaseManager manager = new DatabaseManager();
+        manager = new DatabaseManager();
 
         //Start JavaFX and load login scene
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login.fxml"));
@@ -28,14 +27,7 @@ public class Main extends Application {
 
         stage.show();
 
-        //If window is closed, do cleanup
-        stage.setOnCloseRequest(windowevent -> {
-            updateDatabaseTrackPlayCount();
-            System.out.println("App is closing");
-            manager.close();
-            stage.close();
-            System.exit(0);
-        });
+        UIController.setOnCloseRequestForStage(stage);
     }
 
     public static void main(String[] args) {

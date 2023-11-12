@@ -160,11 +160,6 @@ public class MusicPlayer {
         });
     }
 
-   /* @FXML
-    public void selectedSearchItem() {
-        searchManager.selectedSearchItem();
-    }*/
-
     @FXML
     public void onActionSearchButton() {
         searchManager.onActionSearchButton();
@@ -392,14 +387,13 @@ public class MusicPlayer {
 
     @FXML
     void like() {
-        if (liked == false) {
-            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
-            liked = true;
 
-        } else {
+        if (liked) {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
             liked = false;
-
+        } else {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
+            liked = true;
         }
     }
 
@@ -419,6 +413,8 @@ public class MusicPlayer {
     void logout(ActionEvent event) throws IOException {
         //Stop the player
         this.player.stop();
+
+        updateDatabaseTrackPlayCount();
 
         UIController.makeNewStage(event,"login.fxml");
         userbox.setVisible(false);
