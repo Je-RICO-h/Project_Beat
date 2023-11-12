@@ -210,7 +210,6 @@ public class UIController {
         });
     }
 
-
     public static void movingLabel(Label newsFeedText) {
         Timeline timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000),
@@ -229,5 +228,4 @@ public class UIController {
         // Update the label with the shifted text
         label.setText(shiftedText);
     }
-
 }
