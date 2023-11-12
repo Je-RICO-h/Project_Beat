@@ -387,7 +387,6 @@ public class MusicPlayer {
 
     @FXML
     void like() {
-
         if (liked) {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
             liked = false;
