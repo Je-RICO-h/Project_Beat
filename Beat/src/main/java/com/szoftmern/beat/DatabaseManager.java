@@ -9,6 +9,7 @@ public class DatabaseManager {
     public static JpaTrackDAO trackDAO;
     public static JpaArtistDAO artistDAO;
     public static JpaUserDAO userDAO;
+    public static JpaFavoriteTracksDAO favTracksDAO;
 
     public static User loggedInUser = null;
 
@@ -21,6 +22,7 @@ public class DatabaseManager {
             trackDAO = new JpaTrackDAO();
             artistDAO = new JpaArtistDAO();
             userDAO = new JpaUserDAO();
+            favTracksDAO = new JpaFavoriteTracksDAO();
 
             // get every Track class via JPA from the DB
             everyTrack = trackDAO.getEntities();
@@ -35,6 +37,7 @@ public class DatabaseManager {
             trackDAO.close();
             artistDAO.close();
             userDAO.close();
+            favTracksDAO.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
