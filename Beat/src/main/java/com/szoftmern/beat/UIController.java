@@ -1,6 +1,8 @@
 package com.szoftmern.beat;
 
-import javafx.event.ActionEvent;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,7 @@ import static com.szoftmern.beat.DatabaseManager.*;
 
 public class UIController {
     private static HBox hBox;
+    private static String name;
 
     public static void switchScene(Pane currentPane, String fxml) {
         try {
@@ -74,6 +77,41 @@ public class UIController {
         setHBoxOnMouseClicked(hBox, track, musicPlayer);
 
         return hBox;
+    }
+
+    public static void writeArtistsToScreen(MusicPlayer musicPlayer) {
+        musicPlayer.artistlist.setVisible(true);
+        musicPlayer.artistLabel.setVisible(true);
+
+        List<String> artists = new ArrayList<>();
+
+        for (Artist artist : getEveryArtist()) {
+            artists.add(artist.getName());
+        }
+
+        ObservableList<String> artistList = FXCollections.observableArrayList(artists);
+        musicPlayer.artistlist.setItems(artistList);
+
+        musicPlayer.artistlist.setOnMouseClicked( event -> {
+            name = musicPlayer.artistlist.getSelectionModel().getSelectedItem();
+
+            System.out.println("Kiválasztott elem: " + name);
+
+            musicPlayer.artistlist.setVisible(false);
+            musicPlayer.artistLabel.setVisible(false);
+
+            musicPlayer.artistbox.getChildren().add(new Label(name));
+
+            Platform.runLater(() -> {
+                System.out.println(getTracksFromArtist(name));
+                for (Track track : getTracksFromArtist(name)) {
+                    hBox = loadAndSetHBox(track, musicPlayer);
+
+                    musicPlayer.artistbox.getChildren().add(hBox);
+                }
+            });
+            musicPlayer.artistbox.setVisible(true);
+        });
     }
 
     // Fills a ComboBox with the countries listed in countries.txt
@@ -125,7 +163,15 @@ public class UIController {
     public static void makeNewStage(Event event, String file) throws IOException {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
-        Parent root1 = fxmlLoader.load();
+        Parent root1 = null;
+
+        try {
+            root1 = fxmlLoader.load();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Stage stage2 = new Stage();
         stage2.setScene(new Scene(root1));
         stage2.show();

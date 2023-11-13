@@ -2,12 +2,15 @@ package com.szoftmern.beat;
 
 import lombok.Getter;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DatabaseManager {
     public static JpaTrackDAO trackDAO;
     public static JpaArtistDAO artistDAO;
     public static JpaUserDAO userDAO;
+
+    public static User loggedInUser = null;
 
     // Returns every track's data in our DB
     @Getter
@@ -116,5 +119,40 @@ public class DatabaseManager {
                 .get(0);
 
         return track;
+    }
+
+    // Gets the password hash of a user
+    public static String getPassHashFromUsername(String username) {
+        String hash = "";
+
+        for (User user : userDAO.getEntities()) {
+            if (user.getName().equals(username)) {
+                hash = new String(user.getPassHash(), StandardCharsets.UTF_8);
+            }
+        }
+
+        return hash;
+    }
+
+    public static  List<Artist> getEveryArtist() {
+        List<Artist> artists = trackDAO.entityManager
+                .createQuery("""
+                        SELECT A
+                        FROM Artist A
+                        """,
+                        Artist.class)
+                .getResultList();
+
+        return  artists;
+    }
+
+    public static List<Track> getTracksFromArtist(String name) {
+        for (Artist artist : getEveryArtist()) {
+            if (artist.getName().equals(name)) {
+                return artist.getTracks();
+            }
+        }
+
+        return null;
     }
 }

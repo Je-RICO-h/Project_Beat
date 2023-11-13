@@ -68,6 +68,65 @@ public class MusicPlayer {
     private HistoryManager historyManager;
     private boolean volumeInit = false;
 
+    @FXML
+    private Pane homebox;
+    @FXML
+    private Pane settingsbox;
+    @FXML
+    protected Pane artistbox;
+    @FXML
+    private Pane favouritebox;
+    @FXML
+    protected ListView<String> artistlist;
+    @FXML
+    protected Label artistLabel;
+    @FXML
+    private ComboBox<String> color_settings;
+    @FXML
+    public Button saveButton;
+    @FXML
+    public TextField usernameField;
+    @FXML
+    public TextField emailField;
+    @FXML
+    public TextField oldPasswordField;
+    @FXML
+    public TextField newPasswordField;
+    @FXML
+    public TextField newPasswordConfirmationField;
+    @FXML
+    private ComboBox<String> countryPicker;
+    @FXML
+    private ComboBox<String> genderPicker;
+
+    private SettingsManager settingsManager;
+
+    @FXML
+    public void initialize() {
+        settingsManager = new SettingsManager(
+                DatabaseManager.loggedInUser,
+                saveButton,
+                usernameField,
+                emailField,
+                oldPasswordField,
+                newPasswordField,
+                newPasswordConfirmationField,
+                genderPicker,
+                countryPicker
+        );
+
+        //set homepage firs
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox);
+
+        //set the country list
+        loadCountriesIntoCombobox(countryPicker);
+
+        //set the original data from database
+        settingsManager.displayCurrentAccountInfo();
+
+        settingsManager.setColorPickerBox(color_settings);
+    }
+
     //Constructor
     public MusicPlayer() {
         this.searchManager = new SearchManager(this);
@@ -85,7 +144,7 @@ public class MusicPlayer {
     }
 
     //Init for the volume slider
-    public void initVolumeSlider(){
+    public void initVolumeSlider() {
 
         // Volume Control
         this.volumeSlider.setValue(50);
@@ -99,11 +158,6 @@ public class MusicPlayer {
             }
         });
     }
-
-   /* @FXML
-    public void selectedSearchItem() {
-        searchManager.selectedSearchItem();
-    }*/
 
     @FXML
     public void onActionSearchButton() {
@@ -332,14 +386,12 @@ public class MusicPlayer {
 
     @FXML
     void like() {
-        if (liked == false) {
-            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
-            liked = true;
-
-        } else {
+        if (liked) {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
             liked = false;
-
+        } else {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
+            liked = true;
         }
     }
 
@@ -355,6 +407,19 @@ public class MusicPlayer {
         }
     }
 
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        //Stop the player
+        this.player.stop();
+
+        UIController.makeNewStage(event,"login.fxml");
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user=false;
+
+        System.out.println("User " + DatabaseManager.loggedInUser.getName() + " logged out successfully");
+        DatabaseManager.loggedInUser = null;
+    }
 
     boolean user = false;
     @FXML
@@ -373,74 +438,43 @@ public class MusicPlayer {
     }
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
-
-        //Stop the player
-        this.player.stop();
-
-        //UIController.switchScene(border, "login.fxml");
-        UIController.makeNewStage(event,"login.fxml");
-        userbox.setVisible(false);
-        userbox.setDisable(true);
-        user=false;
-    }
-
-
-    @FXML
-    private Pane homebox;
-    @FXML
-    private Pane settingsbox;
-    @FXML
-    private Pane artistbox;
-    @FXML
-    private Pane favouritebox;
-    @FXML
-    public TextField username_settings;
-    @FXML
-    public TextField password_settings;
-    @FXML
-    public TextField email_settings;
-    @FXML
-    private ComboBox<String> country_setting;
-    @FXML
-    private ComboBox<String> gender_settings;
-    @FXML
-    private ComboBox<String> color_settings;
-
-    @FXML
-    public void initialize() {
-        //set homepage firs
-        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
-
-        //set the country list
-        loadCountriesIntoCombobox(country_setting);
-
-        //set the original data from database
-        SettingsManager.originalTexts(username_settings,email_settings,password_settings,country_setting,gender_settings);
-
-        SettingsManager.setColorPickerBox(color_settings);
-    }
-
-
-
-    @FXML
     void settings_selected() {
-        UIController.setMiddlePain(settingsbox,homebox,artistbox,favouritebox);
+        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox);
+
         userbox.setVisible(false);
         userbox.setDisable(true);
         user = false;
     }
 
     @FXML
-    void home_selected() {UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);}
+    void home_selected() {
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox);
+    }
+
     @FXML
-    void artist_selected() {UIController.setMiddlePain(artistbox,homebox,settingsbox,favouritebox);}
+    void artist_selected() {
+        UIController.writeArtistsToScreen(this);
+        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox);
+    }
+
     @FXML
-    void favourite_selected() {UIController.setMiddlePain(favouritebox,artistbox,homebox,settingsbox);}
+    void favourite_selected() {
+        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox);
+    }
+
     @FXML
-    void logo_selected() {home_selected();}
+    void logo_selected() {
+        home_selected();
+    }
 
     //Save the new settings data
     @FXML
-    void save_newData(){SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);};
+    void save_newData() {
+        try {
+            settingsManager.uploadNewUserAccountInfoToDatabase();
+
+        } catch (IncorrectInformationException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
