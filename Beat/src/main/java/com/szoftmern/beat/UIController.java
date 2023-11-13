@@ -156,7 +156,7 @@ public class UIController {
     }
 
 
-    public static void makeNewStage(Event event, String file) throws IOException {
+    public static void makeNewStage(Event event, String file) {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
         Parent root1 = null;
@@ -239,5 +239,19 @@ public class UIController {
         } else {
             musicPlayer.heart.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/heart2.png"))));
         }
+    }
+
+    public static void setOnCloseRequestForStage(Stage stage) {
+        //If window is closed, do cleanup
+        stage.setOnCloseRequest(windowevent -> {
+
+            EntityUtil.updateDatabaseTrackPlayCount();
+
+            System.out.println("App is closing");
+
+            Main.manager.close();
+            stage.close();
+            System.exit(0);
+        });
     }
 }

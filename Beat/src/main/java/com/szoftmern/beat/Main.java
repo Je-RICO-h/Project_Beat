@@ -11,7 +11,6 @@ public class Main extends Application {
     public static DatabaseManager manager;
     @Override
     public void start(Stage stage) throws IOException {
-
         //Start Database
 
        manager = new DatabaseManager();

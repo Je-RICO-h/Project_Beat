@@ -51,11 +51,7 @@ public class Login {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    try {
-                        loginUser(ke);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    loginUser(ke);
                 }
             }
         });
