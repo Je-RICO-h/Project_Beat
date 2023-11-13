@@ -412,6 +412,8 @@ public class MusicPlayer {
         //Stop the player
         this.player.stop();
 
+        updateDatabaseTrackPlayCount();
+
         UIController.makeNewStage(event,"login.fxml");
         userbox.setVisible(false);
         userbox.setDisable(true);

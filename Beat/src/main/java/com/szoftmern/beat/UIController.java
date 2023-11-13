@@ -160,14 +160,13 @@ public class UIController {
         }
     }
 
-    public static void makeNewStage(Event event, String file) throws IOException {
+    public static void makeNewStage(Event event, String file) {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
         Parent root1 = null;
 
         try {
             root1 = fxmlLoader.load();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,11 +180,7 @@ public class UIController {
         s.close();
 
         //If window is closed, do cleanup
-        stage2.setOnCloseRequest(windowevent -> {
-            System.out.println("App is closing");
-            stage2.close();
-            System.exit(0);
-        });
+        UIController.setOnCloseRequestForStage(stage2);
     }
 
     public static void setMiddlePain(Pane first,Pane other1,Pane other2,Pane other3){
@@ -199,5 +194,19 @@ public class UIController {
         other2.setVisible(false);
         other3.setDisable(true);
         other3.setVisible(false);
+    }
+
+    public static void setOnCloseRequestForStage(Stage stage) {
+        //If window is closed, do cleanup
+        stage.setOnCloseRequest(windowevent -> {
+
+            EntityUtil.updateDatabaseTrackPlayCount();
+
+            System.out.println("App is closing");
+
+            Main.manager.close();
+            stage.close();
+            System.exit(0);
+        });
     }
 }
