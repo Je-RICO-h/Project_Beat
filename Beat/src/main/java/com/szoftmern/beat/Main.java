@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
 
         //Start Database
-        manager = new DatabaseManager();
+       manager = new DatabaseManager();
 
         //Start JavaFX and load login scene
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login.fxml"));
