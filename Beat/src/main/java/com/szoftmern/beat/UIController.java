@@ -162,7 +162,7 @@ public class UIController {
         }
     }
 
-    public static void makeNewStage(Event event, String file) throws IOException {
+    public static void makeNewStage(Event event, String file) {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
         Parent root1 = null;
