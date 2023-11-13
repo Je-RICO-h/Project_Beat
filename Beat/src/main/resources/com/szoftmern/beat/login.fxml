@@ -13,7 +13,6 @@
     <children>
         <Pane layoutX="490.0" layoutY="175.0" prefHeight="370.0" prefWidth="300.0" style="-fx-background-color: ffffff;">
             <children>
-                <Button layoutX="0.0" layoutY="0.0" onMouseClicked="#skipChecksAndLogin" text="just log in" textAlignment="CENTER"/>
                 <Label layoutX="52.0" layoutY="27.0" prefHeight="39.0" prefWidth="196.0" text="Bejelentkezés" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="24.0" />
