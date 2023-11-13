@@ -27,6 +27,7 @@ public class Main extends Application {
 
         stage.show();
 
+        //If window is closed, do cleanup
         UIController.setOnCloseRequestForStage(stage);
     }
 
