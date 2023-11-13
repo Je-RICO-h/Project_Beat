@@ -40,6 +40,8 @@ public class EntityUtil {
              trackList.add(track);
         }
 
+        trackPlayCount.clear();
+
         return trackList;
    }
 
