@@ -85,7 +85,7 @@ public class EntityUtil {
         return true;
     }
 
-    // Returns the username if it exists, otherwise it throws an exception
+    // Returns the user if it exists, otherwise it throws an exception
     public static User returnUserIfItExists(String username) throws IncorrectInformationException {
         for (User user : DatabaseManager.userDAO.getEntities()) {
             if (user.getName().equals(username)) {
@@ -97,6 +97,7 @@ public class EntityUtil {
         // the user doesn't exist
         throw new IncorrectInformationException("Ez a felhasználó nem létezik!\n");
     }
+
 
     public static void addTrackToFavorites(Track track, Boolean isLiked) {
         FavoriteTracks existingFavorite = getFavorite(loggedInUser.getId(), track.getId());
@@ -119,6 +120,17 @@ public class EntityUtil {
         FavoriteTracks existingFavorite = getFavorite(loggedInUser.getId(), track.getId());
         System.out.println(existingFavorite);
         return existingFavorite != null;
+    }
+
+    // If a user exists with the given email, it returns it, otherwise it throws an exception
+    public static User findUserWithEmail(String email) throws IncorrectInformationException {
+        for (User user : DatabaseManager.userDAO.getEntities()) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+
+        throw new IncorrectInformationException("Nem létezik felhasználó ezzel az email címmel!\n");
     }
 }
 
