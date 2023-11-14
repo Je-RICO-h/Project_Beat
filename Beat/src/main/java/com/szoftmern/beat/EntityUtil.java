@@ -99,7 +99,6 @@ public class EntityUtil {
         throw new IncorrectInformationException("Ez a felhasználó nem létezik!\n");
     }
 
-
     public static void addTrackToFavorites(Track track, Boolean isLiked) {
         FavoriteTracks existingFavorite = getFavorite(loggedInUser.getId(), track.getId());
 
@@ -124,6 +123,7 @@ public class EntityUtil {
     }
 <<<<<<< HEAD
 =======
+
 
     // If a user exists with the given email, it returns it, otherwise it throws an exception
     public static User findUserWithEmail(String email) throws IncorrectInformationException {
