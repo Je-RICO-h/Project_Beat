@@ -36,39 +36,17 @@ public class ForgottenPassword {
 
     @FXML
     public void requestNewPasswordForUser() {
+
         if (emailSentText.getText().equals("Email elküldve!")) {
             // pane váltása, a helyes kód beírása után kellene
             setPane(newPasswordPane2, newPasswordPane1);
         }
-/*
-        String email = emailField.getText();
-        User userRequestingPassChange = null;
 
-         try {
-            userRequestingPassChange = EntityUtil.findUserWithEmail(email);
-
-         } catch (IncorrectInformationException e) {
-             emailSentText.setText(e.getMessage());
-
-             return;
-         }
-
-        // send password recovery email to user
-        MailingService.sendPlainTextEmail(
-            MailingService.USERNAME,
-            email,
-           "Does it work?",
-            """
-                <h1 style='font-family: cursive'>Fancy text, eh?</h1>
-            """,
-            true
-        );
-
-        System.out.println(userRequestingPassChange);*/
         emailSentText.setText("Email elküldve!");
         codeField.setDisable(false);
         emailField.setDisable(true);
     }
+
     @FXML
     public void savePassword() {
         newPasswordInfo.setText("Új jelszó mentve!");
