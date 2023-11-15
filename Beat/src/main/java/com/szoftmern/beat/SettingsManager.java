@@ -73,12 +73,12 @@ public class SettingsManager {
         String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
 
         if ( currentUser.getName().equals(usernameField.getText()) &&
-                currentUser.getEmail().equals(emailField.getText()) &&
-                currentUser.getGender() == selectedGender &&
-                currentUser.getCountry().equals(selectedCountry) &&
-                oldPasswordField.getText().isEmpty() &&
-                newPasswordField.getText().isEmpty() &&
-                newPasswordConfirmationField.getText().isEmpty()
+             currentUser.getEmail().equals(emailField.getText()) &&
+             currentUser.getGender() == selectedGender &&
+             currentUser.getCountry().equals(selectedCountry) &&
+             oldPasswordField.getText().isEmpty() &&
+             newPasswordField.getText().isEmpty() &&
+             newPasswordConfirmationField.getText().isEmpty()
         ) {
             return false;
         }
@@ -125,8 +125,8 @@ public class SettingsManager {
         // only do any password related checks if the user has entered something
         // in all the password fields
         if ( !oldPass.isEmpty() &&
-                !newPass.isEmpty() &&
-                !newPassAgain.isEmpty()
+             !newPass.isEmpty() &&
+             !newPassAgain.isEmpty()
         ) {
             UserInfoHelper.checkIfUserHasEnteredCorrectPassword(currentUser.getName(), oldPass);
 
@@ -155,6 +155,7 @@ public class SettingsManager {
         color.add("linear-gradient(to top,#E3B1EF, #86E09A)");
         color.add("linear-gradient(to top,#E3B1EF, #86E09A)");
         colors.setItems(color);
+        ///
 
 
     }
