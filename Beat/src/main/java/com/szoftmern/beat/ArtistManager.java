@@ -5,13 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.AnchorPane;
 
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.szoftmern.beat.DatabaseManager.getEveryArtist;
-import static com.szoftmern.beat.UIController.loadAndSetHBox;
 
 public class ArtistManager {
     private final MusicPlayer musicPlayer;
