@@ -158,4 +158,14 @@ public class SettingsManager {
 
 
     }
+
+    public static void setBadWords(Button button){
+        if(button.getText().equals("Ki")){
+            button.setText("Be");
+        }
+        else {
+            button.setText("Ki");
+        }
+
+    }
 }

@@ -1,8 +1,9 @@
 package com.szoftmern.beat;
+import javafx.animation.*;
+import javafx.scene.control.Label;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -31,7 +33,7 @@ import static com.szoftmern.beat.DatabaseManager.*;
 
 public class UIController {
     private static HBox hBox;
-    private static String name;
+
 
     public static void switchScene(Pane currentPane, String fxml) {
         try {
@@ -58,6 +60,7 @@ public class UIController {
             System.out.println("Kiválasztott elem: " + title);
 
             musicPlayer.play_pause.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/pause.png"))));
+            musicPlayer.movingItem.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/giphy.gif"))));
         });
     }
 
@@ -79,40 +82,38 @@ public class UIController {
         return hBox;
     }
 
-    public static void writeArtistsToScreen(MusicPlayer musicPlayer) {
-        musicPlayer.artistlist.setVisible(true);
-        musicPlayer.artistLabel.setVisible(true);
 
-        List<String> artists = new ArrayList<>();
+    public static AnchorPane loadAndSetArtist(String artistname, MusicPlayer musicPlayer) {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(UIController.class.getResource("artist.fxml"));
 
-        for (Artist artist : getEveryArtist()) {
-            artists.add(artist.getName());
+        AnchorPane anchorPane;
+        try {
+            anchorPane = fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
-        ObservableList<String> artistList = FXCollections.observableArrayList(artists);
-        musicPlayer.artistlist.setItems(artistList);
+        SongController songController = fxmlLoader.getController();
+        songController.SetArtistToItem(artistname);
 
-        musicPlayer.artistlist.setOnMouseClicked( event -> {
-            name = musicPlayer.artistlist.getSelectionModel().getSelectedItem();
+        anchorPane.setOnMouseClicked(mouseEvent -> {
+            musicPlayer.oneArtistName.setText(artistname);
+            musicPlayer.oneArtistSongs.getChildren().clear();
+            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox);
 
-            System.out.println("Kiválasztott elem: " + name);
+            for (Track track : Objects.requireNonNull(getTracksFromArtist(artistname))) {
+                hBox = loadAndSetHBox(track, musicPlayer);
 
-            musicPlayer.artistlist.setVisible(false);
-            musicPlayer.artistLabel.setVisible(false);
+                musicPlayer.oneArtistSongs.getChildren().add(hBox);
+            }
 
-            musicPlayer.artistbox.getChildren().add(new Label(name));
-
-            Platform.runLater(() -> {
-                System.out.println(getTracksFromArtist(name));
-                for (Track track : getTracksFromArtist(name)) {
-                    hBox = loadAndSetHBox(track, musicPlayer);
-
-                    musicPlayer.artistbox.getChildren().add(hBox);
-                }
-            });
-            musicPlayer.artistbox.setVisible(true);
         });
+
+        return anchorPane;
     }
+
+
 
     // Fills a ComboBox with the countries listed in countries.txt
     public static void loadCountriesIntoCombobox(ComboBox<String> countryPicker) {
@@ -183,17 +184,15 @@ public class UIController {
         UIController.setOnCloseRequestForStage(stage2);
     }
 
-    public static void setMiddlePain(Pane first,Pane other1,Pane other2,Pane other3){
-        //set only the first parameter valid and disable the other
+    public static void setMiddlePain(Pane first, Pane... others) {
+
         first.setDisable(false);
         first.setVisible(true);
 
-        other1.setDisable(true);
-        other1.setVisible(false);
-        other2.setDisable(true);
-        other2.setVisible(false);
-        other3.setDisable(true);
-        other3.setVisible(false);
+        for (Pane other : others) {
+            other.setDisable(true);
+            other.setVisible(false);
+        }
     }
 
     public static void setOnCloseRequestForStage(Stage stage) {
@@ -209,4 +208,24 @@ public class UIController {
             System.exit(0);
         });
     }
+
+
+    public static void movingLabel(Label newsFeedText) {
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                event -> scrollText(newsFeedText)
+        ));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+    }
+    public static void scrollText(Label label) {
+        // Get the current text and create a new text with shifted characters
+        String currentText =label.getText();
+        String shiftedText = currentText.substring(1) + currentText.charAt(0);
+
+        // Update the label with the shifted text
+        label.setText(shiftedText);
+    }
+
 }
