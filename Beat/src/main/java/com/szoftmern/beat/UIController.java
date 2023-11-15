@@ -1,17 +1,20 @@
 package com.szoftmern.beat;
+import javafx.animation.*;
+import javafx.scene.control.Label;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -30,6 +33,7 @@ import static com.szoftmern.beat.DatabaseManager.*;
 
 public class UIController {
     private static HBox hBox;
+
 
     public static void switchScene(Pane currentPane, String fxml) {
         try {
@@ -56,6 +60,7 @@ public class UIController {
             System.out.println("Kiválasztott elem: " + title);
 
             musicPlayer.play_pause.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/pause.png"))));
+            musicPlayer.movingItem.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/giphy.gif"))));
         });
     }
 
@@ -76,6 +81,39 @@ public class UIController {
 
         return hBox;
     }
+
+
+    public static AnchorPane loadAndSetArtist(String artistname, MusicPlayer musicPlayer) {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(UIController.class.getResource("artist.fxml"));
+
+        AnchorPane anchorPane;
+        try {
+            anchorPane = fxmlLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        SongController songController = fxmlLoader.getController();
+        songController.SetArtistToItem(artistname);
+
+        anchorPane.setOnMouseClicked(mouseEvent -> {
+            musicPlayer.oneArtistName.setText(artistname);
+            musicPlayer.oneArtistSongs.getChildren().clear();
+            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox);
+
+            for (Track track : Objects.requireNonNull(getTracksFromArtist(artistname))) {
+                hBox = loadAndSetHBox(track, musicPlayer);
+
+                musicPlayer.oneArtistSongs.getChildren().add(hBox);
+            }
+
+        });
+
+        return anchorPane;
+    }
+
+
 
     // Fills a ComboBox with the countries listed in countries.txt
     public static void loadCountriesIntoCombobox(ComboBox<String> countryPicker) {
@@ -105,11 +143,35 @@ public class UIController {
             }
         });
     }
-  
-    public static void makeNewStage(Event event, String file) throws IOException {
+
+    // Shows or hides password
+    // changes password field to text field to show password
+    public static void showAndHidePassword(PasswordField password, TextField visiblepassword, Label text){
+        if (password.isVisible()) {
+            password.setVisible(false);
+            visiblepassword.setVisible(true);
+            visiblepassword.setText(password.getText());
+            text.setText("hide");
+        }
+        else {
+            visiblepassword.setVisible(false);
+            password.setVisible(true);
+            password.setText(visiblepassword.getText());
+            text.setText("show");
+        }
+    }
+
+    public static void makeNewStage(Event event, String file) {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
-        Parent root1 = fxmlLoader.load();
+        Parent root1 = null;
+
+        try {
+            root1 = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Stage stage2 = new Stage();
         stage2.setScene(new Scene(root1));
         stage2.show();
@@ -119,23 +181,51 @@ public class UIController {
         s.close();
 
         //If window is closed, do cleanup
-        stage2.setOnCloseRequest(windowevent -> {
+        UIController.setOnCloseRequestForStage(stage2);
+    }
+
+    public static void setMiddlePain(Pane first, Pane... others) {
+
+        first.setDisable(false);
+        first.setVisible(true);
+
+        for (Pane other : others) {
+            other.setDisable(true);
+            other.setVisible(false);
+        }
+    }
+
+    public static void setOnCloseRequestForStage(Stage stage) {
+        //If window is closed, do cleanup
+        stage.setOnCloseRequest(windowevent -> {
+
+            EntityUtil.updateDatabaseTrackPlayCount();
+
             System.out.println("App is closing");
-            stage2.close();
+
+            Main.manager.close();
+            stage.close();
             System.exit(0);
         });
     }
 
-    public static void setMiddlePain(Pane first,Pane other1,Pane other2,Pane other3){
-        //set only the first parameter valid and disable the other
-        first.setDisable(false);
-        first.setVisible(true);
 
-        other1.setDisable(true);
-        other1.setVisible(false);
-        other2.setDisable(true);
-        other2.setVisible(false);
-        other3.setDisable(true);
-        other3.setVisible(false);
+    public static void movingLabel(Label newsFeedText) {
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                event -> scrollText(newsFeedText)
+        ));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
     }
+    public static void scrollText(Label label) {
+        // Get the current text and create a new text with shifted characters
+        String currentText =label.getText();
+        String shiftedText = currentText.substring(1) + currentText.charAt(0);
+
+        // Update the label with the shifted text
+        label.setText(shiftedText);
+    }
+
 }

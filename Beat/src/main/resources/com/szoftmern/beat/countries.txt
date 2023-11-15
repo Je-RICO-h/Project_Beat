@@ -34,14 +34,12 @@ Dél-Afrika
 Dél-Korea
 Djibouti
 Dominikai Köztársaság
-Dominikai Közösség
 Egyenlítői-Guinea
 Egyesült Arab Emírségek
 Egyesült Királyság
 Egyesült Államok
 Egyiptom
 Eritrea
-Észtország
 Eswatini
 Északi-Ciprus
 Északi-Macedónia
@@ -86,7 +84,6 @@ Kína
 Kirgizisztán
 Kolumbia
 Kongói Demokratikus Köztársaság
-Kongói Köztársaság
 Közép-afrikai Köztársaság
 Kuba
 Kuvait

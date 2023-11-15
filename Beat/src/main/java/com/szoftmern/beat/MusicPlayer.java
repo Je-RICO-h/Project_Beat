@@ -21,6 +21,21 @@ import static com.szoftmern.beat.UIController.loadCountriesIntoCombobox;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
+
+    @FXML
+    private Button badWordsStatus;
+
+
+    @FXML
+    protected VBox oneArtistSongs;
+    @FXML
+    protected Label oneArtistName;
+    @FXML
+    protected Pane oneArtistbox;
+    @FXML
+    protected ImageView movingItem;
+    @FXML
+    protected GridPane artistGrid;
     @FXML
     public BorderPane border;
     @FXML
@@ -66,13 +81,78 @@ public class MusicPlayer {
     private SearchManager searchManager;
     private TopMusicManager topMusicManager;
     private HistoryManager historyManager;
+    private ArtistManager artistManager;
     private boolean volumeInit = false;
+
+    @FXML
+    protected Pane homebox;
+    @FXML
+    protected Pane settingsbox;
+    @FXML
+    protected Pane artistbox;
+    @FXML
+    protected Pane favouritebox;
+
+    @FXML
+    protected Label artistLabel;
+    @FXML
+    private ComboBox<String> color_settings;
+    @FXML
+    public Button saveButton;
+    @FXML
+    public TextField usernameField;
+    @FXML
+    public TextField emailField;
+    @FXML
+    public TextField oldPasswordField;
+    @FXML
+    public TextField newPasswordField;
+    @FXML
+    public TextField newPasswordConfirmationField;
+    @FXML
+    private ComboBox<String> countryPicker;
+    @FXML
+    private ComboBox<String> genderPicker;
+
+    private SettingsManager settingsManager;
+
+    @FXML
+    public void initialize() {
+        settingsManager = new SettingsManager(
+                DatabaseManager.loggedInUser,
+                saveButton,
+                usernameField,
+                emailField,
+                oldPasswordField,
+                newPasswordField,
+                newPasswordConfirmationField,
+                genderPicker,
+                countryPicker
+        );
+
+        //set homepage firs
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox,oneArtistbox);
+
+        //set the country list
+        loadCountriesIntoCombobox(countryPicker);
+
+        //set the original data from database
+        settingsManager.displayCurrentAccountInfo();
+
+        settingsManager.setColorPickerBox(color_settings);
+
+
+
+
+
+    }
 
     //Constructor
     public MusicPlayer() {
         this.searchManager = new SearchManager(this);
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
+        this.artistManager=new ArtistManager(this);
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -85,7 +165,7 @@ public class MusicPlayer {
     }
 
     //Init for the volume slider
-    public void initVolumeSlider(){
+    public void initVolumeSlider() {
 
         // Volume Control
         this.volumeSlider.setValue(50);
@@ -99,11 +179,6 @@ public class MusicPlayer {
             }
         });
     }
-
-   /* @FXML
-    public void selectedSearchItem() {
-        searchManager.selectedSearchItem();
-    }*/
 
     @FXML
     public void onActionSearchButton() {
@@ -140,10 +215,13 @@ public class MusicPlayer {
         if (player.getStatus() == MediaPlayer.Status.PLAYING) {
             player.pause();
             play_pause.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/play.png"))));
+            movingItem.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/giphy2.png"))));
+
         } else {
             player.play();
 //            changeStatus(musicList.get(this.pos).getTitle());
             play_pause.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/pause.png"))));
+            movingItem.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/giphy.gif"))));
         }
     }
 
@@ -153,11 +231,13 @@ public class MusicPlayer {
         statuslabel.setText(text);
     }
 
+
     @FXML
     public void changeArtist() {
         List<String> artistsName = getArtistNameList(musicList.get(pos).getArtists());
         String text = artistsName.toString();
         artistNameLabel.setText(text.substring(1, text.length() - 1));
+        UIController.movingLabel(artistNameLabel);
     }
 
     public void refreshTimeSlider() {
@@ -252,9 +332,7 @@ public class MusicPlayer {
 
             changeArtist();
 
-            System.out.println(musicList.get(this.pos).getPlayCount());
             incrementListenCount(musicList.get(this.pos));
-            System.out.println(musicList.get(this.pos).getPlayCount());
         }
     }
 
@@ -334,14 +412,12 @@ public class MusicPlayer {
 
     @FXML
     void like() {
-        if (liked == false) {
-            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
-            liked = true;
-
-        } else {
+        if (liked) {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
             liked = false;
-
+        } else {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
+            liked = true;
         }
     }
 
@@ -357,6 +433,21 @@ public class MusicPlayer {
         }
     }
 
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        //Stop the player
+        this.player.stop();
+
+        updateDatabaseTrackPlayCount();
+
+        UIController.makeNewStage(event,"login.fxml");
+        userbox.setVisible(false);
+        userbox.setDisable(true);
+        user=false;
+
+        System.out.println("User " + DatabaseManager.loggedInUser.getName() + " logged out successfully");
+        DatabaseManager.loggedInUser = null;
+    }
 
     boolean user = false;
     @FXML
@@ -375,74 +466,52 @@ public class MusicPlayer {
     }
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
-
-        //Stop the player
-        this.player.stop();
-
-        //UIController.switchScene(border, "login.fxml");
-        UIController.makeNewStage(event,"login.fxml");
-        userbox.setVisible(false);
-        userbox.setDisable(true);
-        user=false;
-    }
-
-
-    @FXML
-    private Pane homebox;
-    @FXML
-    private Pane settingsbox;
-    @FXML
-    private Pane artistbox;
-    @FXML
-    private Pane favouritebox;
-    @FXML
-    public TextField username_settings;
-    @FXML
-    public TextField password_settings;
-    @FXML
-    public TextField email_settings;
-    @FXML
-    private ComboBox<String> country_setting;
-    @FXML
-    private ComboBox<String> gender_settings;
-    @FXML
-    private ComboBox<String> color_settings;
-
-    @FXML
-    public void initialize() {
-        //set homepage firs
-        UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);
-
-        //set the country list
-        loadCountriesIntoCombobox(country_setting);
-
-        //set the original data from database
-        SettingsManager.originalTexts(username_settings,email_settings,password_settings,country_setting,gender_settings);
-
-        SettingsManager.setColorPickerBox(color_settings);
-    }
-
-
-
-    @FXML
     void settings_selected() {
-        UIController.setMiddlePain(settingsbox,homebox,artistbox,favouritebox);
+        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox,oneArtistbox);
+
         userbox.setVisible(false);
         userbox.setDisable(true);
         user = false;
     }
 
     @FXML
-    void home_selected() {UIController.setMiddlePain(homebox,settingsbox,artistbox,favouritebox);}
+    void home_selected() {
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox,oneArtistbox);
+    }
+
     @FXML
-    void artist_selected() {UIController.setMiddlePain(artistbox,homebox,settingsbox,favouritebox);}
+    void artist_selected() {
+
+        //set the list of artist to Előadók
+        artistGrid.getChildren().clear();
+        artistManager.writeArtistToBlock();
+        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox,oneArtistbox);
+    }
+
     @FXML
-    void favourite_selected() {UIController.setMiddlePain(favouritebox,artistbox,homebox,settingsbox);}
+    void favourite_selected() {
+        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox,oneArtistbox);
+    }
+
     @FXML
-    void logo_selected() {home_selected();}
+    void logo_selected() {
+        home_selected();
+    }
 
     //Save the new settings data
     @FXML
-    void save_newData(){SettingsManager.saveData(username_settings,email_settings,password_settings,country_setting,gender_settings);};
+    void save_newData() {
+        try {
+            settingsManager.uploadNewUserAccountInfoToDatabase();
+
+        } catch (IncorrectInformationException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    void badWordsSetting() {
+        SettingsManager.setBadWords(badWordsStatus);
+
+    }
 }

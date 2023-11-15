@@ -7,15 +7,7 @@ import javafx.scene.layout.Pane;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.apache.commons.validator.routines.EmailValidator;
-import org.mindrot.jbcrypt.BCrypt;
-
-import static com.szoftmern.beat.UIController.*;
-
 public class Registration {
-
     @FXML
     private Pane registrationPanel;
     @FXML
@@ -45,8 +37,8 @@ public class Registration {
         UIController.setFocusOnEnterKeyPressed(emailField, passwordField);
         UIController.setFocusOnEnterKeyPressed(passwordField, passwordAgainField);
         UIController.setFocusOnEnterKeyPressed(passwordAgainField, birthDatePicker);
-//      UIController.moveFocusOnEnter(birthDatePicker, genderPicker);
-//      UIController.moveFocusOnEnter(genderPicker, countryPicker);
+        UIController.setFocusOnEnterKeyPressed(birthDatePicker, genderPicker);
+        UIController.setFocusOnEnterKeyPressed(genderPicker, countryPicker);
     }
 
     @FXML
@@ -56,7 +48,7 @@ public class Registration {
 
     @FXML
     protected void showPasswordRequirements() {
-        info.setText("A jelszónak minimum 8 karakterből \nkell állnia, tartalmaznia kell \nkisbetűt, nagybetűt, és számot!");
+        info.setText(UserInfoHelper.passwordInfo);
     }
 
     // Saves the new user's info to the database
@@ -82,9 +74,9 @@ public class Registration {
         try {
             checkIfEveryInfoIsEntered();
 
-            username = getAndValidateUsername();
-            email = getAndValidateEmail();
-            pass = getAndValidatePassword();
+            username = UserInfoHelper.validateUsername(usernameField.getText());
+            email = UserInfoHelper.validateEmail(emailField.getText());
+            pass = UserInfoHelper.validatePassword(passwordField.getText(), passwordAgainField.getText());
 
         } catch (IncorrectInformationException e) {
             info.setText(e.getMessage());
@@ -92,20 +84,14 @@ public class Registration {
             return null;
         }
 
-        byte gender = getSelectedGender();
+        byte gender = UserInfoHelper.getSelectedGender(genderPicker);
         Date dateOfBirth = Date.valueOf(getDateOfBirth());
-        String country = getSelectedCountry();
+        String country = UserInfoHelper.getSelectedCountry(countryPicker);
 
-        byte[] passwordHash = generatePasswordHashForUser(pass);
+        byte[] passwordHash = UserInfoHelper.generatePasswordHashForUser(pass);
         Date currentDate = Date.valueOf(LocalDate.now());
 
         return new User(username, email, passwordHash, gender, dateOfBirth, country, currentDate);
-    }
-
-    // Generates the bcrypt hash for the user's password
-    private byte[] generatePasswordHashForUser(String plainPassword) {
-        String hash = BCrypt.hashpw(plainPassword, BCrypt.gensalt());
-        return hash.getBytes();
     }
 
     // Checks whether the user has entered every piece of info
@@ -118,91 +104,11 @@ public class Registration {
              genderPicker.getValue() == null ||
              countryPicker.getValue() == null
         ) {
-            throw new IncorrectInformationException("Nem adtál meg minden adatot!");
+            throw new IncorrectInformationException(UserInfoHelper.missingInfo);
         }
-    }
-
-    private String getAndValidateUsername() throws IncorrectInformationException{
-        String username = usernameField.getText();
-
-        // if user already exists, bail
-        if (doesUserAlreadyExist(username)) {
-            throw new IncorrectInformationException("Ez a felhasználónév már foglalt.");
-        }
-
-        // regex for validating the username
-        Pattern userPattern = Pattern.compile(
-                "^(?![-_.])" +        // no -, _ or . at the start
-                "(?!.*[-_.]{2})" +    // no combination of -, _ or . should repeat
-                "[a-zA-Z0-9._-]" +    // allowed characters
-                "{5,20}" +            // length is between 5 and 20 characters
-                "(?<![-_.])$"         // no -, _ or . at the end either
-        );
-        Matcher matcher = userPattern.matcher(username);
-
-        // if the username is invalid, bail
-        if (!matcher.matches()) {
-            throw new IncorrectInformationException("A megadott felhasználónév helytelen!");
-        }
-
-        return username;
-    }
-
-    private boolean doesUserAlreadyExist(String username) {
-        for (User user : DatabaseManager.userDAO.getEntities()) {
-            if (user.getName().equals(username)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private String getAndValidateEmail() throws IncorrectInformationException {
-        String emailAddress = emailField.getText();
-
-        // if the email is not valid, bail
-        if (!EmailValidator.getInstance().isValid(emailAddress)) {
-            throw new IncorrectInformationException("A megadott email cím helytelen!");
-        }
-
-        return emailAddress;
-    }
-
-    private String getAndValidatePassword() throws IncorrectInformationException {
-        String pass = passwordField.getText();
-        String passAgain = passwordAgainField.getText();
-
-        if (!pass.equals(passAgain)) {
-            throw new IncorrectInformationException("A jelszavak nem egyeznek!");
-        }
-
-        // regex pattern for validating the password
-        Pattern passPattern = Pattern.compile(
-                "^(?=\\S*[0-9])" +    // at least one digit
-                "(?=\\S*[a-z])" +     // at least one lowercase character
-                "(?=\\S*[A-Z])" +     // at least one uppercase character
-                "\\S{8,30}$"          // length is between 8 and 30 characters
-        );
-        Matcher matcher = passPattern.matcher(pass);
-
-        // if the password is not valid, bail
-        if (!matcher.matches()) {
-            throw new IncorrectInformationException("A jelszónak minimum 8 karakterből \nkell állnia, tartalmaznia kell \nkisbetűt, nagybetűt, és számot!");
-        }
-
-        return pass;
-    }
-
-    private byte getSelectedGender() {
-        return (byte)genderPicker.getSelectionModel().getSelectedIndex();
     }
 
     public LocalDate getDateOfBirth() {
         return birthDatePicker.getValue();
-    }
-
-    public String getSelectedCountry() {
-        return countryPicker.getValue();
     }
 }

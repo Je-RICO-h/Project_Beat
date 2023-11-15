@@ -2,31 +2,149 @@ package com.szoftmern.beat;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 
 public class SettingsManager {
+    private final User currentUser;
+    private Button saveButton;
+    private TextField usernameField;
+    private TextField emailField;
+    private TextField oldPasswordField;
+    private TextField newPasswordField;
+    private TextField newPasswordConfirmationField;
+    private ComboBox<String> genderPicker;
+    private ComboBox<String> countryPicker;
 
-    public static void originalTexts(TextField username, TextField email, TextField password, ComboBox<String> country, ComboBox<String> gender){
-        //set the origin data from database
-        username.setPromptText("Eredeti felhnév");
-        email.setPromptText("Eredeti email");
-        password.setPromptText("Eredeti jelszo");
-        country.setPromptText("Ország");
-        gender.setPromptText("Nem");
+    public SettingsManager(
+            User currentUser,
+            Button saveButton, TextField usernameField,
+            TextField emailField, TextField oldPasswordField,
+            TextField newPasswordField, TextField newPasswordConfirmationField,
+            ComboBox<String> genderPicker, ComboBox<String> countryPicker
+    ) {
+        this.currentUser = currentUser;
+        this.saveButton = saveButton;
+
+        this.usernameField = usernameField;
+        this.emailField = emailField;
+
+        this.oldPasswordField = oldPasswordField;
+        this.newPasswordField = newPasswordField;
+        this.newPasswordConfirmationField = newPasswordConfirmationField;
+
+        this.genderPicker = genderPicker;
+        this.countryPicker = countryPicker;
     }
 
-    public static void saveData(TextField username, TextField email, TextField password, ComboBox<String> country, ComboBox<String> gender){
-        //set the new data to database
-        String new_username = username.getText();
-        String new_email = email.getText();
-        String new_password = password.getText();
-        String new_country = country.getValue();
-        String new_gender = gender.getValue();
+    public void displayCurrentAccountInfo(
+    ) {
+        usernameField.setText(currentUser.getName());
+        emailField.setText(currentUser.getEmail());
 
-        System.out.println(new_username+new_email+new_password+new_country+new_gender);
+        countryPicker.getSelectionModel().select(currentUser.getCountry());
+        genderPicker.getSelectionModel().select(currentUser.getGender());
+    }
 
+    // If the user has any unsaved settings and those changes are valid,
+    // it saves the updated User entity to the database
+    public void uploadNewUserAccountInfoToDatabase() throws IncorrectInformationException {
+        if (hasAnyAccountInfoBeenChanged() && canUpdateUserInfo()) {
+            // save updated user entity to the database
+            DatabaseManager.userDAO.saveEntity(currentUser);
+
+            oldPasswordField.clear();
+            newPasswordField.clear();
+            newPasswordConfirmationField.clear();
+
+            System.out.printf("User " + currentUser.getName() + "'s info has been successfully updated.\n");
+            System.out.println(currentUser);
+        }
+    }
+
+    private boolean hasAnyAccountInfoBeenChanged() throws IncorrectInformationException {
+        if (usernameField.getText().isEmpty() || emailField.getText().isEmpty()) {
+            throw new IncorrectInformationException("A felhasználónév és email mező nem lehet üres!\n");
+        }
+
+        byte selectedGender = UserInfoHelper.getSelectedGender(genderPicker);
+        String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
+
+        if ( currentUser.getName().equals(usernameField.getText()) &&
+             currentUser.getEmail().equals(emailField.getText()) &&
+             currentUser.getGender() == selectedGender &&
+             currentUser.getCountry().equals(selectedCountry) &&
+             oldPasswordField.getText().isEmpty() &&
+             newPasswordField.getText().isEmpty() &&
+             newPasswordConfirmationField.getText().isEmpty()
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean canUpdateUserInfo() throws IncorrectInformationException {
+        boolean canUpdate = false;
+
+        String username     = usernameField.getText();
+        String email        = emailField.getText();
+        String oldPass      = oldPasswordField.getText();
+        String newPass      = newPasswordField.getText();
+        String newPassAgain = newPasswordConfirmationField.getText();
+
+
+        // set new username and email for the user if they are valid
+        if (!currentUser.getName().equals(username)) {
+            currentUser.setName(UserInfoHelper.validateUsername(username));
+            canUpdate = true;
+        }
+
+        if (!currentUser.getEmail().equals(email)) {
+            currentUser.setEmail(UserInfoHelper.validateEmail(email));
+            canUpdate = true;
+        }
+
+
+        // set new gender and country for the user if they are valid
+        byte selectedGender = UserInfoHelper.getSelectedGender(genderPicker);
+        if (currentUser.getGender() != selectedGender) {
+            currentUser.setGender(selectedGender);
+            canUpdate = true;
+        }
+
+        String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
+        if (!currentUser.getCountry().equals(selectedCountry)) {
+            currentUser.setCountry(selectedCountry);
+            canUpdate = true;
+        }
+
+
+        // only do any password related checks if the user has entered something
+        // in all the password fields
+        if ( !oldPass.isEmpty() &&
+             !newPass.isEmpty() &&
+             !newPassAgain.isEmpty()
+        ) {
+            UserInfoHelper.checkIfUserHasEnteredCorrectPassword(currentUser.getName(), oldPass);
+
+            if (newPass.equals(oldPass)) {
+                throw new IncorrectInformationException("Az új jelszó nem lehet ugyanaz, mint a régi!\n");
+            }
+
+            // validate the newly entered passwords
+            UserInfoHelper.validatePassword(newPass, newPassAgain);
+
+            // generate a hash from the new password
+            byte[] newPasswordHash = UserInfoHelper.generatePasswordHashForUser(newPass);
+            currentUser.setPassHash(newPasswordHash);
+
+            canUpdate = true;
+        }
+
+        return canUpdate;
     }
 
     public static void setColorPickerBox(ComboBox<String> colors){
@@ -41,5 +159,13 @@ public class SettingsManager {
 
     }
 
+    public static void setBadWords(Button button){
+        if(button.getText().equals("Ki")){
+            button.setText("Be");
+        }
+        else {
+            button.setText("Ki");
+        }
 
+    }
 }
