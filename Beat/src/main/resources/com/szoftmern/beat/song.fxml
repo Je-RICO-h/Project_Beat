@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
 <HBox alignment="CENTER_LEFT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="668.0" styleClass="gray" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.SongController">
    <children>
       <ImageView fitHeight="43.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
@@ -38,7 +37,7 @@
          </padding>
       </VBox>
       <Pane prefHeight="32.0" prefWidth="482.0" HBox.hgrow="ALWAYS" />
-      <ImageView fx:id="song_like" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#songLikeClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/heart2.png" />
          </image>

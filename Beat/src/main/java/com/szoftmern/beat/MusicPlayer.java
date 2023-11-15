@@ -21,21 +21,6 @@ import static com.szoftmern.beat.UIController.loadCountriesIntoCombobox;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
-
-    @FXML
-    private Button badWordsStatus;
-
-
-    @FXML
-    protected VBox oneArtistSongs;
-    @FXML
-    protected Label oneArtistName;
-    @FXML
-    protected Pane oneArtistbox;
-    @FXML
-    protected ImageView movingItem;
-    @FXML
-    protected GridPane artistGrid;
     @FXML
     public BorderPane border;
     @FXML
@@ -81,18 +66,18 @@ public class MusicPlayer {
     private SearchManager searchManager;
     private TopMusicManager topMusicManager;
     private HistoryManager historyManager;
-    private ArtistManager artistManager;
     private boolean volumeInit = false;
 
     @FXML
-    protected Pane homebox;
+    private Pane homebox;
     @FXML
-    protected Pane settingsbox;
+    private Pane settingsbox;
     @FXML
     protected Pane artistbox;
     @FXML
-    protected Pane favouritebox;
-
+    private Pane favouritebox;
+    @FXML
+    protected ListView<String> artistlist;
     @FXML
     protected Label artistLabel;
     @FXML
@@ -131,7 +116,7 @@ public class MusicPlayer {
         );
 
         //set homepage firs
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox,oneArtistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox);
 
         //set the country list
         loadCountriesIntoCombobox(countryPicker);
@@ -140,11 +125,6 @@ public class MusicPlayer {
         settingsManager.displayCurrentAccountInfo();
 
         settingsManager.setColorPickerBox(color_settings);
-
-
-
-
-
     }
 
     //Constructor
@@ -152,7 +132,6 @@ public class MusicPlayer {
         this.searchManager = new SearchManager(this);
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
-        this.artistManager=new ArtistManager(this);
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -215,13 +194,10 @@ public class MusicPlayer {
         if (player.getStatus() == MediaPlayer.Status.PLAYING) {
             player.pause();
             play_pause.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/play.png"))));
-            movingItem.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/giphy2.png"))));
-
         } else {
             player.play();
 //            changeStatus(musicList.get(this.pos).getTitle());
             play_pause.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/pause.png"))));
-            movingItem.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/giphy.gif"))));
         }
     }
 
@@ -231,13 +207,11 @@ public class MusicPlayer {
         statuslabel.setText(text);
     }
 
-
     @FXML
     public void changeArtist() {
         List<String> artistsName = getArtistNameList(musicList.get(pos).getArtists());
         String text = artistsName.toString();
         artistNameLabel.setText(text.substring(1, text.length() - 1));
-        UIController.movingLabel(artistNameLabel);
     }
 
     public void refreshTimeSlider() {
@@ -467,7 +441,7 @@ public class MusicPlayer {
 
     @FXML
     void settings_selected() {
-        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox,oneArtistbox);
+        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox);
 
         userbox.setVisible(false);
         userbox.setDisable(true);
@@ -476,21 +450,18 @@ public class MusicPlayer {
 
     @FXML
     void home_selected() {
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox,oneArtistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox);
     }
 
     @FXML
     void artist_selected() {
-
-        //set the list of artist to Előadók
-        artistGrid.getChildren().clear();
-        artistManager.writeArtistToBlock();
-        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox,oneArtistbox);
+        UIController.writeArtistsToScreen(this);
+        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox);
     }
 
     @FXML
     void favourite_selected() {
-        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox,oneArtistbox);
+        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox);
     }
 
     @FXML
@@ -507,11 +478,5 @@ public class MusicPlayer {
         } catch (IncorrectInformationException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @FXML
-    void badWordsSetting() {
-        SettingsManager.setBadWords(badWordsStatus);
-
     }
 }
