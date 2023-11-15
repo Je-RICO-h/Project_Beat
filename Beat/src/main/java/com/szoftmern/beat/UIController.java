@@ -98,6 +98,7 @@ public class UIController {
         songController.SetArtistToItem(artistname);
 
         anchorPane.setOnMouseClicked(mouseEvent -> {
+            System.out.println(artistname);
             musicPlayer.oneArtistName.setText(artistname);
             musicPlayer.oneArtistSongs.getChildren().clear();
             setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox);
