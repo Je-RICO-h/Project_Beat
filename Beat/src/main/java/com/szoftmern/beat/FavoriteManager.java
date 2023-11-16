@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.UIController.loadAndSetHBox;
 

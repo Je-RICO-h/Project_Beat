@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.szoftmern.beat.DatabaseManager.*;
@@ -190,6 +191,7 @@ public class UIController {
     }
 
 
+
     public static void movingLabel(Label newsFeedText) {
         stopTimeLine();
 
@@ -228,6 +230,7 @@ public class UIController {
             System.exit(0);
         });
     }
+
 
     public static void settingLikeButton(MusicPlayer musicPlayer, boolean isLiked)  {
         if (isLiked) {

@@ -82,6 +82,7 @@ public class MusicPlayer {
     private final HistoryManager historyManager;
     private final ArtistManager artistManager;
     private final FavoriteManager favoriteManager;
+
     private boolean volumeInit = false;
 
     @FXML
@@ -500,6 +501,7 @@ public class MusicPlayer {
         //set the list of artist to Előadók
         artistGrid.getChildren().clear();
         artistManager.writeArtistToBlock();
+
         UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox, statisticbox, oneArtistbox);
     }
 
@@ -516,7 +518,6 @@ public class MusicPlayer {
         favoriteManager.writeFavoriteTracks();
         UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox);
     }
-
 
     @FXML
     void logo_selected() {
