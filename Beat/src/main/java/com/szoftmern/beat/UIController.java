@@ -225,7 +225,6 @@ public class UIController {
         });
     }
 
-
     public static void movingLabel(Label newsFeedText) {
         stopTimeLine();
 

@@ -172,7 +172,10 @@
                         </Label>
                         <ScrollPane fitToWidth="true" prefHeight="297.0" prefWidth="883.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                            <content>
-                              <VBox fx:id="favoriteListContener" prefHeight="390.0" prefWidth="850.0" />
+                              <VBox fx:id="favoriteListContainer" prefHeight="390.0" prefWidth="850.0" spacing="20.0">
+                                 <padding>
+                                    <Insets right="100.0" />
+                                 </padding></VBox>
                            </content>
                            <padding>
                               <Insets right="50.0" />
@@ -270,7 +273,6 @@
                                  <padding>
                                     <Insets top="30.0" />
                                  </padding></VBox>
->>>>>>> 9e08f6d (Rebase merge conflict)
                            </content>
                            <VBox.margin>
                               <Insets top="10.0" />

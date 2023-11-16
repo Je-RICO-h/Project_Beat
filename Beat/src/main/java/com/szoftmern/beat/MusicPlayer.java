@@ -34,6 +34,7 @@ public class MusicPlayer {
     protected ListView<String> playlistList;
     @FXML
     private Label lejatszasilistaLabel;
+    private Button badWordsStatus;
     @FXML
     protected VBox oneArtistSongs;
     @FXML
@@ -56,6 +57,7 @@ public class MusicPlayer {
     protected VBox favoriteListContainer;
     @FXML
     protected VBox userPlaylistsVBox;
+    protected VBox favoriteListContener;
     @FXML
     public BorderPane border;
     @FXML
@@ -102,8 +104,9 @@ public class MusicPlayer {
     private final HistoryManager historyManager;
     private final ArtistManager artistManager;
     private final FavoriteManager favoriteManager;
-    private  final PlayListManager playListManager;
-    private  final StatisticManager staticticManager;
+    private final PlayListManager playListManager;
+    private final StatisticManager staticticManager;
+
     private boolean volumeInit = false;
 
     @FXML
@@ -196,6 +199,7 @@ public class MusicPlayer {
         this.favoriteManager = new FavoriteManager(this);
         this.playListManager = new PlayListManager(this);
         this.staticticManager = new StatisticManager(this);
+
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -223,6 +227,7 @@ public class MusicPlayer {
             }
         });
     }
+
 
     @FXML
     public void onActionSearchButton() {
@@ -355,7 +360,7 @@ public class MusicPlayer {
             historyManager.displayhistory();
 
             //If volume not initialized, initialize it
-            if(!volumeInit) {
+            if (!volumeInit) {
                 initVolumeSlider();
                 volumeInit = true;
             }
@@ -495,7 +500,7 @@ public class MusicPlayer {
 
         updateDatabaseTrackPlayCount();
 
-        UIController.makeNewStage(event,"login.fxml");
+        UIController.makeNewStage(event, "login.fxml");
         userbox.setVisible(false);
         userbox.setDisable(true);
         user = false;
@@ -510,15 +515,15 @@ public class MusicPlayer {
 
 
     boolean user = false;
+
     @FXML
     void user_selected() {
 
-        if(user){
+        if (user) {
             userbox.setVisible(false);
             userbox.setDisable(true);
             user = false;
-        }
-        else {
+        } else {
             userbox.setVisible(true);
             userbox.setDisable(false);
             user = true;
@@ -528,7 +533,7 @@ public class MusicPlayer {
 
     @FXML
     void settings_selected() {
-        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox, statisticbox, oneArtistbox,playlistbox,onePlaylistbox);
+        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox, statisticbox, oneArtistbox, playlistbox, onePlaylistbox);
 
         userbox.setVisible(false);
         userbox.setDisable(true);
@@ -538,7 +543,7 @@ public class MusicPlayer {
 
     @FXML
     void home_selected() {
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox,playlistbox,onePlaylistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox, playlistbox, onePlaylistbox);
     }
 
 
@@ -555,7 +560,7 @@ public class MusicPlayer {
     @FXML
     void favourite_selected() {
         favoriteManager.writeFavoriteTracks();
-        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox, statisticbox, oneArtistbox,playlistbox,onePlaylistbox);
+        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox, statisticbox, oneArtistbox, playlistbox, onePlaylistbox);
     }
 
 
@@ -566,7 +571,7 @@ public class MusicPlayer {
         staticticManager.writeAllRegistrationNumber();
         staticticManager.populateCountryUserDistributionChart();
         staticticManager.populateCountryTrackDistributionChart();
-        UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox,playlistbox,onePlaylistbox);
+        UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox, playlistbox, onePlaylistbox);
     }
 
     @FXML
@@ -593,14 +598,15 @@ public class MusicPlayer {
 
     @FXML
     void playlist_selected() {
-        UIController.setMiddlePain(playlistbox,statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox,onePlaylistbox);
+        UIController.setMiddlePain(playlistbox, statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox, onePlaylistbox);
     }
 
     boolean addplaylistIcon = false;
+
     @FXML
     void addPlaylistIcon_selected() {
 
-        if(addplaylistIcon) {
+        if (addplaylistIcon) {
             playlistList.setVisible(false);
             playlistList.setDisable(true);
 
@@ -631,7 +637,7 @@ public class MusicPlayer {
     void newPlaylistAdd_selected() {
         playListManager.createNewPlaylist(newPlaylistName.getText());
 
-        if(!newPlaylistName.getText().isEmpty()) {
+        if (!newPlaylistName.getText().isEmpty()) {
             playlistItems.add(newPlaylistName.getText());
         }
 
