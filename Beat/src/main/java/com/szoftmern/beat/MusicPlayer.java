@@ -18,14 +18,12 @@ import java.util.*;
 import static com.szoftmern.beat.DatabaseManager.*;
 import static com.szoftmern.beat.EntityUtil.*;
 import static com.szoftmern.beat.UIController.loadCountriesIntoCombobox;
+import static com.szoftmern.beat.UIController.settingLikeButton;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
-
     @FXML
     private Button badWordsStatus;
-
-
     @FXML
     protected VBox oneArtistSongs;
     @FXML
@@ -36,6 +34,8 @@ public class MusicPlayer {
     protected ImageView movingItem;
     @FXML
     protected GridPane artistGrid;
+    @FXML
+    protected VBox favoriteListContener;
     @FXML
     public BorderPane border;
     @FXML
@@ -52,7 +52,7 @@ public class MusicPlayer {
     private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
     @FXML
-    private ImageView heart;
+    protected ImageView heart;
     @FXML
     protected ImageView play_pause;
     @FXML
@@ -82,6 +82,7 @@ public class MusicPlayer {
     private TopMusicManager topMusicManager;
     private HistoryManager historyManager;
     private ArtistManager artistManager;
+   private FavoriteManager favoriteManager;
     private boolean volumeInit = false;
 
     @FXML
@@ -140,19 +141,16 @@ public class MusicPlayer {
         settingsManager.displayCurrentAccountInfo();
 
         settingsManager.setColorPickerBox(color_settings);
-
-
-
-
-
     }
+
 
     //Constructor
     public MusicPlayer() {
         this.searchManager = new SearchManager(this);
         this.topMusicManager = new TopMusicManager(this);
         this.historyManager = new HistoryManager(this);
-        this.artistManager=new ArtistManager(this);
+        this.artistManager = new ArtistManager(this);
+        this.favoriteManager = new FavoriteManager(this);
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -163,6 +161,7 @@ public class MusicPlayer {
         Media media = new Media(musicList.get(this.pos).getResourceUrl());
         this.player = new MediaPlayer(media);
     }
+
 
     //Init for the volume slider
     public void initVolumeSlider() {
@@ -180,15 +179,18 @@ public class MusicPlayer {
         });
     }
 
+
     @FXML
     public void onActionSearchButton() {
         searchManager.onActionSearchButton();
     }
 
+
     @FXML
     public void onKeyPressedSearchTextField() {
         searchManager.onKeyPressedSearchTextField();
     }
+
 
     @FXML
     public void mute() {
@@ -209,6 +211,7 @@ public class MusicPlayer {
             sound.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream("img/sound.png"))));
     }
 
+
     @FXML
     void pausePlay() {
         //If status of the player is playing, pause the music, else play it
@@ -225,6 +228,7 @@ public class MusicPlayer {
         }
     }
 
+
     @FXML
     public void changeStatus(String text) {
         //Function to change the label
@@ -236,9 +240,15 @@ public class MusicPlayer {
     public void changeArtist() {
         List<String> artistsName = getArtistNameList(musicList.get(pos).getArtists());
         String text = artistsName.toString();
-        artistNameLabel.setText(text.substring(1, text.length() - 1));
-        UIController.movingLabel(artistNameLabel);
+        artistNameLabel.setText(text.substring(1, text.length() - 1) + " ");
+
+        if (artistNameLabel.getText().length() > 17) {
+            UIController.movingLabel(artistNameLabel);
+        } else {
+            UIController.stopTimeLine();
+        }
     }
+
 
     public void refreshTimeSlider() {
         //Set the sliders max value to the duration
@@ -284,6 +294,7 @@ public class MusicPlayer {
         });
     }
 
+
     @FXML
     public void playMusic() {
 
@@ -307,13 +318,10 @@ public class MusicPlayer {
 
             player.setVolume(volumeSlider.getValue() / 100);
 
-
             //Initialize Music slider
-
             if (player.getStatus() == MediaPlayer.Status.UNKNOWN) {
 
                 //If the player is not initialized, wait until it is initialized
-
                 player.statusProperty().addListener((obs, oldStatus, newStatus) -> {
 
                     if (newStatus == MediaPlayer.Status.READY)
@@ -333,8 +341,13 @@ public class MusicPlayer {
             changeArtist();
 
             incrementListenCount(musicList.get(this.pos));
+
+            liked = isLiked(musicList.get(this.pos));
+
+            settingLikeButton(this, liked);
         }
     }
+
 
     @FXML
     public void volUp() {
@@ -357,6 +370,7 @@ public class MusicPlayer {
             }
         }
     }
+
 
     @FXML
     public void volDown() {
@@ -397,6 +411,7 @@ public class MusicPlayer {
         playMusic();
     }
 
+
     @FXML
     public void prev() {
         //If the list reached the beginning, start from behind
@@ -419,7 +434,10 @@ public class MusicPlayer {
             heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
             liked = true;
         }
+
+        addTrackToFavorites(musicList.get(this.pos), liked);
     }
+
 
     @FXML
     void loop() {
@@ -432,6 +450,7 @@ public class MusicPlayer {
             loop_icon.setImage(new Image(getClass().getResourceAsStream("img/loop1.png")));
         }
     }
+
 
     @FXML
     void logout(ActionEvent event) throws IOException {
@@ -449,69 +468,75 @@ public class MusicPlayer {
         DatabaseManager.loggedInUser = null;
     }
 
+
     boolean user = false;
     @FXML
     void user_selected() {
 
-        if(user == false){
-            userbox.setVisible(true);
-            userbox.setDisable(false);
-            user = true;
-        }
-        else {
+        if(user){
             userbox.setVisible(false);
             userbox.setDisable(true);
             user = false;
         }
+        else {
+            userbox.setVisible(true);
+            userbox.setDisable(false);
+            user = true;
+        }
     }
+
 
     @FXML
     void settings_selected() {
-        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox,oneArtistbox);
+        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox, oneArtistbox);
 
         userbox.setVisible(false);
         userbox.setDisable(true);
         user = false;
     }
 
+
     @FXML
     void home_selected() {
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox,oneArtistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, oneArtistbox);
     }
+
 
     @FXML
     void artist_selected() {
-
         //set the list of artist to Előadók
         artistGrid.getChildren().clear();
         artistManager.writeArtistToBlock();
-        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox,oneArtistbox);
+        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox, oneArtistbox);
     }
+
 
     @FXML
     void favourite_selected() {
-        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox,oneArtistbox);
+        favoriteManager.writeFavoriteTracks();
+        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox, oneArtistbox);
     }
+
 
     @FXML
     void logo_selected() {
         home_selected();
     }
 
+
     //Save the new settings data
     @FXML
     void save_newData() {
         try {
             settingsManager.uploadNewUserAccountInfoToDatabase();
-
         } catch (IncorrectInformationException e) {
             System.out.println(e.getMessage());
         }
     }
 
+
     @FXML
     void badWordsSetting() {
         SettingsManager.setBadWords(badWordsStatus);
-
     }
 }

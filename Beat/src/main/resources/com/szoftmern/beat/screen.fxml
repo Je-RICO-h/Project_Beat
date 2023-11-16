@@ -148,8 +148,14 @@
                         </Label>
                         <ScrollPane prefHeight="297.0" prefWidth="883.0" style="-fx-background-color: transparent;">
                            <content>
-                              <VBox prefHeight="390.0" prefWidth="850.0" />
+                              <VBox fx:id="favoriteListContener" prefHeight="390.0" prefWidth="850.0" />
                            </content>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </padding>
                         </ScrollPane>
                      </children>
                   </VBox>

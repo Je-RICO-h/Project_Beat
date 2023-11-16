@@ -76,5 +76,28 @@ public class EntityUtil {
         // the user doesn't exist
         throw new IncorrectInformationException("Ez a felhasználó nem létezik!\n");
     }
+
+    public static void addTrackToFavorites(Track track, Boolean isLiked) {
+        FavoriteTracks existingFavorite = getFavorite(loggedInUser.getId(), track.getId());
+
+        if (isLiked) {
+            if (existingFavorite == null) {
+                FavoriteTracks newFavorite = new FavoriteTracks();
+                newFavorite.setTrack_id(track.getId());
+                newFavorite.setUser_id(loggedInUser.getId());
+                favTracksDAO.saveEntity(newFavorite);
+            }
+        } else {
+            if (existingFavorite != null) {
+                favTracksDAO.deleteEntity(existingFavorite);
+            }
+        }
+    }
+
+    public static boolean isLiked(Track track) {
+        FavoriteTracks existingFavorite = getFavorite(loggedInUser.getId(), track.getId());
+        System.out.println(existingFavorite);
+        return existingFavorite != null;
+    }
 }
 
