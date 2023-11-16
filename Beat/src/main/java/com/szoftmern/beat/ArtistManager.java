@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.szoftmern.beat.DatabaseManager.getEveryArtist;
+import static com.szoftmern.beat.DatabaseManager.artistDAO;
 
 public class ArtistManager {
     private final MusicPlayer musicPlayer;
@@ -16,12 +16,11 @@ public class ArtistManager {
         this.musicPlayer = musicPlayer;
     }
 
-    public  void writeArtistToBlock()
-
+    public void writeArtistToBlock()
     {
         List<String> artists = new ArrayList<>();
 
-        for (Artist artist : getEveryArtist()) {
+        for (Artist artist : artistDAO.getEntities()) {
             artists.add(artist.getName());
         }
 
@@ -38,10 +37,7 @@ public class ArtistManager {
                     colum=1;
                     row++;
                 }
-
-
             }
         });
-
     }
 }

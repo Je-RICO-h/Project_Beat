@@ -1,9 +1,7 @@
 package com.szoftmern.beat;
 import javafx.animation.*;
 import javafx.scene.control.Label;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -21,22 +18,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-
-
 
 import static com.szoftmern.beat.DatabaseManager.*;
 
 public class UIController {
     private static HBox hBox;
-
+    public static Timeline timeline;
 
     public static void switchScene(Pane currentPane, String fxml) {
         try {
@@ -44,7 +39,6 @@ public class UIController {
 
             currentPane.getChildren().removeAll();
             currentPane.getChildren().setAll(nextPane);
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -111,7 +105,6 @@ public class UIController {
 
                 musicPlayer.oneArtistSongs.getChildren().add(hBox);
             }
-
         });
 
         return anchorPane;
@@ -199,15 +192,22 @@ public class UIController {
         }
     }
 
-
     public static void movingLabel(Label newsFeedText) {
-        Timeline timeline = new Timeline(new KeyFrame(
+        stopTimeLine();
+
+        timeline = new Timeline(new KeyFrame(
                 Duration.millis(1000),
                 event -> scrollText(newsFeedText)
         ));
+
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+    }
 
+    public static void stopTimeLine() {
+        if (timeline != null) {
+            timeline.stop();
+        }
     }
 
     public static void scrollText(Label label) {
@@ -228,5 +228,13 @@ public class UIController {
             stage.close();
             System.exit(0);
         });
+    }
+
+    public static void settingLikeButton(MusicPlayer musicPlayer, boolean isLiked)  {
+        if (isLiked) {
+            musicPlayer.heart.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/heart1.png"))));
+        } else {
+            musicPlayer.heart.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/heart2.png"))));
+        }
     }
 }

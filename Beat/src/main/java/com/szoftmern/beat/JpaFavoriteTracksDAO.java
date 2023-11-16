@@ -36,7 +36,9 @@ public class JpaFavoriteTracksDAO implements AutoCloseable, EntityDAO {
 
     @Override
     public void deleteEntity(Object t) {
-        System.out.println("Meg nem torlunk semmit sehonnan...");
+        entityManager.getTransaction().begin();
+        entityManager.remove(t);
+        entityManager.getTransaction().commit();
     }
 
     @Override

@@ -137,25 +137,22 @@ public class DatabaseManager {
         return hash;
     }
 
-    public static  List<Artist> getEveryArtist() {
-        List<Artist> artists = trackDAO.entityManager
-                .createQuery("""
-                        SELECT A
-                        FROM Artist A
-                        """,
-                        Artist.class)
-                .getResultList();
-
-        return  artists;
-    }
-
     public static List<Track> getTracksFromArtist(String name) {
-        for (Artist artist : getEveryArtist()) {
+        for (Artist artist : artistDAO.getEntities()) {
             if (artist.getName().equals(name)) {
                 return artist.getTracks();
             }
         }
 
+        return null;
+    }
+
+    public static FavoriteTracks getFavorite(Long userId, Long trackId) {
+        for (FavoriteTracks favoriteTrack : favTracksDAO.getEntities()) {
+            if (favoriteTrack.getUser_id() == userId && favoriteTrack.getTrack_id() == trackId) {
+                return favoriteTrack;
+            }
+        }
         return null;
     }
 }
