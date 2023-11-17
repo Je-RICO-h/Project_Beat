@@ -12,6 +12,7 @@
       <class>com.szoftmern.beat.Track</class>
       <class>com.szoftmern.beat.User</class>
       <class>com.szoftmern.beat.FavoriteTracks</class>
+      <class>com.szoftmern.beat.Country</class>
 
       <properties>
           <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
