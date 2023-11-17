@@ -98,7 +98,7 @@ public class UIController {
             System.out.println(artistname);
             musicPlayer.oneArtistName.setText(artistname);
             musicPlayer.oneArtistSongs.getChildren().clear();
-            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox);
+            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox, musicPlayer.statisticbox);
 
             for (Track track : Objects.requireNonNull(getTracksFromArtist(artistname))) {
                 hBox = loadAndSetHBox(track, musicPlayer);
