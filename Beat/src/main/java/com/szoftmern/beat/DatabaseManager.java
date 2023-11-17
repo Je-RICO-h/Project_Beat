@@ -149,9 +149,8 @@ public class DatabaseManager {
 
     public static FavoriteTracks getFavorite(Long userId, Long trackId) {
         for (FavoriteTracks favoriteTrack : favTracksDAO.getEntities()) {
-            if (favoriteTrack.getUser_id() == userId && favoriteTrack.getTrack_id() == trackId) {
+            if (favoriteTrack.getUser_id() == userId && favoriteTrack.getTrack_id() == trackId)
                 return favoriteTrack;
-            }
         }
         return null;
     }
