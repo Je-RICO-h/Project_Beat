@@ -47,6 +47,7 @@ public class Login {
             }
         });
 
+
         // log the user in if they press ENTER while
         // the password field has focus AND password is visible
         visiblePassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -55,7 +56,6 @@ public class Login {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
                     try {
                         loginUser(ke);
-
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

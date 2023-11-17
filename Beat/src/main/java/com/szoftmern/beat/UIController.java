@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.szoftmern.beat.DatabaseManager.*;
@@ -95,7 +96,7 @@ public class UIController {
             System.out.println(artistname);
             musicPlayer.oneArtistName.setText(artistname);
             musicPlayer.oneArtistSongs.getChildren().clear();
-            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox, musicPlayer.statisticbox);
+            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox);
 
             for (Track track : Objects.requireNonNull(getTracksFromArtist(artistname))) {
                 hBox = loadAndSetHBox(track, musicPlayer);
@@ -155,7 +156,6 @@ public class UIController {
         }
     }
 
-
     public static void makeNewStage(Event event, String file) {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
@@ -189,6 +189,22 @@ public class UIController {
             other.setVisible(false);
         }
     }
+
+
+    public static void setOnCloseRequestForStage(Stage stage) {
+        //If window is closed, do cleanup
+        stage.setOnCloseRequest(windowevent -> {
+
+            EntityUtil.updateDatabaseTrackPlayCount();
+
+            System.out.println("App is closing");
+
+            Main.manager.close();
+            stage.close();
+            System.exit(0);
+        });
+    }
+
 
     public static void movingLabel(Label newsFeedText) {
         stopTimeLine();
@@ -224,19 +240,5 @@ public class UIController {
         } else {
             musicPlayer.heart.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/heart2.png"))));
         }
-    }
-
-    public static void setOnCloseRequestForStage(Stage stage) {
-        //If window is closed, do cleanup
-        stage.setOnCloseRequest(windowevent -> {
-
-            EntityUtil.updateDatabaseTrackPlayCount();
-
-            System.out.println("App is closing");
-
-            Main.manager.close();
-            stage.close();
-            System.exit(0);
-        });
     }
 }

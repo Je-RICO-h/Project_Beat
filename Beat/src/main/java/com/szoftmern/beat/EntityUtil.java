@@ -29,6 +29,7 @@ public class EntityUtil {
         trackPlayCount.put(track.getId(), playCount);
    }
 
+
    public static List<Track> updateTrack() {
         List<Track> trackList = new ArrayList<>();
         Track track;
@@ -51,6 +52,9 @@ public class EntityUtil {
        for (Track track : updateTrackList) {
            trackDAO.updateEntity(track);
        }
+
+       int countryListenCount = trackPlayCount.values().stream().reduce(0, Integer::sum);
+
    }
 
     public static boolean doesUserAlreadyExist(String username) {

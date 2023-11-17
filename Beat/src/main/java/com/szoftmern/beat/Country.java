@@ -2,9 +2,7 @@ package com.szoftmern.beat;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
-import java.util.ArrayList;
 
 @Data
 @AllArgsConstructor
@@ -29,4 +27,6 @@ public class Country {
 
     @OneToMany(mappedBy = "country")
     private List<User> users;
+
+
 }
