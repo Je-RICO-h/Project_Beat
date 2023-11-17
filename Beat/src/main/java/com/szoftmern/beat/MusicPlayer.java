@@ -60,6 +60,7 @@ public class MusicPlayer {
     public Label statuslabel;
     public Label artistNameLabel;
     public TextField searchTextField;
+
     public Button playbutton;
     public Slider volumeSlider;
     public Label starttime;
@@ -77,11 +78,11 @@ public class MusicPlayer {
     boolean liked = false;
     boolean loop = false;
 
-    private final SearchManager searchManager;
-    private final TopMusicManager topMusicManager;
-    private final HistoryManager historyManager;
-    private final ArtistManager artistManager;
-    private final FavoriteManager favoriteManager;
+    private SearchManager searchManager;
+    private TopMusicManager topMusicManager;
+    private HistoryManager historyManager;
+    private ArtistManager artistManager;
+   private FavoriteManager favoriteManager;
     private boolean volumeInit = false;
 
     @FXML
@@ -92,8 +93,6 @@ public class MusicPlayer {
     protected Pane artistbox;
     @FXML
     protected Pane favouritebox;
-    @FXML
-    protected Pane statisticbox;
 
     @FXML
     protected Label artistLabel;
@@ -133,7 +132,7 @@ public class MusicPlayer {
         );
 
         //set homepage firs
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox,oneArtistbox);
 
         //set the country list
         loadCountriesIntoCombobox(countryPicker);
@@ -427,8 +426,16 @@ public class MusicPlayer {
     }
 
     @FXML
-    public void like() {
-        favoriteManager.onPressedLikeButton(liked);
+    void like() {
+        if (liked) {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
+            liked = false;
+        } else {
+            heart.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
+            liked = true;
+        }
+
+        addTrackToFavorites(musicList.get(this.pos), liked);
     }
 
 
@@ -481,7 +488,7 @@ public class MusicPlayer {
 
     @FXML
     void settings_selected() {
-        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox, oneArtistbox);
 
         userbox.setVisible(false);
         userbox.setDisable(true);
@@ -491,7 +498,7 @@ public class MusicPlayer {
 
     @FXML
     void home_selected() {
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, oneArtistbox);
     }
 
 
@@ -500,21 +507,14 @@ public class MusicPlayer {
         //set the list of artist to Előadók
         artistGrid.getChildren().clear();
         artistManager.writeArtistToBlock();
-        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox, oneArtistbox);
     }
 
 
     @FXML
     void favourite_selected() {
         favoriteManager.writeFavoriteTracks();
-        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox, statisticbox, oneArtistbox);
-    }
-
-
-    @FXML
-    void statistic_selected() {
-        favoriteManager.writeFavoriteTracks();
-        UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox);
+        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox, oneArtistbox);
     }
 
 

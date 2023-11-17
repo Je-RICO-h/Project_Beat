@@ -6,12 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import static com.szoftmern.beat.EntityUtil.getArtistNameList;
-import static com.szoftmern.beat.EntityUtil.isLiked;
 
 public class SongController {
 
@@ -27,41 +22,28 @@ public class SongController {
     //ez az artist.fxml nél a label
     @FXML
     private Label artist_item;
-    boolean songlike = false;
-    private Timer waitTimer = new Timer();
+    boolean songlike=false;
 
     @FXML
-    public void songLikeClicked() {
-        settingSongLikeButton();
-
-        waitTimer.cancel();
-        waitTimer = new Timer();
-        waitTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                EntityUtil.addTrackToFavorites(Objects.requireNonNull(DatabaseManager.getTrackFromTitle(song_name.getText())), songlike);
-            }
-        }, 1000); // 1000 ms = 1.0 másodperc késleltetés
-    }
-
-    public void settingSongLikeButton()  {
-        songlike = isLiked(Objects.requireNonNull(DatabaseManager.getTrackFromTitle(song_name.getText())));
-
+    void songLikeClicked(){
         if (songlike) {
-            song_like.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
-        } else {
             song_like.setImage(new Image(getClass().getResourceAsStream("img/heart2.png")));
+            songlike = false;
+        } else {
+            song_like.setImage(new Image(getClass().getResourceAsStream("img/heart1.png")));
+            songlike = true;
         }
+
     }
 
     public void SetData(Track track){
         song_name.setText(track.getTitle());
         String artist = String.valueOf(getArtistNameList(track.getArtists()));
         song_artist.setText(artist.substring(1, artist.length() - 1));
-        settingSongLikeButton();
     }
 
     public void SetArtistToItem(String artist){
         artist_item.setText(artist);
+
     }
 }
