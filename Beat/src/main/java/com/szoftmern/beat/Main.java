@@ -12,6 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //Start Database
+
        manager = new DatabaseManager();
 
         //Start JavaFX and load login scene

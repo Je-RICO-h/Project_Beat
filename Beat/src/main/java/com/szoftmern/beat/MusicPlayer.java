@@ -512,6 +512,7 @@ public class MusicPlayer {
 
     @FXML
     void statistic_selected() {
+        favoriteManager.writeFavoriteTracks();
         UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox);
     }
 
