@@ -10,6 +10,7 @@ public class DatabaseManager {
     public static JpaArtistDAO artistDAO;
     public static JpaUserDAO userDAO;
     public static JpaFavoriteTracksDAO favTracksDAO;
+    public static JpaCountryDAO countryDAO;
 
     public static User loggedInUser = null;
 
@@ -17,15 +18,20 @@ public class DatabaseManager {
     @Getter
     private static List<Track> everyTrack;
 
+    @Getter
+    private static List<Country> everyCountry;
+
     public DatabaseManager() {
         try {
-            trackDAO = new JpaTrackDAO();
-            artistDAO = new JpaArtistDAO();
-            userDAO = new JpaUserDAO();
+            trackDAO     = new JpaTrackDAO();
+            artistDAO    = new JpaArtistDAO();
+            userDAO      = new JpaUserDAO();
             favTracksDAO = new JpaFavoriteTracksDAO();
+            countryDAO   = new JpaCountryDAO();
 
-            // get every Track class via JPA from the DB
-            everyTrack = trackDAO.getEntities();
+            // get every Track and Country class via JPA from the DB
+            everyTrack   = trackDAO.getEntities();
+            everyCountry = countryDAO.getEntities();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -38,6 +44,7 @@ public class DatabaseManager {
             artistDAO.close();
             userDAO.close();
             favTracksDAO.close();
+            countryDAO.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -152,6 +159,16 @@ public class DatabaseManager {
             if (favoriteTrack.getUser_id() == userId && favoriteTrack.getTrack_id() == trackId)
                 return favoriteTrack;
         }
+        return null;
+    }
+
+    public static Country getCountryFromName(String countryName) {
+        for (Country c : everyCountry) {
+            if (c.getName().equals(countryName)) {
+                return c;
+            }
+        }
+
         return null;
     }
 }
