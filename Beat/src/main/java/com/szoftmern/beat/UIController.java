@@ -230,6 +230,9 @@ public class UIController {
         //If window is closed, do cleanup
         stage.setOnCloseRequest(windowevent -> {
 
+            if (DatabaseManager.loggedInUser != null)
+                EntityUtil.updateDatabaseCountryPlayCount();
+
             EntityUtil.updateDatabaseTrackPlayCount();
 
             System.out.println("App is closing");

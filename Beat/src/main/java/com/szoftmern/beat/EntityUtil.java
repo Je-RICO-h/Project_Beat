@@ -45,6 +45,16 @@ public class EntityUtil {
         return trackList;
    }
 
+   public static int sumPlayCounts() {
+        int counter = 0;
+
+       for (int count : trackPlayCount.values()) {
+           counter += count;
+       }
+
+       return counter;
+   }
+
    public static void updateDatabaseTrackPlayCount() {
        List<Track> updateTrackList = updateTrack();
 
@@ -52,6 +62,17 @@ public class EntityUtil {
            trackDAO.updateEntity(track);
        }
    }
+
+    public static void updateDatabaseCountryPlayCount() {
+        Country userCountry = DatabaseManager.loggedInUser.getCountry();
+
+        int currentPlayCount = userCountry.getTotalPlayCount();
+        int countryTotalPlayCount = sumPlayCounts();
+
+        userCountry.setTotalPlayCount(currentPlayCount + countryTotalPlayCount);
+
+        countryDAO.updateEntity(userCountry);
+    }
 
     public static boolean doesUserAlreadyExist(String username) {
         try {

@@ -28,6 +28,7 @@ public class JpaCountryDAO implements AutoCloseable, EntityDAO {
 
     @Override
     public void updateEntity(Object t) {
+        t = entityManager.merge(t);
         entityManager.getTransaction().begin();
         entityManager.persist(t);
         entityManager.getTransaction().commit();

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.ArrayList;
 
 @Data
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class Country {
 
     @Basic
     @Column(name = "total_play_count")
-    private int total_play_count;
+    private int totalPlayCount;
 
     @OneToMany(mappedBy = "country")
     private List<User> users;
