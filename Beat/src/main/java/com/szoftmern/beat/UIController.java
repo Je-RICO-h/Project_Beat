@@ -190,21 +190,6 @@ public class UIController {
         }
     }
 
-    public static void setOnCloseRequestForStage(Stage stage) {
-        //If window is closed, do cleanup
-        stage.setOnCloseRequest(windowevent -> {
-
-            EntityUtil.updateDatabaseTrackPlayCount();
-
-            System.out.println("App is closing");
-
-            Main.manager.close();
-            stage.close();
-            System.exit(0);
-        });
-    }
-
-
     public static void movingLabel(Label newsFeedText) {
         stopTimeLine();
 
