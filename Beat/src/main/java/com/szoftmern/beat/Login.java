@@ -39,29 +39,26 @@ public class Login {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
                     try {
                         loginUser(ke);
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
         });
+
         // log the user in if they press ENTER while
         // the password field has focus AND password is visible
         visiblePassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    loginUser(ke);
-                }
-            }
-        });
-        // log the user in if they press ENTER while
-        // the password field has focus AND password is visible
-        visiblePassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent ke) {
-                if (ke.getCode().equals(KeyCode.ENTER)) {
-                    loginUser(ke);
+                    try {
+                        loginUser(ke);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });

@@ -44,7 +44,9 @@ public class SettingsManager {
         usernameField.setText(currentUser.getName());
         emailField.setText(currentUser.getEmail());
 
-        countryPicker.getSelectionModel().select(currentUser.getCountry());
+        int countryIdx = (int)currentUser.getCountry().getId() - 2;
+        countryPicker.getSelectionModel().select(countryIdx);
+
         genderPicker.getSelectionModel().select(currentUser.getGender());
     }
 
@@ -116,8 +118,10 @@ public class SettingsManager {
         }
 
         String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
+        Country country = DatabaseManager.getCountryFromName(selectedCountry);
+
         if (!currentUser.getCountry().equals(selectedCountry)) {
-            currentUser.setCountry(selectedCountry);
+            currentUser.setCountry(country);
             canUpdate = true;
         }
 
