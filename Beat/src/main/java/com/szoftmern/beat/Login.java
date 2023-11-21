@@ -47,22 +47,6 @@ public class Login {
             }
         });
 
-
-        // log the user in if they press ENTER while
-        // the password field has focus AND password is visible
-        visiblePassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent ke) {
-                if (ke.getCode().equals(KeyCode.ENTER)) {
-                    try {
-                        loginUser(ke);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-        });
-
         // set the focus on the password field if the user
         // presses ENTER while the username field has focus
         UIController.setFocusOnEnterKeyPressed(usernameField, passwordField);
