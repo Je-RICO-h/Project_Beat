@@ -124,7 +124,6 @@ public class EntityUtil {
 <<<<<<< HEAD
 =======
 
-
     // If a user exists with the given email, it returns it, otherwise it throws an exception
     public static User findUserWithEmail(String email) throws IncorrectInformationException {
         for (User user : DatabaseManager.userDAO.getEntities()) {
