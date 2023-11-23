@@ -120,5 +120,16 @@ public class EntityUtil {
         System.out.println(existingFavorite);
         return existingFavorite != null;
     }
+
+    // If a user exists with the given email, it returns it, otherwise it throws an exception
+    public static User findUserWithEmail(String email) throws IncorrectInformationException {
+        for (User user : DatabaseManager.userDAO.getEntities()) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+
+        throw new IncorrectInformationException("Nem létezik felhasználó ezzel az email címmel!\n");
+    }
 }
 
