@@ -1,17 +1,18 @@
 package com.szoftmern.beat;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(exclude = "users")
 @EqualsAndHashCode
 @Entity
-@Table(name = "RadioStations", schema = "beat-db")
-public class RadioStation {
+@Table(name = "Countries", schema = "beat-db")
+public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -22,6 +23,9 @@ public class RadioStation {
     private String name;
 
     @Basic
-    @Column(name = "station_url")
-    private String stationUrl;
+    @Column(name = "total_play_count")
+    private int totalPlayCount;
+
+    @OneToMany(mappedBy = "country")
+    private List<User> users;
 }

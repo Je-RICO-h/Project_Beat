@@ -39,9 +39,9 @@ public class User {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @Basic
-    @Column(name = "country")
-    private String country;
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
 
     @Basic
     @Column(name = "registration_date")
@@ -50,7 +50,7 @@ public class User {
     @ManyToMany(mappedBy = "usersWhoFavorited")
     private List<Track> favorites;
 
-    public User(String name, String email, byte[] passHash, Byte gender, Date dateOfBirth, String country, Date registrationDate) {
+    public User(String name, String email, byte[] passHash, Byte gender, Date dateOfBirth, Country country, Date registrationDate) {
         this.name = name;
         this.email = email;
         this.passHash = passHash;

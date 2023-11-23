@@ -1,9 +1,7 @@
 package com.szoftmern.beat;
 import javafx.animation.*;
 import javafx.scene.control.Label;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -18,7 +16,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,13 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
-
 import static com.szoftmern.beat.DatabaseManager.*;
 
 public class UIController {
     private static HBox hBox;
-
+    public static Timeline timeline;
 
     public static void switchScene(Pane currentPane, String fxml) {
         try {
@@ -41,7 +36,6 @@ public class UIController {
 
             currentPane.getChildren().removeAll();
             currentPane.getChildren().setAll(nextPane);
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -101,14 +95,13 @@ public class UIController {
             System.out.println(artistname);
             musicPlayer.oneArtistName.setText(artistname);
             musicPlayer.oneArtistSongs.getChildren().clear();
-            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox);
+            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox, musicPlayer.statisticbox);
 
             for (Track track : Objects.requireNonNull(getTracksFromArtist(artistname))) {
                 hBox = loadAndSetHBox(track, musicPlayer);
 
                 musicPlayer.oneArtistSongs.getChildren().add(hBox);
             }
-
         });
 
         return anchorPane;
@@ -162,6 +155,7 @@ public class UIController {
         }
     }
 
+
     public static void makeNewStage(Event event, String file) {
         //new stage to make screen.fxml responsive
         FXMLLoader fxmlLoader = new FXMLLoader(UIController.class.getResource(file));
@@ -196,9 +190,48 @@ public class UIController {
         }
     }
 
+    public static void movingLabel(Label newsFeedText) {
+        stopTimeLine();
+
+        timeline = new Timeline(new KeyFrame(
+                Duration.millis(1000),
+                event -> scrollText(newsFeedText)
+        ));
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    public static void stopTimeLine() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+    }
+
+    public static void scrollText(Label label) {
+        // Get the current text and create a new text with shifted characters
+        String currentText =label.getText();
+        String shiftedText = currentText.substring(1) + currentText.charAt(0);
+
+        // Update the label with the shifted text
+        label.setText(shiftedText);
+    }
+
+
+    public static void settingLikeButton(MusicPlayer musicPlayer, boolean isLiked)  {
+        if (isLiked) {
+            musicPlayer.heart.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/heart1.png"))));
+        } else {
+            musicPlayer.heart.setImage(new Image(Objects.requireNonNull(UIController.class.getResourceAsStream("img/heart2.png"))));
+        }
+    }
+
     public static void setOnCloseRequestForStage(Stage stage) {
         //If window is closed, do cleanup
         stage.setOnCloseRequest(windowevent -> {
+
+            if (DatabaseManager.loggedInUser != null)
+                EntityUtil.updateDatabaseCountryPlayCount();
 
             EntityUtil.updateDatabaseTrackPlayCount();
 
@@ -209,24 +242,4 @@ public class UIController {
             System.exit(0);
         });
     }
-
-
-    public static void movingLabel(Label newsFeedText) {
-        Timeline timeline = new Timeline(new KeyFrame(
-                Duration.millis(1000),
-                event -> scrollText(newsFeedText)
-        ));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
-
-    }
-    public static void scrollText(Label label) {
-        // Get the current text and create a new text with shifted characters
-        String currentText =label.getText();
-        String shiftedText = currentText.substring(1) + currentText.charAt(0);
-
-        // Update the label with the shifted text
-        label.setText(shiftedText);
-    }
-
 }

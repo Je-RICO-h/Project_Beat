@@ -86,7 +86,9 @@ public class Registration {
 
         byte gender = UserInfoHelper.getSelectedGender(genderPicker);
         Date dateOfBirth = Date.valueOf(getDateOfBirth());
-        String country = UserInfoHelper.getSelectedCountry(countryPicker);
+
+        String countryName = UserInfoHelper.getSelectedCountry(countryPicker);
+        Country country = DatabaseManager.getCountryFromName(countryName);
 
         byte[] passwordHash = UserInfoHelper.generatePasswordHashForUser(pass);
         Date currentDate = Date.valueOf(LocalDate.now());

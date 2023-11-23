@@ -37,17 +37,28 @@ public class Login {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    loginUser(ke);
+                    try {
+                        loginUser(ke);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
+
         // log the user in if they press ENTER while
         // the password field has focus AND password is visible
         visiblePassword.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    loginUser(ke);
+                    try {
+                        loginUser(ke);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
@@ -59,7 +70,7 @@ public class Login {
 
     // Validate the given user info and try to log in the user
     @FXML
-    protected void loginUser(Event event) {
+    protected void loginUser(Event event) throws IOException {
         try {
             checkIfEveryInfoIsEntered();
 

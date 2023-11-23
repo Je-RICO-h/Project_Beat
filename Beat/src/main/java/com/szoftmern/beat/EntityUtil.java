@@ -45,6 +45,16 @@ public class EntityUtil {
         return trackList;
    }
 
+   public static int sumPlayCounts() {
+        int counter = 0;
+
+       for (int count : trackPlayCount.values()) {
+           counter += count;
+       }
+
+       return counter;
+   }
+
    public static void updateDatabaseTrackPlayCount() {
        List<Track> updateTrackList = updateTrack();
 
@@ -52,6 +62,17 @@ public class EntityUtil {
            trackDAO.updateEntity(track);
        }
    }
+
+    public static void updateDatabaseCountryPlayCount() {
+        Country userCountry = DatabaseManager.loggedInUser.getCountry();
+
+        int currentPlayCount = userCountry.getTotalPlayCount();
+        int countryTotalPlayCount = sumPlayCounts();
+
+        userCountry.setTotalPlayCount(currentPlayCount + countryTotalPlayCount);
+
+        countryDAO.updateEntity(userCountry);
+    }
 
     public static boolean doesUserAlreadyExist(String username) {
         try {
@@ -77,15 +98,27 @@ public class EntityUtil {
         throw new IncorrectInformationException("Ez a felhasználó nem létezik!\n");
     }
 
-    // If a user exists with the given email, it returns it, otherwise it throws an exception
-    public static User findUserWithEmail(String email) throws IncorrectInformationException {
-        for (User user : DatabaseManager.userDAO.getEntities()) {
-            if (user.getEmail().equals(email)) {
-                return user;
+    public static void addTrackToFavorites(Track track, Boolean isLiked) {
+        FavoriteTracks existingFavorite = getFavorite(loggedInUser.getId(), track.getId());
+
+        if (isLiked) {
+            if (existingFavorite == null) {
+                FavoriteTracks newFavorite = new FavoriteTracks();
+                newFavorite.setTrack_id(track.getId());
+                newFavorite.setUser_id(loggedInUser.getId());
+                favTracksDAO.saveEntity(newFavorite);
+            }
+        } else {
+            if (existingFavorite != null) {
+                favTracksDAO.deleteEntity(existingFavorite);
             }
         }
+    }
 
-        throw new IncorrectInformationException("Nem létezik felhasználó ezzel az email címmel!\n");
+    public static boolean isLiked(Track track) {
+        FavoriteTracks existingFavorite = getFavorite(loggedInUser.getId(), track.getId());
+        System.out.println(existingFavorite);
+        return existingFavorite != null;
     }
 }
 

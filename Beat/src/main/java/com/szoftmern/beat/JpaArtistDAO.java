@@ -11,15 +11,15 @@ public class JpaArtistDAO implements EntityDAO {
     public final EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     @Override
-    public void saveEntity(Object t) {
+    public void saveEntity(Object a) {
         System.out.println("Meg nem mentunk semmit sehova...");
     }
 
     @Override
-    public List<Track> getEntities() {
+    public List<Artist> getEntities() {
         TypedQuery query =
-                entityManager.createQuery("SELECT T FROM Artist T", Artist.class);
-        List<Track> artists = query.getResultList();
+                entityManager.createQuery("SELECT A FROM Artist A", Artist.class);
+        List<Artist> artists = query.getResultList();
 
         return artists;
     }
