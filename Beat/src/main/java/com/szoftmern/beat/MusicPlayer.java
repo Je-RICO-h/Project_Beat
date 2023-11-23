@@ -122,7 +122,6 @@ public class MusicPlayer {
     @FXML
     public void initialize() {
         settingsManager = new SettingsManager(
-                DatabaseManager.loggedInUser,
                 saveButton,
                 usernameField,
                 emailField,
@@ -446,7 +445,7 @@ public class MusicPlayer {
 
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
+    void logout(ActionEvent event) {
         //Stop the player
         this.player.stop();
 
@@ -456,7 +455,11 @@ public class MusicPlayer {
         UIController.makeNewStage(event,"login.fxml");
         userbox.setVisible(false);
         userbox.setDisable(true);
-        user=false;
+        user = false;
+
+        // log out the user
+        DatabaseManager.loggedInUser.setLoggedIn(false);
+        DatabaseManager.userDAO.saveEntity(DatabaseManager.loggedInUser);
 
         System.out.println("User " + DatabaseManager.loggedInUser.getName() + " logged out successfully");
         DatabaseManager.loggedInUser = null;

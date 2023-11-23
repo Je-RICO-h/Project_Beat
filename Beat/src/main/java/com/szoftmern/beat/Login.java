@@ -55,13 +55,18 @@ public class Login {
     // Validate the given user info and try to log in the user
     @FXML
     protected void loginUser(Event event) throws IOException {
+        User user;
+
         try {
             checkIfEveryInfoIsEntered();
+            user = EntityUtil.returnUserIfItExists(usernameField.getText());
 
-            // save the currently logged-in user
-            DatabaseManager.loggedInUser = EntityUtil.returnUserIfItExists(usernameField.getText());
+            if (user.isLoggedIn()) {
+                System.out.println("user already logged in");
+                throw new IncorrectInformationException("Máshol már be vagy jelentkezve!");
+            }
 
-            String username = DatabaseManager.loggedInUser.getName();
+            String username = user.getName();
             UserInfoHelper.checkIfUserHasEnteredCorrectPassword(username, passwordField.getText());
 
         } catch (IncorrectInformationException e) {
@@ -70,7 +75,13 @@ public class Login {
             return;
         }
 
+        // save the currently logged-in user
+        DatabaseManager.loggedInUser = user;
+
         // every info is correct, log the user in...
+        DatabaseManager.loggedInUser.setLoggedIn(true);
+        DatabaseManager.userDAO.saveEntity(DatabaseManager.loggedInUser);
+
         welcomeText.setText("Bejelentkezés...");
         UIController.makeNewStage(event,"screen.fxml");
 
