@@ -47,6 +47,10 @@ public class User {
     @Column(name = "registration_date")
     private Date registrationDate;
 
+    @Basic
+    @Column(name = "is_logged_in")
+    private boolean isLoggedIn;
+
     @ManyToMany(mappedBy = "usersWhoFavorited")
     private List<Track> favorites;
 
