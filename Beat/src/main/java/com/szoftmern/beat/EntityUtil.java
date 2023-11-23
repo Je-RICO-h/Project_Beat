@@ -85,7 +85,7 @@ public class EntityUtil {
         return true;
     }
 
-    // Returns the username if it exists, otherwise it throws an exception
+    // Returns the user if it exists, otherwise it throws an exception
     public static User returnUserIfItExists(String username) throws IncorrectInformationException {
         for (User user : DatabaseManager.userDAO.getEntities()) {
             if (user.getName().equals(username)) {
