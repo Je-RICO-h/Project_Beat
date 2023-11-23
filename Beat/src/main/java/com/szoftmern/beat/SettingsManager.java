@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 
 
 public class SettingsManager {
-    private final User currentUser;
+    private final User currentUser = DatabaseManager.loggedInUser;
     private Button saveButton;
     private TextField usernameField;
     private TextField emailField;
@@ -19,13 +19,11 @@ public class SettingsManager {
     private ComboBox<String> countryPicker;
 
     public SettingsManager(
-            User currentUser,
             Button saveButton, TextField usernameField,
             TextField emailField, TextField oldPasswordField,
             TextField newPasswordField, TextField newPasswordConfirmationField,
             ComboBox<String> genderPicker, ComboBox<String> countryPicker
     ) {
-        this.currentUser = currentUser;
         this.saveButton = saveButton;
 
         this.usernameField = usernameField;
@@ -39,13 +37,12 @@ public class SettingsManager {
         this.countryPicker = countryPicker;
     }
 
-    public void displayCurrentAccountInfo(
-    ) {
+    public void displayCurrentAccountInfo() {
         usernameField.setText(currentUser.getName());
         emailField.setText(currentUser.getEmail());
 
-        int countryIdx = (int)currentUser.getCountry().getId() - 2;
-        countryPicker.getSelectionModel().select(countryIdx);
+        int countryIdx = (int)currentUser.getCountry().getId();
+        countryPicker.getSelectionModel().select(countryIdx - 1);
 
         genderPicker.getSelectionModel().select(currentUser.getGender());
     }
@@ -102,11 +99,13 @@ public class SettingsManager {
         if (!currentUser.getName().equals(username)) {
             currentUser.setName(UserInfoHelper.validateUsername(username));
             canUpdate = true;
+            System.out.println("user");
         }
 
         if (!currentUser.getEmail().equals(email)) {
             currentUser.setEmail(UserInfoHelper.validateEmail(email));
             canUpdate = true;
+            System.out.println("email");
         }
 
 
@@ -114,14 +113,16 @@ public class SettingsManager {
         byte selectedGender = UserInfoHelper.getSelectedGender(genderPicker);
         if (currentUser.getGender() != selectedGender) {
             currentUser.setGender(selectedGender);
+            System.out.println("gender");
             canUpdate = true;
         }
 
         String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
         Country country = DatabaseManager.getCountryFromName(selectedCountry);
 
-        if (!currentUser.getCountry().equals(selectedCountry)) {
+        if (!currentUser.getCountry().getName().equals(selectedCountry)) {
             currentUser.setCountry(country);
+            System.out.println("country");
             canUpdate = true;
         }
 
@@ -145,6 +146,7 @@ public class SettingsManager {
             byte[] newPasswordHash = UserInfoHelper.generatePasswordHashForUser(newPass);
             currentUser.setPassHash(newPasswordHash);
 
+            System.out.println("pass");
             canUpdate = true;
         }
 
