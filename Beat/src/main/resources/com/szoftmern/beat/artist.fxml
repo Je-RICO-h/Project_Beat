@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="64.0" prefWidth="242.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.SongController">
+<AnchorPane prefHeight="64.0" prefWidth="245.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.SongController">
    <children>
       <HBox prefHeight="64.0" prefWidth="242.0" styleClass="gray" stylesheets="@style.css">
          <children>
