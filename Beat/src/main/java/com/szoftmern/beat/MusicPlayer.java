@@ -2,6 +2,8 @@ package com.szoftmern.beat;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -22,17 +24,33 @@ import static java.lang.Math.round;
 
 public class MusicPlayer {
     @FXML
+    private TextField newPlaylistName;
+    @FXML
+    protected ListView<String> playlistList;
+    @FXML
+    private Label lejatszasilistaLabel;
+    @FXML
     protected VBox oneArtistSongs;
+    @FXML
+    protected VBox onePlaylistSongs;
     @FXML
     protected Label oneArtistName;
     @FXML
-    protected Pane oneArtistbox;
+    protected Label onePlaylistName;
+    @FXML
+    protected AnchorPane oneArtistbox;
+    @FXML
+    protected AnchorPane playlistbox;
+    @FXML
+    protected AnchorPane onePlaylistbox;
     @FXML
     protected ImageView movingItem;
     @FXML
     protected GridPane artistGrid;
     @FXML
-    protected VBox favoriteListContener;
+    protected VBox favoriteListContainer;
+    @FXML
+    protected VBox allPlayList;
     @FXML
     public BorderPane border;
     @FXML
@@ -79,24 +97,23 @@ public class MusicPlayer {
     private final HistoryManager historyManager;
     private final ArtistManager artistManager;
     private final FavoriteManager favoriteManager;
-
+    private  final PlayListManager playListManager;
     private boolean volumeInit = false;
 
     @FXML
-    protected Pane homebox;
+    protected AnchorPane homebox;
     @FXML
-    protected Pane settingsbox;
+    protected AnchorPane settingsbox;
     @FXML
-    protected Pane artistbox;
+    protected AnchorPane artistbox;
     @FXML
-    protected Pane favouritebox;
+    protected AnchorPane favouritebox;
     @FXML
-    protected Pane statisticbox;
+    protected AnchorPane statisticbox;
 
     @FXML
     protected Label artistLabel;
-    @FXML
-    private ComboBox<String> color_settings;
+
     @FXML
     public Button saveButton;
     @FXML
@@ -120,6 +137,8 @@ public class MusicPlayer {
 
     private SettingsManager settingsManager;
 
+    ObservableList<String> playlistItems = FXCollections.observableArrayList();
+
     @FXML
     public void initialize() {
         settingsManager = new SettingsManager(
@@ -136,7 +155,7 @@ public class MusicPlayer {
         );
 
         //set homepage firs
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox, playlistbox, onePlaylistbox);
 
         //set the country list
         loadCountriesIntoCombobox(countryPicker);
@@ -144,7 +163,16 @@ public class MusicPlayer {
         //set the original data from database
         settingsManager.displayCurrentAccountInfo();
 
-        settingsManager.setColorPickerBox(color_settings);
+        //label setting in two lines
+        lejatszasilistaLabel.setText("Lejátszási\nlisták");
+
+        playlistList.setVisible(false);
+        playlistList.setDisable(true);
+
+        playlistList.setItems(playlistItems);
+        playlistItems.add("Lejátszási listáid");
+
+        PlayListManager.addMusicToOneOfPlaylist(playlistList);
     }
 
 
@@ -155,6 +183,7 @@ public class MusicPlayer {
         this.historyManager = new HistoryManager(this);
         this.artistManager = new ArtistManager(this);
         this.favoriteManager = new FavoriteManager(this);
+        this.playListManager = new PlayListManager(this);
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -488,7 +517,7 @@ public class MusicPlayer {
 
     @FXML
     void settings_selected() {
-        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(settingsbox, homebox, artistbox, favouritebox, statisticbox, oneArtistbox,playlistbox,onePlaylistbox);
 
         userbox.setVisible(false);
         userbox.setDisable(true);
@@ -498,7 +527,7 @@ public class MusicPlayer {
 
     @FXML
     void home_selected() {
-        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(homebox, settingsbox, artistbox, favouritebox, statisticbox, oneArtistbox,playlistbox,onePlaylistbox);
     }
 
 
@@ -515,14 +544,14 @@ public class MusicPlayer {
     @FXML
     void favourite_selected() {
         favoriteManager.writeFavoriteTracks();
-        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(favouritebox, artistbox, homebox, settingsbox, statisticbox, oneArtistbox,playlistbox,onePlaylistbox);
     }
 
 
     @FXML
     void statistic_selected() {
         favoriteManager.writeFavoriteTracks();
-        UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox);
+        UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox,playlistbox,onePlaylistbox);
     }
 
     @FXML
@@ -545,5 +574,52 @@ public class MusicPlayer {
     @FXML
     void toggleBadWords() {
         settingsManager.toggleBadWordsFlag();
+    }
+
+    @FXML
+    void playlist_selected() {
+        UIController.setMiddlePain(playlistbox,statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox,onePlaylistbox);
+    }
+
+    boolean addplaylistIcon = false;
+    @FXML
+    void addPlaylistIcon_selected() {
+
+        if(addplaylistIcon) {
+            playlistList.setVisible(false);
+            playlistList.setDisable(true);
+
+            addplaylistIcon = false;
+        } else {
+            playlistList.setVisible(true);
+            playlistList.setDisable(false);
+
+            addplaylistIcon = true;
+        }
+    }
+
+    @FXML
+    void leaveSearchContainer() {
+        searchcontener.setVisible(false);
+        searchcontener.setDisable(true);
+        searchTextField.setText("");
+    }
+
+    @FXML
+    void leaveAddPlaylistIcon() {
+        playlistList.setVisible(false);
+        playlistList.setDisable(true);
+        addplaylistIcon = false;
+    }
+
+    @FXML
+    void newPlaylistAdd_selected() {
+        playListManager.creatNewPlaylist(newPlaylistName.getText());
+
+        if(!newPlaylistName.getText().isEmpty()) {
+            playlistItems.add(newPlaylistName.getText());
+        }
+
+        newPlaylistName.clear();
     }
 }

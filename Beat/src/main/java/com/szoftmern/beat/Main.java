@@ -18,11 +18,12 @@ public class Main extends Application {
         //Start JavaFX and load login scene
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("login.fxml"));
 
-        Scene scene = new Scene(fxmlLoader.load(), 1280,720 );
+        Scene scene = new Scene(fxmlLoader.load(), 1300,750 );
 
         stage.setTitle("Beat!");
 
         stage.setScene(scene);
+
 
         stage.show();
 

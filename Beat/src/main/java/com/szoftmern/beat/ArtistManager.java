@@ -26,14 +26,24 @@ public class ArtistManager {
 
         ObservableList<String> artistList = FXCollections.observableArrayList(artists);
         Platform.runLater(() -> {
+
+            //keret szélesséneg meghatározása
+            double size = musicPlayer.artistGrid.getParent().getBoundsInLocal().getWidth();
+
+            int onerow = (int)(size / 245);
+            if (onerow < 4) {
+                onerow = 4;
+            }
+
             int row = 1;
-            int colum=1;
+            int colum = 1;
 
             for(String s : artistList) {
 
                 AnchorPane anchorPane = UIController.loadAndSetArtist(s, musicPlayer);
                 musicPlayer.artistGrid.add(anchorPane,colum++,row);
-                if(colum==4){
+
+                if(colum == onerow) {
                     colum=1;
                     row++;
                 }

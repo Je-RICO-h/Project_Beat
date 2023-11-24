@@ -142,7 +142,7 @@ public class ForgottenPassword {
 
             // if the use has entered the correct confirmation code
             // they can now change their password
-            UIController.setMiddlePain(passwordUpdatePane, emailAndCodeConfirmationPane);
+            UIController.setMiddlePain2(passwordUpdatePane, emailAndCodeConfirmationPane);
 
             doesUserExist = false;
         }
@@ -196,7 +196,7 @@ public class ForgottenPassword {
 
     @FXML
     public void switchBackToConfirmationPane() {
-        UIController.setMiddlePain(emailAndCodeConfirmationPane, passwordUpdatePane);
+        UIController.setMiddlePain2(emailAndCodeConfirmationPane, passwordUpdatePane);
 
         // reset pane back to its original state
         emailSentText.setText("");

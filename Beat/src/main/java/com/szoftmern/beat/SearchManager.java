@@ -61,15 +61,6 @@ public class SearchManager{
 
             });
 
-            //ha kiválasztottam a keresett zenét akkor ismét tünjön el blokk
-            musicPlayer.border.setOnMouseClicked(event -> {
-
-                        musicPlayer.searchcontener.setVisible(false);
-                        musicPlayer.searchcontener.setDisable(true);
-                        musicPlayer.searchTextField.setText("");
-
-                    }
-            );
 
             musicPlayer.searchcontener.setVisible(true);
             musicPlayer.searchcontener.setDisable(false);

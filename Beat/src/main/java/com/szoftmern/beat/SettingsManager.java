@@ -170,17 +170,6 @@ public class SettingsManager {
         return canUpdate;
     }
 
-    public static void setColorPickerBox(ComboBox<String> colors){
-
-        ObservableList<String> color = FXCollections.observableArrayList();
-        color.add("linear-gradient(to top,#E3B1EF, #86E09A)");
-        color.add("linear-gradient(to top,#E3B1EF, #9b86e0)");
-        color.add("linear-gradient(to top,#E3B1EF, #86E09A)");
-        color.add("linear-gradient(to top,#E3B1EF, #86E09A)");
-        colors.setItems(color);
-
-
-    }
 
     public void toggleBadWordsFlag() {
         wasBadWordsButtonToggled = !wasBadWordsButtonToggled;

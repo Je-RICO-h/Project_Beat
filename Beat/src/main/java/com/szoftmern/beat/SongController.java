@@ -56,8 +56,10 @@ public class SongController {
 
     public void SetData(Track track){
         song_name.setText(track.getTitle());
+        song_name.setStyle("-fx-font-size: 20; -fx-text-fill: white; -fx-font-family: 'Arial Rounded MT Bold';");
         String artist = String.valueOf(getArtistNameList(track.getArtists()));
         song_artist.setText(artist.substring(1, artist.length() - 1));
+        song_artist.setStyle("-fx-font-size: 15; -fx-text-fill: white; -fx-font-family: 'Arial Rounded MT Bold';");
         settingSongLikeButton();
     }
 
