@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Random;
 
 public class Registration {
     @FXML
@@ -37,15 +38,18 @@ public class Registration {
     @FXML
     private Label labelRightSum;
     @FXML
+    private Label labelNumbers;
+    @FXML
     private CheckBox iAmNotARobot;
 
     @FXML
     protected void iAmNotARobot() {
         captchaPane.setVisible(true);
+        Captcha.setMathProblem(labelNumbers);
     }
     @FXML
     protected void sumCheck() {
-        if (!sumTextField.getText().equals("25")) {
+        if (!sumTextField.getText().equals(Captcha.getSum(labelNumbers))) {
             labelWrongSum.setVisible(true);
         }
         else {
