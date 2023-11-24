@@ -12,7 +12,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.*;
 
 import static com.szoftmern.beat.DatabaseManager.*;
@@ -22,8 +21,6 @@ import static com.szoftmern.beat.UIController.settingLikeButton;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
-    @FXML
-    private Button badWordsStatus;
     @FXML
     protected VBox oneArtistSongs;
     @FXML
@@ -115,13 +112,16 @@ public class MusicPlayer {
     private ComboBox<String> countryPicker;
     @FXML
     private ComboBox<String> genderPicker;
+    @FXML
+    protected Button badWordsToggleBtn;
+    @FXML
+    protected Label resetInfoLabel;
 
     private SettingsManager settingsManager;
 
     @FXML
     public void initialize() {
         settingsManager = new SettingsManager(
-                DatabaseManager.loggedInUser,
                 saveButton,
                 usernameField,
                 emailField,
@@ -129,7 +129,9 @@ public class MusicPlayer {
                 newPasswordField,
                 newPasswordConfirmationField,
                 genderPicker,
-                countryPicker
+                countryPicker,
+                badWordsToggleBtn,
+                resetInfoLabel
         );
 
         //set homepage firs
@@ -445,7 +447,7 @@ public class MusicPlayer {
 
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
+    void logout(ActionEvent event) {
         //Stop the player
         this.player.stop();
 
@@ -455,7 +457,11 @@ public class MusicPlayer {
         UIController.makeNewStage(event,"login.fxml");
         userbox.setVisible(false);
         userbox.setDisable(true);
-        user=false;
+        user = false;
+
+        // log out the user
+        DatabaseManager.loggedInUser.setLoggedIn(false);
+        DatabaseManager.userDAO.saveEntity(DatabaseManager.loggedInUser);
 
         System.out.println("User " + DatabaseManager.loggedInUser.getName() + " logged out successfully");
         DatabaseManager.loggedInUser = null;
@@ -536,7 +542,7 @@ public class MusicPlayer {
 
 
     @FXML
-    void badWordsSetting() {
-        SettingsManager.setBadWords(badWordsStatus);
+    void toggleBadWords() {
+        settingsManager.toggleBadWordsFlag();
     }
 }

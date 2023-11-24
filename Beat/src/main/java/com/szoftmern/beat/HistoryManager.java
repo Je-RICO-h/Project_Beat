@@ -32,7 +32,9 @@ public class HistoryManager {
     public void displayhistory() {
         ObservableList<Track> result = FXCollections.observableArrayList(musicPlayer.musicHistory);
 
-        Platform.runLater(() -> {
+        // Ha nem kommentelem ki, kivételt dob egyes esetekben. Azért mert
+        // ugyanazt a JDBC sessions-t két külön szálról piszkálják egyidőben.
+        //Platform.runLater(() -> {
             musicPlayer.historylistContener.getChildren().clear();
 
             for (int i = result.size() - 1; i >= 0 ; i--) {
@@ -40,6 +42,6 @@ public class HistoryManager {
 
                 musicPlayer.historylistContener.getChildren().add(hBox);
             }
-        });
+        //});
     }
 }

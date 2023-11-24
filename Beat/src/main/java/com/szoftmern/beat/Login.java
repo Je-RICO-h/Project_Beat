@@ -71,14 +71,20 @@ public class Login {
     // Validate the given user info and try to log in the user
     @FXML
     protected void loginUser(Event event) throws IOException {
+        User user;
+
         try {
             checkIfEveryInfoIsEntered();
+            user = EntityUtil.returnUserIfItExists(usernameField.getText());
 
-            // save the currently logged-in user
-            DatabaseManager.loggedInUser = EntityUtil.returnUserIfItExists(usernameField.getText());
+            if (user.isLoggedIn()) {
+                System.out.println("User " + user.getName() + " already logged in");
+                throw new IncorrectInformationException("Máshol már be vagy jelentkezve!");
+            }
 
-            String username = DatabaseManager.loggedInUser.getName();
-            UserInfoHelper.checkIfUserHasEnteredCorrectPassword(username, passwordField.getText());
+            UserInfoHelper.checkIfUserHasEnteredCorrectPassword(
+                    user.getName(), passwordField.getText()
+            );
 
         } catch (IncorrectInformationException e) {
             welcomeText.setText(e.getMessage());
@@ -86,7 +92,16 @@ public class Login {
             return;
         }
 
+        // save the currently logged-in user
+        DatabaseManager.loggedInUser = user;
+
         // every info is correct, log the user in...
+        DatabaseManager.loggedInUser.setLoggedIn(true);
+        DatabaseManager.userDAO.saveEntity(DatabaseManager.loggedInUser);
+
+        loadAndSaveTracksToMemory();
+        loadAndSaveCountriesToMemory();
+
         welcomeText.setText("Bejelentkezés...");
         UIController.makeNewStage(event,"screen.fxml");
 
@@ -97,6 +112,24 @@ public class Login {
         if ( usernameField.getText().isEmpty() || passwordField.getText().isEmpty() ) {
             throw new IncorrectInformationException(UserInfoHelper.missingInfo);
         }
+    }
+
+    // Loads every track from the database. Depending on the user's
+    // preference, it only loads tracks that have no explicit lyrics.
+    private void loadAndSaveTracksToMemory() {
+        if (DatabaseManager.loggedInUser.isFilteringExplicitLyrics()) {
+            DatabaseManager.setEveryTrack(
+                    DatabaseManager.loadAllNonExplicitTracksFromDatabase());
+        } else {
+            DatabaseManager.setEveryTrack(
+                    DatabaseManager.loadAllTracksFromDatabase());
+        }
+
+        System.out.println(DatabaseManager.getEveryTrack().size());
+    }
+
+    private void loadAndSaveCountriesToMemory() {
+        DatabaseManager.setEveryCountry(DatabaseManager.countryDAO.getEntities());
     }
 
     @FXML

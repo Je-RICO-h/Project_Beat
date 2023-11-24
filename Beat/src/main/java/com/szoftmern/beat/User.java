@@ -47,6 +47,14 @@ public class User {
     @Column(name = "registration_date")
     private Date registrationDate;
 
+    @Basic
+    @Column(name = "is_logged_in")
+    private boolean isLoggedIn;
+
+    @Basic
+    @Column(name = "is_filtering_explicit_lyrics")
+    private boolean isFilteringExplicitLyrics;
+
     @ManyToMany(mappedBy = "usersWhoFavorited")
     private List<Track> favorites;
 
