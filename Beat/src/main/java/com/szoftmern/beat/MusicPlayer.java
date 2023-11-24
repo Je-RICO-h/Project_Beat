@@ -12,7 +12,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.util.*;
 
 import static com.szoftmern.beat.DatabaseManager.*;
@@ -22,8 +21,6 @@ import static com.szoftmern.beat.UIController.settingLikeButton;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
-    @FXML
-    private Button badWordsStatus;
     @FXML
     protected VBox oneArtistSongs;
     @FXML
@@ -115,6 +112,10 @@ public class MusicPlayer {
     private ComboBox<String> countryPicker;
     @FXML
     private ComboBox<String> genderPicker;
+    @FXML
+    protected Button badWordsToggleBtn;
+    @FXML
+    protected Label resetInfoLabel;
 
     private SettingsManager settingsManager;
 
@@ -128,7 +129,9 @@ public class MusicPlayer {
                 newPasswordField,
                 newPasswordConfirmationField,
                 genderPicker,
-                countryPicker
+                countryPicker,
+                badWordsToggleBtn,
+                resetInfoLabel
         );
 
         //set homepage firs
@@ -539,7 +542,7 @@ public class MusicPlayer {
 
 
     @FXML
-    void badWordsSetting() {
-        SettingsManager.setBadWords(badWordsStatus);
+    void toggleBadWords() {
+        settingsManager.toggleBadWordsFlag();
     }
 }

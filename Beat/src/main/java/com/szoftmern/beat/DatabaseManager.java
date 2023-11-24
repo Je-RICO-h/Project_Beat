@@ -1,6 +1,7 @@
 package com.szoftmern.beat;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -16,9 +17,11 @@ public class DatabaseManager {
 
     // Returns every track's data in our DB
     @Getter
+    @Setter
     private static List<Track> everyTrack;
 
     @Getter
+    @Setter
     private static List<Country> everyCountry;
 
     public DatabaseManager() {
@@ -29,9 +32,6 @@ public class DatabaseManager {
             favTracksDAO = new JpaFavoriteTracksDAO();
             countryDAO   = new JpaCountryDAO();
 
-            // get every Track and Country class via JPA from the DB
-            everyTrack   = trackDAO.getEntities();
-            everyCountry = countryDAO.getEntities();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -49,6 +49,25 @@ public class DatabaseManager {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static List<Track> loadAllTracksFromDatabase() {
+        return trackDAO.getEntities();
+    }
+
+    public static List<Track> loadAllNonExplicitTracksFromDatabase() {
+        List<Track> resultList;
+
+        resultList = trackDAO.entityManager
+                .createQuery("""
+                        SELECT T
+                        FROM Track T
+                        WHERE T.isLyricsExplicit = false
+                        """,
+                        Track.class)
+                .getResultList();
+
+        return resultList;
     }
 
     // Gets the top 10 most played music
@@ -76,6 +95,10 @@ public class DatabaseManager {
 
         keyword = keyword.trim();
 
+        String explicitTrackFilterString = loggedInUser.isFilteringExplicitLyrics()
+                ? "AND T.isLyricsExplicit = false"
+                : "";
+
         // lassuuu!!! valahogy ki kene menteni es inkabb a memoriaba tarolni ennek az
         // eredmenyet egyszer a program elejen...
         resultList = trackDAO.entityManager
@@ -83,7 +106,7 @@ public class DatabaseManager {
                         SELECT T
                         FROM Track T
                         WHERE T.title LIKE :keyword
-                        """,
+                        """ + explicitTrackFilterString,
                         Track.class)
                 .setParameter("keyword", "%" + keyword + "%")
                 .getResultList();
