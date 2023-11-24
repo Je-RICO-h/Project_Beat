@@ -103,7 +103,7 @@
                         <Label fx:id="labelNumbers" layoutX="14.0" layoutY="45.0" prefHeight="16.0" prefWidth="75.0" />
                         <TextField fx:id="sumTextField" layoutX="91.0" layoutY="41.0" prefHeight="24.0" prefWidth="36.0" />
                         <Label layoutX="14.0" layoutY="14.0" text="A két szám összege: " />
-                        <Button layoutX="103.0" layoutY="74.0" mnemonicParsing="false" onAction="#sumCheck" text="Ellenőrzés" />
+                        <Button layoutX="103.0" layoutY="74.0" mnemonicParsing="false" onAction="#isCaptchaCorrect" text="Ellenőrzés" />
                         <Label fx:id="labelWrongSum" layoutX="131.0" layoutY="43.0" text="X" textFill="#f20000" visible="false">
                             <font>
                                 <Font size="18.0" />

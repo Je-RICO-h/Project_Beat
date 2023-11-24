@@ -49,6 +49,7 @@ public class Registration {
     @FXML
     private CheckBox iAmNotARobot;
 
+    private boolean isCaptchaCorrect = false;
 
     @FXML
     public void initialize() {
@@ -83,14 +84,19 @@ public class Registration {
     protected void iAmNotARobot() {
         captchaPane.setVisible(true);
         labelWrongSum.setVisible(false);
+
         sumTextField.setText("");
+
         Captcha.setMathProblem(labelNumbers);
         iAmNotARobot.setDisable(true);
     }
+
     // checks the entered sum
     @FXML
-    protected void sumCheck() {
-        if (!sumTextField.getText().equals(Captcha.getSum(labelNumbers))) {
+    protected void isCaptchaCorrect() {
+        this.isCaptchaCorrect = sumTextField.getText().equals(Captcha.getSum(labelNumbers));
+
+        if (!this.isCaptchaCorrect) {
             labelWrongSum.setVisible(true);
         }
         else {
@@ -128,12 +134,31 @@ public class Registration {
     private User prepareUserForRegistration() {
         String username, email, pass;
 
+
+
+        System.out.println(passwordField.getText()+ " "+passwordAgainField.getText()
+                +" " +nonvisiblePasswordField.getText()+ " "+nonvisiblePasswordField2.getText());
+
         try {
             checkIfEveryInfoIsEntered();
 
+            if (!this.isCaptchaCorrect) {
+                throw new IncorrectInformationException("Rossz captcha válasz");
+            }
+
+            String p1 = passwordField.getText();
+            if (nonvisiblePasswordField.isVisible()) {
+                p1 = nonvisiblePasswordField.getText();
+            }
+
+            String p2 = passwordAgainField.getText();
+            if (nonvisiblePasswordField2.isVisible()) {
+                p2 = nonvisiblePasswordField2.getText();
+            }
+
             username = UserInfoHelper.validateUsername(usernameField.getText());
             email = UserInfoHelper.validateEmail(emailField.getText());
-            pass = UserInfoHelper.validatePassword(passwordField.getText(), passwordAgainField.getText());
+            pass = UserInfoHelper.validatePassword(p1, p2);
 
         } catch (IncorrectInformationException e) {
             info.setText(e.getMessage());
@@ -156,12 +181,12 @@ public class Registration {
     // Checks whether the user has entered every piece of info
     private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{
         if ( emailField.getText().isEmpty() ||
-                usernameField.getText().isEmpty() ||
-                passwordField.getText().isEmpty() ||
-                passwordAgainField.getText().isEmpty() ||
-                birthDatePicker.getValue() == null ||
-                genderPicker.getValue() == null ||
-                countryPicker.getValue() == null
+             usernameField.getText().isEmpty() ||
+             nonvisiblePasswordField.getText().isEmpty() ||
+             nonvisiblePasswordField2.getText().isEmpty() ||
+             birthDatePicker.getValue() == null ||
+             genderPicker.getValue() == null ||
+             countryPicker.getValue() == null
         ) {
             throw new IncorrectInformationException(UserInfoHelper.missingInfo);
         }
