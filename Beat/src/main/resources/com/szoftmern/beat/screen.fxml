@@ -370,11 +370,16 @@
                                                       <Font name="Arial Rounded MT Bold" size="20.0" />
                                                    </font>
                                                 </Label>
-                                                <Button fx:id="badWordsStatus" mnemonicParsing="false" onAction="#badWordsSetting" prefHeight="53.0" prefWidth="88.0" style="-fx-text-fill: white; -fx-background-color: #2f2b2b33; -fx-background-radius: 50;" text="Ki">
+                                                <Button fx:id="badWordsToggleBtn" mnemonicParsing="false" onAction="#toggleBadWords" prefHeight="53.0" prefWidth="88.0" style="-fx-text-fill: white; -fx-background-color: #2f2b2b33; -fx-background-radius: 50;" text="Ki">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="18.0" />
                                                    </font>
                                                 </Button>
+                                                <Label fx:id="resetInfoLabel" prefHeight="30.0" prefWidth="500.0" text="" textFill="RED">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="16.0" />
+                                                   </font>
+                                                </Label>
                                              </children>
                                              <VBox.margin>
                                                 <Insets bottom="10.0" top="10.0" />

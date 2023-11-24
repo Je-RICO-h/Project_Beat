@@ -255,7 +255,7 @@ public class UIController {
                 DatabaseManager.loggedInUser.setLoggedIn(false);
                 DatabaseManager.userDAO.saveEntity(DatabaseManager.loggedInUser);
 
-                System.out.println("User " + DatabaseManager.loggedInUser + " has been logged out.");
+                System.out.println("User " + DatabaseManager.loggedInUser.getName() + " has been logged out.");
             }
 
             System.out.println("App is closing");
