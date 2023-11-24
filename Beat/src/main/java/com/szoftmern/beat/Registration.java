@@ -13,6 +13,8 @@ public class Registration {
     @FXML
     private Label info;
     @FXML
+    private Label info1;
+    @FXML
     private TextField passwordField;
     @FXML
     private TextField passwordAgainField;
@@ -26,7 +28,32 @@ public class Registration {
     private ComboBox<String> genderPicker;
     @FXML
     private ComboBox<String> countryPicker;
+    @FXML
+    private Pane captchaPane;
+    @FXML
+    private TextField sumTextField;
+    @FXML
+    private Label labelWrongSum;
+    @FXML
+    private Label labelRightSum;
+    @FXML
+    private CheckBox iAmNotARobot;
 
+    @FXML
+    protected void iAmNotARobot() {
+        captchaPane.setVisible(true);
+    }
+    @FXML
+    protected void sumCheck() {
+        if (!sumTextField.getText().equals("25")) {
+            labelWrongSum.setVisible(true);
+        }
+        else {
+            captchaPane.setVisible(false);
+            labelRightSum.setVisible(true);
+            iAmNotARobot.setDisable(true);
+        }
+    }
     @FXML
     public void initialize() {
         UIController.loadCountriesIntoCombobox(countryPicker);
@@ -47,8 +74,12 @@ public class Registration {
     }
 
     @FXML
-    protected void showPasswordRequirements() {
-        info.setText(UserInfoHelper.passwordInfo);
+    protected void showInfo() {
+        info1.setVisible(true);
+    }
+    @FXML
+    protected void hideInfo() {
+        info1.setVisible(false);
     }
 
     // Saves the new user's info to the database
@@ -99,12 +130,12 @@ public class Registration {
     // Checks whether the user has entered every piece of info
     private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{
         if ( emailField.getText().isEmpty() ||
-             usernameField.getText().isEmpty() ||
-             passwordField.getText().isEmpty() ||
-             passwordAgainField.getText().isEmpty() ||
-             birthDatePicker.getValue() == null ||
-             genderPicker.getValue() == null ||
-             countryPicker.getValue() == null
+                usernameField.getText().isEmpty() ||
+                passwordField.getText().isEmpty() ||
+                passwordAgainField.getText().isEmpty() ||
+                birthDatePicker.getValue() == null ||
+                genderPicker.getValue() == null ||
+                countryPicker.getValue() == null
         ) {
             throw new IncorrectInformationException(UserInfoHelper.missingInfo);
         }
