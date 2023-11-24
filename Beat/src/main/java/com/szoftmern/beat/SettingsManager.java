@@ -4,11 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 
 public class SettingsManager {
     private final User currentUser = DatabaseManager.loggedInUser;
+    private boolean wasBadWordsButtonToggled = false;
+    private String[] toggleStrings = {"Be", "Ki"};
     private Button saveButton;
     private TextField usernameField;
     private TextField emailField;
@@ -17,12 +20,15 @@ public class SettingsManager {
     private TextField newPasswordConfirmationField;
     private ComboBox<String> genderPicker;
     private ComboBox<String> countryPicker;
+    private Button badWordsToggleButton;
+    private Label resetInfoLabel;
 
     public SettingsManager(
             Button saveButton, TextField usernameField,
             TextField emailField, TextField oldPasswordField,
             TextField newPasswordField, TextField newPasswordConfirmationField,
-            ComboBox<String> genderPicker, ComboBox<String> countryPicker
+            ComboBox<String> genderPicker, ComboBox<String> countryPicker,
+            Button badWordsToggle, Label resetInfoLabel
     ) {
         this.saveButton = saveButton;
 
@@ -35,6 +41,9 @@ public class SettingsManager {
 
         this.genderPicker = genderPicker;
         this.countryPicker = countryPicker;
+
+        this.badWordsToggleButton = badWordsToggle;
+        this.resetInfoLabel = resetInfoLabel;
     }
 
     public void displayCurrentAccountInfo() {
@@ -45,6 +54,9 @@ public class SettingsManager {
         countryPicker.getSelectionModel().select(countryIdx - 1);
 
         genderPicker.getSelectionModel().select(currentUser.getGender());
+        badWordsToggleButton.setText(
+                currentUser.isFilteringExplicitLyrics() ? "Be" : "Ki"
+        );
     }
 
     // If the user has any unsaved settings and those changes are valid,
@@ -57,6 +69,7 @@ public class SettingsManager {
             oldPasswordField.clear();
             newPasswordField.clear();
             newPasswordConfirmationField.clear();
+            wasBadWordsButtonToggled = false;
 
             System.out.printf("User " + currentUser.getName() + "'s info has been successfully updated.\n");
             System.out.println(currentUser);
@@ -99,13 +112,11 @@ public class SettingsManager {
         if (!currentUser.getName().equals(username)) {
             currentUser.setName(UserInfoHelper.validateUsername(username));
             canUpdate = true;
-            System.out.println("user");
         }
 
         if (!currentUser.getEmail().equals(email)) {
             currentUser.setEmail(UserInfoHelper.validateEmail(email));
             canUpdate = true;
-            System.out.println("email");
         }
 
 
@@ -113,7 +124,6 @@ public class SettingsManager {
         byte selectedGender = UserInfoHelper.getSelectedGender(genderPicker);
         if (currentUser.getGender() != selectedGender) {
             currentUser.setGender(selectedGender);
-            System.out.println("gender");
             canUpdate = true;
         }
 
@@ -122,7 +132,14 @@ public class SettingsManager {
 
         if (!currentUser.getCountry().getName().equals(selectedCountry)) {
             currentUser.setCountry(country);
-            System.out.println("country");
+            canUpdate = true;
+        }
+
+        if (wasBadWordsButtonToggled) {
+            // toggle the user's filtering preferences
+            currentUser.setFilteringExplicitLyrics(!currentUser.isFilteringExplicitLyrics());
+            resetInfoLabel.setText("A változtatás újbóli belépés után fog életbe lépni!");
+
             canUpdate = true;
         }
 
@@ -165,13 +182,14 @@ public class SettingsManager {
 
     }
 
-    public static void setBadWords(Button button){
-        if(button.getText().equals("Ki")){
-            button.setText("Be");
-        }
-        else {
-            button.setText("Ki");
-        }
+    public void toggleBadWordsFlag() {
+        wasBadWordsButtonToggled = !wasBadWordsButtonToggled;
 
+        // xnor logic, think it through
+        if (currentUser.isFilteringExplicitLyrics() == wasBadWordsButtonToggled) {
+            badWordsToggleButton.setText("Ki");
+        } else {
+            badWordsToggleButton.setText("Be");
+        }
     }
 }
