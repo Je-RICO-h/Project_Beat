@@ -67,6 +67,7 @@ public class SettingsManager {
             newPasswordField.clear();
             newPasswordConfirmationField.clear();
             wasBadWordsButtonToggled = false;
+            countryIdx = (int)currentUser.getCountryId();
 
             System.out.println("User " + currentUser.getName() + "'s info has been successfully updated.\n");
             System.out.println(currentUser);
@@ -79,10 +80,10 @@ public class SettingsManager {
         }
 
         byte selectedGender = UserInfoHelper.getSelectedGender(genderPicker);
-        String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
-        String userCountry = DatabaseManager.getEveryCountry().get(countryIdx).getName();
-        System.out.println(selectedCountry + " " + userCountry);
 
+        System.out.println(DatabaseManager.getEveryCountry().size());
+        String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
+        String userCountry = DatabaseManager.getEveryCountry().get(countryIdx - 1 > 169 ? 169 : countryIdx - 1).getName();
 
         if ( currentUser.getName().equals(usernameField.getText()) &&
              currentUser.getEmail().equals(emailField.getText()) &&
@@ -130,11 +131,10 @@ public class SettingsManager {
 
         int selectedCountryId = (int)DatabaseManager.getCountryIdFromName(
                 UserInfoHelper.getSelectedCountry(countryPicker));
-        int userCountryId = (int) DatabaseManager.getEveryCountry().get(countryIdx - 1).getId();
-        System.out.println(selectedCountryId + " " + userCountryId);
 
-        if (userCountryId != selectedCountryId) {
-            DatabaseManager.loggedInUser.setCountryId(selectedCountryId + 1);
+
+        if (selectedCountryId != countryIdx) {
+            DatabaseManager.loggedInUser.setCountryId(selectedCountryId);
             canUpdate = true;
         }
 
