@@ -475,12 +475,12 @@
                                           </VBox>
                                           <HBox prefHeight="163.0" prefWidth="862.0" spacing="20.0">
                                              <children>
-                                                <Label prefHeight="30.0" prefWidth="244.0" text="Trágár szavak letiltása" textFill="WHITE">
+                                                <Label prefHeight="30.0" prefWidth="300.0" text="Trágár szavak letiltása" textFill="WHITE">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="20.0" />
                                                    </font>
                                                 </Label>
-                                                <Button fx:id="badWordsToggleBtn" mnemonicParsing="false" onAction="#toggleBadWords" prefHeight="53.0" prefWidth="88.0" style="-fx-text-fill: white; -fx-background-color: #2f2b2b33; -fx-background-radius: 50;" text="Ki">
+                                                <Button fx:id="badWordsToggleBtn" mnemonicParsing="false" onAction="#toggleBadWords" prefHeight="53.0" prefWidth="100.0" style="-fx-text-fill: white; -fx-background-color: #2f2b2b33; -fx-background-radius: 50;" text="Ki">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="18.0" />
                                                    </font>
@@ -542,6 +542,11 @@
                                     <Image url="@img/plus.png" />
                                  </image>
                               </ImageView>
+                              <Label fx:id="newPlaylistNameInfoLabel" prefHeight="30.0" prefWidth="500.0" text="" textFill="RED">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="16.0" />
+                                 </font>
+                              </Label>
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" left="20.0" top="10.0" />
@@ -549,7 +554,7 @@
                         </HBox>
                         <ScrollPane prefHeight="297.0" prefWidth="883.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                            <content>
-                              <VBox fx:id="allPlayList" prefHeight="390.0" prefWidth="850.0" spacing="10.0">
+                              <VBox fx:id="userPlaylistsVBox" prefHeight="390.0" prefWidth="850.0" spacing="10.0">
                                  <padding>
                                     <Insets left="10.0" top="10.0" />
                                  </padding></VBox>
@@ -569,7 +574,7 @@
                <children>
                   <VBox prefHeight="728.8" prefWidth="1645.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <Label fx:id="onePlaylistName" prefHeight="48.0" prefWidth="959.0" textFill="WHITE">
+                        <Label fx:id="selectedPlaylistNameLabel" prefHeight="48.0" prefWidth="959.0" textFill="WHITE">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="36.0" />
                            </font>
@@ -579,7 +584,7 @@
                         </Label>
                         <ScrollPane fitToWidth="true" prefHeight="344.0" prefWidth="879.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                            <content>
-                              <VBox fx:id="onePlaylistSongs" prefHeight="38.0" prefWidth="58.0" spacing="20.0">
+                              <VBox fx:id="playlistTracksVBox" prefHeight="38.0" prefWidth="58.0" spacing="20.0">
                                  <padding>
                                     <Insets right="100.0" />
                                  </padding></VBox>

@@ -1,10 +1,12 @@
 package com.szoftmern.beat;
 
+import javafx.application.Platform;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class DatabaseManager {
     public static JpaTrackDAO trackDAO;
@@ -12,6 +14,8 @@ public class DatabaseManager {
     public static JpaUserDAO userDAO;
     public static JpaFavoriteTracksDAO favTracksDAO;
     public static JpaCountryDAO countryDAO;
+    public static JpaPlaylistDAO playlistDAO;
+    public static JpaPlaylistTracksDAO playlistTracksDAO;
 
     public static User loggedInUser = null;
 
@@ -22,15 +26,17 @@ public class DatabaseManager {
 
     @Getter
     @Setter
-    private static List<Country> everyCountry;
+    private static List<Country> everyCountry = new ArrayList<>();
 
     public DatabaseManager() {
         try {
-            trackDAO     = new JpaTrackDAO();
-            artistDAO    = new JpaArtistDAO();
-            userDAO      = new JpaUserDAO();
-            favTracksDAO = new JpaFavoriteTracksDAO();
-            countryDAO   = new JpaCountryDAO();
+            trackDAO          = new JpaTrackDAO();
+            artistDAO         = new JpaArtistDAO();
+            userDAO           = new JpaUserDAO();
+            favTracksDAO      = new JpaFavoriteTracksDAO();
+            countryDAO        = new JpaCountryDAO();
+            playlistDAO       = new JpaPlaylistDAO();
+            playlistTracksDAO = new JpaPlaylistTracksDAO();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -45,6 +51,8 @@ public class DatabaseManager {
             userDAO.close();
             favTracksDAO.close();
             countryDAO.close();
+            playlistDAO.close();
+            playlistTracksDAO.close();
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -140,18 +148,18 @@ public class DatabaseManager {
     }
 
     public static Track getTrackFromId(Long id) {
-        Track track = trackDAO.entityManager
-                .createQuery("""
-                        SELECT T
-                        FROM Track T
-                        WHERE T.id = :id
-                        """,
-                        Track.class)
-                .setParameter("id", id)
-                .getResultList()
-                .get(0);
+            Track track = trackDAO.entityManager
+                    .createQuery("""
+                            SELECT T
+                            FROM Track T
+                            WHERE T.id = :id
+                            """,
+                            Track.class)
+                    .setParameter("id", id)
+                    .getResultList()
+                    .get(0);
 
-        return track;
+            return track;
     }
 
     // Gets the password hash of a user
@@ -187,13 +195,27 @@ public class DatabaseManager {
         return null;
     }
 
-    public static Country getCountryFromName(String countryName) {
-        for (Country c : everyCountry) {
+    public static long getCountryIdFromName(String countryName) {
+        for (Country c : DatabaseManager.countryDAO.getEntities()) {
             if (c.getName().equals(countryName)) {
-                return c;
+                return c.getId();
             }
         }
 
-        return null;
+        return -1;
+    }
+
+    public static List<User> getAllUsersFromCountry(long countryId) {
+        List <User> users = trackDAO.entityManager
+                .createQuery("""
+                        SELECT U
+                        FROM User U
+                        WHERE U.countryId = :id
+                        """,
+                        User.class)
+                .setParameter("id", countryId)
+                .getResultList();
+
+        return users;
     }
 }
