@@ -1,5 +1,9 @@
 package com.szoftmern.beat;
 import javafx.animation.*;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -23,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.szoftmern.beat.DatabaseManager.*;
@@ -278,5 +283,36 @@ public class UIController {
             stage.close();
             System.exit(0);
         });
+    }
+
+    public static BarChart<String, Number> createBarChaer(Map<Object, Object> map, String title, String xAxisLabel, String yAxisLabel) {
+        XYChart.Series dataSeries = new XYChart.Series();
+
+        for (Object name : map.keySet()) {
+            dataSeries.getData().add(new XYChart.Data(name, map.get(name)));
+
+        }
+
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
+
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+
+        barChart.setTitle(title);
+        xAxis.setLabel(xAxisLabel);
+        yAxis.setLabel(yAxisLabel);
+
+        barChart.setMinWidth(1000);
+        barChart.setMinHeight(500);
+
+        barChart.getData().add(dataSeries);
+
+        barChart.setLegendVisible(false);
+        xAxis.setTickLabelRotation(20);
+
+        barChart.setBarGap(5);
+        barChart.setCategoryGap(30);
+
+        return barChart;
     }
 }

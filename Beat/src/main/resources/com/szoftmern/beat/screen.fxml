@@ -209,61 +209,61 @@
                                                 <Font name="Arial Rounded MT Bold" size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label prefHeight="52.0" prefWidth="68.0" text="Label" textFill="WHITE">
+                                          <Label fx:id="allRegistrationNumber" prefHeight="52.0" prefWidth="68.0" textFill="WHITE">
                                              <font>
                                                 <Font name="Arial Rounded MT Bold" size="18.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                                    <VBox fx:id="VBoxCountryUserDistributionChart" layoutX="10.0" layoutY="110.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                                        <children>
-                                          <Label text="Regisztrált fellhasználók ország szerint" textFill="WHITE">
-                                             <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <BarChart VBox.vgrow="ALWAYS">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" tickLabelFill="WHITE">
-                                                   <tickLabelFont>
-                                                      <Font name="Arial Rounded MT Bold" size="12.0" />
-                                                   </tickLabelFont>
-                                                </CategoryAxis>
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis side="LEFT" tickLabelFill="WHITE">
-                                                   <tickLabelFont>
-                                                      <Font name="Arial Rounded MT Bold" size="12.0" />
-                                                   </tickLabelFont>
-                                                </NumberAxis>
-                                            </yAxis>
-                                          </BarChart>
+<!--                                          <Label text="Regisztrált fellhasználók ország szerint" textFill="WHITE">-->
+<!--                                             <font>-->
+<!--                                                <Font name="Arial Rounded MT Bold" size="18.0" />-->
+<!--                                             </font>-->
+<!--                                          </Label>-->
+<!--                                          <BarChart fx:id="countryUserDistributionChart" VBox.vgrow="ALWAYS">-->
+<!--                                            <xAxis>-->
+<!--                                              <CategoryAxis fx:id="xAxisCountryUserDistributionChart" side="BOTTOM" tickLabelFill="WHITE" label="Országok">-->
+<!--                                                   <tickLabelFont>-->
+<!--                                                      <Font name="Arial Rounded MT Bold" size="12.0" />-->
+<!--                                                   </tickLabelFont>-->
+<!--                                                </CategoryAxis>-->
+<!--                                            </xAxis>-->
+<!--                                            <yAxis>-->
+<!--                                              <NumberAxis fx:id="yAxisCountryUserDistributionChart" side="LEFT" tickLabelFill="WHITE" label="Felhasználók száma">-->
+<!--                                                   <tickLabelFont>-->
+<!--                                                      <Font name="Arial Rounded MT Bold" size="12.0" />-->
+<!--                                                   </tickLabelFont>-->
+<!--                                                </NumberAxis>-->
+<!--                                            </yAxis>-->
+<!--                                          </BarChart>-->
                                        </children>
                                     </VBox>
-                                    <VBox layoutX="10.0" layoutY="110.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                                    <VBox fx:id="VBoxCountryTrackDistributionChart" layoutX="10.0" layoutY="110.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                                        <children>
-                                          <Label text="Regisztrált fellhasználók ország szerint" textFill="WHITE">
-                                             <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <BarChart VBox.vgrow="ALWAYS">
-                                             <xAxis>
-                                                <CategoryAxis side="BOTTOM" tickLabelFill="WHITE">
-                                                   <tickLabelFont>
-                                                      <Font name="Arial Rounded MT Bold" size="12.0" />
-                                                   </tickLabelFont>
-                                                </CategoryAxis>
-                                             </xAxis>
-                                             <yAxis>
-                                                <NumberAxis side="LEFT" tickLabelFill="WHITE">
-                                                   <tickLabelFont>
-                                                      <Font name="Arial Rounded MT Bold" size="12.0" />
-                                                   </tickLabelFont>
-                                                </NumberAxis>
-                                             </yAxis>
-                                          </BarChart>
+<!--                                          <Label text="Regisztrált fellhasználók ország szerint" textFill="WHITE">-->
+<!--                                             <font>-->
+<!--                                                <Font name="Arial Rounded MT Bold" size="18.0" />-->
+<!--                                             </font>-->
+<!--                                          </Label>-->
+<!--                                          <BarChart VBox.vgrow="ALWAYS">-->
+<!--                                             <xAxis>-->
+<!--                                                <CategoryAxis side="BOTTOM" tickLabelFill="WHITE">-->
+<!--                                                   <tickLabelFont>-->
+<!--                                                      <Font name="Arial Rounded MT Bold" size="12.0" />-->
+<!--                                                   </tickLabelFont>-->
+<!--                                                </CategoryAxis>-->
+<!--                                             </xAxis>-->
+<!--                                             <yAxis>-->
+<!--                                                <NumberAxis side="LEFT" tickLabelFill="WHITE">-->
+<!--                                                   <tickLabelFont>-->
+<!--                                                      <Font name="Arial Rounded MT Bold" size="12.0" />-->
+<!--                                                   </tickLabelFont>-->
+<!--                                                </NumberAxis>-->
+<!--                                             </yAxis>-->
+<!--                                          </BarChart>-->
                                        </children>
                                     </VBox>
                                  </children>
