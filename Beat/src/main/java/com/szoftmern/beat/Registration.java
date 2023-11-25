@@ -6,7 +6,6 @@ import javafx.scene.layout.Pane;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Random;
 
 public class Registration {
     @FXML
@@ -42,22 +41,7 @@ public class Registration {
     @FXML
     private CheckBox iAmNotARobot;
 
-    @FXML
-    protected void iAmNotARobot() {
-        captchaPane.setVisible(true);
-        Captcha.setMathProblem(labelNumbers);
-    }
-    @FXML
-    protected void sumCheck() {
-        if (!sumTextField.getText().equals(Captcha.getSum(labelNumbers))) {
-            labelWrongSum.setVisible(true);
-        }
-        else {
-            captchaPane.setVisible(false);
-            labelRightSum.setVisible(true);
-            iAmNotARobot.setDisable(true);
-        }
-    }
+
     @FXML
     public void initialize() {
         UIController.loadCountriesIntoCombobox(countryPicker);
@@ -85,6 +69,37 @@ public class Registration {
     protected void hideInfo() {
         info1.setVisible(false);
     }
+
+    // when the checkbox is checked, shows captcha panel
+    @FXML
+    protected void iAmNotARobot() {
+        captchaPane.setVisible(true);
+        labelWrongSum.setVisible(false);
+        sumTextField.setText("");
+        Captcha.setMathProblem(labelNumbers);
+        iAmNotARobot.setDisable(true);
+    }
+    // checks the entered sum
+    @FXML
+    protected void sumCheck() {
+        if (!sumTextField.getText().equals(Captcha.getSum(labelNumbers))) {
+            labelWrongSum.setVisible(true);
+        }
+        else {
+            captchaPane.setVisible(false);
+            labelRightSum.setVisible(true);
+            iAmNotARobot.setDisable(true);
+        }
+    }
+    @FXML
+    protected void hideCaptchaPane() {
+        if (!labelRightSum.isVisible()) {
+            captchaPane.setVisible(false);
+            iAmNotARobot.setSelected(false);
+            iAmNotARobot.setDisable(false);
+        }
+    }
+
 
     // Saves the new user's info to the database
     @FXML

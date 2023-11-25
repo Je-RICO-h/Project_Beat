@@ -1,7 +1,6 @@
 package com.szoftmern.beat;
 
 import javafx.scene.control.Label;
-
 import java.util.*;
 
 public class Captcha {
