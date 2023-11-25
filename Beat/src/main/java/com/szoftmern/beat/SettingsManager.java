@@ -1,7 +1,5 @@
 package com.szoftmern.beat;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -10,8 +8,8 @@ import javafx.scene.control.TextField;
 
 public class SettingsManager {
     private final User currentUser = DatabaseManager.loggedInUser;
+    private int countryIdx = (int)currentUser.getCountryId();
     private boolean wasBadWordsButtonToggled = false;
-    private String[] toggleStrings = {"Be", "Ki"};
     private Button saveButton;
     private TextField usernameField;
     private TextField emailField;
@@ -50,7 +48,6 @@ public class SettingsManager {
         usernameField.setText(currentUser.getName());
         emailField.setText(currentUser.getEmail());
 
-        int countryIdx = (int)currentUser.getCountry().getId();
         countryPicker.getSelectionModel().select(countryIdx - 1);
 
         genderPicker.getSelectionModel().select(currentUser.getGender());
@@ -71,7 +68,7 @@ public class SettingsManager {
             newPasswordConfirmationField.clear();
             wasBadWordsButtonToggled = false;
 
-            System.out.printf("User " + currentUser.getName() + "'s info has been successfully updated.\n");
+            System.out.println("User " + currentUser.getName() + "'s info has been successfully updated.\n");
             System.out.println(currentUser);
         }
     }
@@ -83,14 +80,18 @@ public class SettingsManager {
 
         byte selectedGender = UserInfoHelper.getSelectedGender(genderPicker);
         String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
+        String userCountry = DatabaseManager.getEveryCountry().get(countryIdx).getName();
+        System.out.println(selectedCountry + " " + userCountry);
+
 
         if ( currentUser.getName().equals(usernameField.getText()) &&
              currentUser.getEmail().equals(emailField.getText()) &&
              currentUser.getGender() == selectedGender &&
-             currentUser.getCountry().equals(selectedCountry) &&
+             userCountry.equals(selectedCountry) &&
              oldPasswordField.getText().isEmpty() &&
              newPasswordField.getText().isEmpty() &&
-             newPasswordConfirmationField.getText().isEmpty()
+             newPasswordConfirmationField.getText().isEmpty() &&
+             !wasBadWordsButtonToggled
         ) {
             return false;
         }
@@ -127,11 +128,13 @@ public class SettingsManager {
             canUpdate = true;
         }
 
-        String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
-        Country country = DatabaseManager.getCountryFromName(selectedCountry);
+        int selectedCountryId = (int)DatabaseManager.getCountryIdFromName(
+                UserInfoHelper.getSelectedCountry(countryPicker));
+        int userCountryId = (int) DatabaseManager.getEveryCountry().get(countryIdx - 1).getId();
+        System.out.println(selectedCountryId + " " + userCountryId);
 
-        if (!currentUser.getCountry().getName().equals(selectedCountry)) {
-            currentUser.setCountry(country);
+        if (userCountryId != selectedCountryId) {
+            DatabaseManager.loggedInUser.setCountryId(selectedCountryId + 1);
             canUpdate = true;
         }
 
@@ -163,7 +166,6 @@ public class SettingsManager {
             byte[] newPasswordHash = UserInfoHelper.generatePasswordHashForUser(newPass);
             currentUser.setPassHash(newPasswordHash);
 
-            System.out.println("pass");
             canUpdate = true;
         }
 

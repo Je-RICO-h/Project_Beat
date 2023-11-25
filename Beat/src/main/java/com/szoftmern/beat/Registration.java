@@ -88,12 +88,12 @@ public class Registration {
         Date dateOfBirth = Date.valueOf(getDateOfBirth());
 
         String countryName = UserInfoHelper.getSelectedCountry(countryPicker);
-        Country country = DatabaseManager.getCountryFromName(countryName);
+        long countryId = DatabaseManager.getCountryIdFromName(countryName);
 
         byte[] passwordHash = UserInfoHelper.generatePasswordHashForUser(pass);
-        Date currentDate = Date.valueOf(LocalDate.now());
+        Date currentDate = UserInfoHelper.getCurrentDate();
 
-        return new User(username, email, passwordHash, gender, dateOfBirth, country, currentDate);
+        return new User(username, email, passwordHash, gender, dateOfBirth, countryId, currentDate, true);
     }
 
     // Checks whether the user has entered every piece of info
