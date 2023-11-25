@@ -25,7 +25,4 @@ public class Country {
     @Basic
     @Column(name = "total_play_count")
     private int totalPlayCount;
-
-    @OneToMany(mappedBy = "country")
-    private List<User> users;
 }
