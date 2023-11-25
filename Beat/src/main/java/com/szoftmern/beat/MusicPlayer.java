@@ -26,17 +26,19 @@ public class MusicPlayer {
     @FXML
     private TextField newPlaylistName;
     @FXML
+    protected Label newPlaylistNameInfoLabel;
+    @FXML
     protected ListView<String> playlistList;
     @FXML
     private Label lejatszasilistaLabel;
     @FXML
     protected VBox oneArtistSongs;
     @FXML
-    protected VBox onePlaylistSongs;
+    protected VBox playlistTracksVBox;
     @FXML
     protected Label oneArtistName;
     @FXML
-    protected Label onePlaylistName;
+    protected Label selectedPlaylistNameLabel;
     @FXML
     protected AnchorPane oneArtistbox;
     @FXML
@@ -50,7 +52,7 @@ public class MusicPlayer {
     @FXML
     protected VBox favoriteListContainer;
     @FXML
-    protected VBox allPlayList;
+    protected VBox userPlaylistsVBox;
     @FXML
     public BorderPane border;
     @FXML
@@ -137,7 +139,7 @@ public class MusicPlayer {
 
     private SettingsManager settingsManager;
 
-    ObservableList<String> playlistItems = FXCollections.observableArrayList();
+    List<String> playlistItems = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -169,10 +171,9 @@ public class MusicPlayer {
         playlistList.setVisible(false);
         playlistList.setDisable(true);
 
-        playlistList.setItems(playlistItems);
-        playlistItems.add("Lejátszási listáid");
 
-        PlayListManager.addMusicToOneOfPlaylist(playlistList);
+        playListManager.loadUserPlaylists();
+        playListManager.onClickedSaveTrackToSelectedPlaylist(playlistList);
     }
 
 
@@ -614,7 +615,7 @@ public class MusicPlayer {
 
     @FXML
     void newPlaylistAdd_selected() {
-        playListManager.creatNewPlaylist(newPlaylistName.getText());
+        playListManager.createNewPlaylist(newPlaylistName.getText());
 
         if(!newPlaylistName.getText().isEmpty()) {
             playlistItems.add(newPlaylistName.getText());
