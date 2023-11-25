@@ -169,10 +169,8 @@ public class ForgottenPassword {
         MailingService.sendEmail(
                 MailingService.USERNAME,
                 email,
-                "Does it work?",
-                """
-                   <h1 style='font-family: cursive'>Fancy text, eh?</h1>
-     
+                "Confirmation code for new password request",
+                """     
                    Here is your 6-digit confirmation code:
                 """ + confirmationCode,
                 true
