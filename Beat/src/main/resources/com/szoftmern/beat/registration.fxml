@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.Pane?>
@@ -63,8 +64,10 @@
                 </Label>
                 <TextField fx:id="usernameField" layoutX="30.0" layoutY="109.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
                 <TextField fx:id="emailField" layoutX="30.0" layoutY="164.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="passwordField" layoutX="30.0" layoutY="220.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="passwordAgainField" layoutX="30.0" layoutY="275.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+            <PasswordField fx:id="nonvisiblePasswordField" layoutX="30.0" layoutY="220.0" onAction="#setPasswordText1" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="passwordField" layoutX="30.0" layoutY="220.0" onAction="#setPasswordText1" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" visible="false" />
+            <PasswordField fx:id="nonvisiblePasswordField2" layoutX="30.0" layoutY="275.0" onAction="#setPasswordText2" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="passwordAgainField" layoutX="30.0" layoutY="275.0" onAction="#setPasswordText2" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" visible="false" />
                 <DatePicker fx:id="birthDatePicker" layoutX="30.0" layoutY="330.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
                 <ComboBox fx:id="genderPicker" layoutX="28.0" layoutY="385.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="100.0">
                     <items>
@@ -93,6 +96,8 @@
                         <Font size="22.0" />
                     </font>
                 </Label>
+            <Label fx:id="showPassword1" layoutX="230.0" layoutY="224.0" onMouseClicked="#showPassword1" text="show" />
+            <Label fx:id="showPassword2" layoutX="231.0" layoutY="279.0" onMouseClicked="#showPassword2" text="show" />
                 <Pane fx:id="captchaPane" layoutX="99.0" layoutY="425.0" prefHeight="106.0" prefWidth="196.0" style="-fx-background-color: white; -fx-border-color: grey;" visible="false">
                     <children>
                         <Label fx:id="labelNumbers" layoutX="14.0" layoutY="45.0" prefHeight="16.0" prefWidth="75.0" />

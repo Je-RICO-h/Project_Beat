@@ -17,7 +17,15 @@ public class Registration {
     @FXML
     private TextField passwordField;
     @FXML
+    private PasswordField nonvisiblePasswordField;
+    @FXML
     private TextField passwordAgainField;
+    @FXML
+    private PasswordField nonvisiblePasswordField2;
+    @FXML
+    private Label showPassword1;
+    @FXML
+    private Label showPassword2;
     @FXML
     private TextField usernameField;
     @FXML
@@ -100,7 +108,6 @@ public class Registration {
         }
     }
 
-
     // Saves the new user's info to the database
     @FXML
     protected void registerUser() {
@@ -162,5 +169,28 @@ public class Registration {
 
     public LocalDate getDateOfBirth() {
         return birthDatePicker.getValue();
+    }
+
+
+    // show/hide password, passing the entered text to textfield/passwordfield
+    @FXML
+    protected void showPassword1(){
+        UIController.showAndHidePassword(nonvisiblePasswordField, passwordField, showPassword1);
+    }
+    @FXML
+    protected void setPasswordText1() {
+        if (nonvisiblePasswordField.isVisible()){
+            passwordField.setText(nonvisiblePasswordField.getText());
+        }
+    }
+    @FXML
+    protected void showPassword2(){
+        UIController.showAndHidePassword(nonvisiblePasswordField2, passwordAgainField, showPassword2);
+    }
+    @FXML
+    protected void setPasswordText2() {
+        if (nonvisiblePasswordField2.isVisible()){
+            passwordAgainField.setText(nonvisiblePasswordField2.getText());
+        }
     }
 }
