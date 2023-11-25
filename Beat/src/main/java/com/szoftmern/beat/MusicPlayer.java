@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -119,6 +120,8 @@ public class MusicPlayer {
     @FXML
     public Button saveButton;
     @FXML
+    public Label saveInfoLabel;
+    @FXML
     public TextField usernameField;
     @FXML
     public TextField emailField;
@@ -145,6 +148,7 @@ public class MusicPlayer {
     public void initialize() {
         settingsManager = new SettingsManager(
                 saveButton,
+                saveInfoLabel,
                 usernameField,
                 emailField,
                 oldPasswordField,
@@ -567,7 +571,8 @@ public class MusicPlayer {
         try {
             settingsManager.uploadNewUserAccountInfoToDatabase();
         } catch (IncorrectInformationException e) {
-            System.out.println(e.getMessage());
+            saveInfoLabel.setTextFill(Color.color(1, 0, 0));
+            saveInfoLabel.setText(e.getMessage());
         }
     }
 

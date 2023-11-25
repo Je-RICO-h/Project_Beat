@@ -316,6 +316,11 @@
                                     </HBox>
                                  </graphic>
                               </Button>
+                              <Label fx:id="saveInfoLabel" prefHeight="30.0" prefWidth="500.0" text="" textFill="RED">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="16.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
                         <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" prefHeight="298.0" prefWidth="930.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
