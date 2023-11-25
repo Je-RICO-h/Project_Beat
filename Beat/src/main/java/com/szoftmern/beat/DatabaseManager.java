@@ -1,5 +1,6 @@
 package com.szoftmern.beat;
 
+import jakarta.persistence.Query;
 import javafx.application.Platform;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 public class DatabaseManager {
     public static JpaTrackDAO trackDAO;
@@ -215,5 +217,52 @@ public class DatabaseManager {
                 .getResultList();
 
         return users;
+    }
+
+    public static long getUserCount() {
+        Query query = userDAO.entityManager
+                .createQuery("""
+                        SELECT COUNT(u)
+                        FROM User u
+                        """);
+        return (long) query.getSingleResult();
+    }
+
+    public static Map<Object, Object> fetchCountryUserCounts() {
+        List<Object[]> result = userDAO.entityManager
+                .createQuery("""
+                    SELECT c.name, COUNT(u.id)
+                    FROM User u
+                    JOIN Country c ON c.id = u.countryId
+                    GROUP BY c.id
+                    ORDER BY COUNT(u.id) desc
+                    """,
+                    Object[].class)
+                .setMaxResults(10)
+                .getResultList();
+
+        return result.stream()
+                .collect(Collectors.toMap(
+                        o -> (String) o[0],   // Country name
+                        o -> (Long) o[1]      // User count
+                ));
+    }
+
+    public static Map<Object, Object> fetchCountryTrackCounts() {
+        List<Object[]> result = countryDAO.entityManager
+                .createQuery("""
+                    SELECT c.name, c.totalPlayCount
+                    FROM Country c
+                    ORDER BY totalPlayCount desc
+                    """,
+                        Object[].class)
+                .setMaxResults(10)
+                .getResultList();
+
+        return result.stream()
+                .collect(Collectors.toMap(
+                        o -> (String) o[0],   // Country name
+                        o -> (Integer) o[1]      // Track count
+                ));
     }
 }
