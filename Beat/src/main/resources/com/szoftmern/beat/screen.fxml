@@ -4,9 +4,6 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -54,7 +51,7 @@
                                  </padding></VBox>
                            </content>
                            <padding>
-                              <Insets left="10.0" right="50.0" />
+                              <Insets left="10.0" right="50.0" top="30.0" />
                            </padding>
                         </ScrollPane>
                      </children>
@@ -64,7 +61,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="homebox">
+            <AnchorPane fx:id="homebox" disable="true" visible="false">
                <children>
                   <VBox alignment="CENTER" prefHeight="728.8" prefWidth="1645.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -178,7 +175,7 @@
                                  </padding></VBox>
                            </content>
                            <padding>
-                              <Insets right="50.0" />
+                              <Insets right="50.0" top="30.0" />
                            </padding>
                         </ScrollPane>
                      </children>
@@ -191,7 +188,7 @@
                   <Insets left="50.0" />
                </StackPane.margin>
             </AnchorPane>
-            <AnchorPane fx:id="statisticbox" disable="true" visible="false">
+            <AnchorPane fx:id="statisticbox">
                <children>
                   <VBox prefHeight="728.8" prefWidth="1645.6" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -202,18 +199,18 @@
                         </Label>
                         <ScrollPane prefHeight="297.0" prefWidth="883.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                            <content>
-                              <VBox prefHeight="390.0" prefWidth="850.0" spacing="50.0">
+                              <VBox prefHeight="390.0" prefWidth="850.0" spacing="60.0">
                                  <children>
                                     <HBox prefHeight="100.0" prefWidth="200.0">
                                        <children>
-                                          <Label prefHeight="46.0" prefWidth="317.0" text="Regisztrált felhasználók száma:" textFill="WHITE">
+                                          <Label prefHeight="31.0" prefWidth="409.0" text="Regisztrált felhasználók száma:" textFill="WHITE">
                                              <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                <Font name="Arial Rounded MT Bold" size="25.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="allRegistrationNumber" prefHeight="52.0" prefWidth="68.0" textFill="WHITE">
+                                          <Label fx:id="allRegistrationNumber" prefHeight="31.0" prefWidth="154.0" textFill="WHITE">
                                              <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                <Font name="Arial Rounded MT Bold" size="25.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -268,11 +265,11 @@
 <!--                                          </BarChart>-->
                                        </children>
                                     </VBox>
-                                 </children>
-                                 <padding>
-                                    <Insets top="30.0" />
-                                 </padding></VBox>
+                                 </children></VBox>
                            </content>
+                           <padding>
+                              <Insets top="30.0" />
+                           </padding>
                         </ScrollPane>
                      </children>
                      <padding>
@@ -293,14 +290,14 @@
                      <children>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label prefHeight="58.0" prefWidth="383.0" text="Beállítások" textFill="WHITE">
+                              <Label prefHeight="45.0" prefWidth="266.0" text="Beállítások" textFill="WHITE">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="36.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#save_newData" prefHeight="46.0" prefWidth="214.0" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 50;">
+                              <Button fx:id="saveButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#save_newData" prefHeight="45.0" prefWidth="176.0" style="-fx-background-color: #2f2b2b33; -fx-background-radius: 50;" HBox.hgrow="NEVER">
                                  <graphic>
-                                    <HBox alignment="CENTER" spacing="5.0">
+                                    <HBox alignment="CENTER" prefHeight="37.0" prefWidth="176.0" spacing="5.0">
                                        <children>
                                           <ImageView fitHeight="39.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -316,10 +313,21 @@
                                     </HBox>
                                  </graphic>
                               </Button>
-                              <Label fx:id="saveInfoLabel" prefHeight="30.0" prefWidth="500.0" text="" textFill="RED">
+                              <Pane prefHeight="45.0" prefWidth="53.0" HBox.hgrow="NEVER">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Pane>
+                              <Label fx:id="saveInfoLabel" text=" " textFill="WHITE" HBox.hgrow="ALWAYS">
                                  <font>
-                                    <Font name="Arial Rounded MT Bold" size="16.0" />
+                                    <Font name="Arial Rounded MT Bold" size="25.0" />
                                  </font>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
                               </Label>
                            </children>
                         </HBox>
@@ -480,12 +488,12 @@
                                                       <Font name="Arial Rounded MT Bold" size="20.0" />
                                                    </font>
                                                 </Label>
-                                                <Button fx:id="badWordsToggleBtn" mnemonicParsing="false" onAction="#toggleBadWords" prefHeight="53.0" prefWidth="100.0" style="-fx-text-fill: white; -fx-background-color: #2f2b2b33; -fx-background-radius: 50;" text="Ki">
+                                                <Button fx:id="badWordsToggleBtn" mnemonicParsing="false" onAction="#toggleBadWords" prefHeight="34.0" prefWidth="133.0" style="-fx-text-fill: white; -fx-background-color: #2f2b2b33; -fx-background-radius: 50;" text="Ki" HBox.hgrow="NEVER">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="18.0" />
                                                    </font>
                                                 </Button>
-                                                <Label fx:id="resetInfoLabel" prefHeight="30.0" prefWidth="500.0" text="" textFill="RED">
+                                                <Label fx:id="resetInfoLabel" text="" textFill="RED" HBox.hgrow="ALWAYS">
                                                    <font>
                                                       <Font name="Arial Rounded MT Bold" size="16.0" />
                                                    </font>
@@ -559,6 +567,9 @@
                                     <Insets left="10.0" top="10.0" />
                                  </padding></VBox>
                            </content>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
                         </ScrollPane>
                      </children>
                      <padding>
@@ -590,7 +601,7 @@
                                  </padding></VBox>
                            </content>
                            <VBox.margin>
-                              <Insets />
+                              <Insets top="30.0" />
                            </VBox.margin>
                            <padding>
                               <Insets right="50.0" />
@@ -656,8 +667,8 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Pane prefHeight="200.0" prefWidth="200.0" />
-                              <Label fx:id="statuslabel" alignment="CENTER" prefHeight="34.0" prefWidth="593.0" text="..." textAlignment="CENTER" textFill="WHITE">
+                              <Pane prefHeight="67.0" prefWidth="155.0" HBox.hgrow="ALWAYS" />
+                              <Label fx:id="statuslabel" alignment="CENTER" prefHeight="54.0" prefWidth="434.0" text="..." textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font size="23.0" />
                                  </font>
@@ -665,7 +676,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </Label>
-                              <Pane prefHeight="68.0" prefWidth="355.0" HBox.hgrow="ALWAYS" />
+                              <Pane prefHeight="67.0" prefWidth="112.0" HBox.hgrow="ALWAYS" />
                               <Button alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#next" prefHeight="48.0" prefWidth="45.0" text="Button">
                                  <graphic>
                                     <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
@@ -838,6 +849,11 @@
                               </HBox>
                            </children>
                         </VBox>
+                        <Label fx:id="WelcomeLabel" alignment="TOP_RIGHT" layoutX="-797.0" layoutY="-8.0" prefHeight="31.0" prefWidth="837.0" text="label" textAlignment="RIGHT" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="20.0" />
+                           </font>
+                        </Label>
                      </children>
                   </Pane>
                </children>
