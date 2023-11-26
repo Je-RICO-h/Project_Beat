@@ -6,6 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -101,6 +104,7 @@ public class MusicPlayer {
     private final ArtistManager artistManager;
     private final FavoriteManager favoriteManager;
     private  final PlayListManager playListManager;
+    private  final StatisticManager staticticManager;
     private boolean volumeInit = false;
 
     @FXML
@@ -116,6 +120,12 @@ public class MusicPlayer {
 
     @FXML
     protected Label artistLabel;
+    @FXML
+    protected Label allRegistrationNumber;
+    @FXML
+    protected VBox VBoxCountryUserDistributionChart;
+    @FXML
+    protected VBox VBoxCountryTrackDistributionChart;
 
     @FXML
     public Button saveButton;
@@ -189,6 +199,7 @@ public class MusicPlayer {
         this.artistManager = new ArtistManager(this);
         this.favoriteManager = new FavoriteManager(this);
         this.playListManager = new PlayListManager(this);
+        this.staticticManager = new StatisticManager(this);
         this.musicList = getEveryTrack();
 
         this.pos = 0;
@@ -554,7 +565,11 @@ public class MusicPlayer {
 
     @FXML
     void statistic_selected() {
-        favoriteManager.writeFavoriteTracks();
+        VBoxCountryUserDistributionChart.getChildren().clear();
+        VBoxCountryTrackDistributionChart.getChildren().clear();
+        staticticManager.writeAllRegistrationNumber();
+        staticticManager.populateCountryUserDistributionChart();
+        staticticManager.populateCountryTrackDistributionChart();
         UIController.setMiddlePain(statisticbox, artistbox, homebox, settingsbox, favouritebox, oneArtistbox,playlistbox,onePlaylistbox);
     }
 
