@@ -49,7 +49,7 @@ public class FavoriteManager {
         ObservableList<Track> favoriteTracksList = FXCollections.observableArrayList(favoriteTracks);
 
         Platform.runLater(() -> {
-            musicPlayer.favoriteListContener.getChildren().clear();
+            musicPlayer.favoriteListContainer.getChildren().clear();
 
             for (Track track : favoriteTracksList) {
                 hBox = loadAndSetHBox(track, musicPlayer);

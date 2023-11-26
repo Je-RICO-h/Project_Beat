@@ -80,7 +80,7 @@
                               </Label>
                               <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <VBox fx:id="toplistContener" prefHeight="68.0" prefWidth="811.0" spacing="10.0">
+                                    <VBox fx:id="toplistContainer" prefHeight="68.0" prefWidth="811.0" spacing="10.0">
                                        <padding>
                                           <Insets right="50.0" />
                                        </padding></VBox>
@@ -103,7 +103,7 @@
                               </Label>
                               <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="155.0" prefWidth="855.0" style="-fx-background-color: transparent; -fx-border-color: #2f2b2b33; -fx-border-radius: 20; -fx-border-width: 2.5;" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
                                  <content>
-                                    <VBox fx:id="historylistContener" spacing="10.0">
+                                    <VBox fx:id="historylistContainer" spacing="10.0">
                                        <padding>
                                           <Insets right="50.0" />
                                        </padding></VBox>

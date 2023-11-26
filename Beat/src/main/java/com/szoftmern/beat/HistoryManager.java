@@ -35,12 +35,12 @@ public class HistoryManager {
         // Ha nem kommentelem ki, kivételt dob egyes esetekben. Azért mert
         // ugyanazt a JDBC sessions-t két külön szálról piszkálják egyidőben.
         //Platform.runLater(() -> {
-            musicPlayer.historylistContener.getChildren().clear();
+            musicPlayer.historylistContainer.getChildren().clear();
 
             for (int i = result.size() - 1; i >= 0 ; i--) {
                 hBox = loadAndSetHBox(result.get(i), musicPlayer);
 
-                musicPlayer.historylistContener.getChildren().add(hBox);
+                musicPlayer.historylistContainer.getChildren().add(hBox);
             }
         //});
     }

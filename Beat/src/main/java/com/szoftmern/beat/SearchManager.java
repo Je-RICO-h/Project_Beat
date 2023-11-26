@@ -61,7 +61,6 @@ public class SearchManager{
 
             });
 
-
             musicPlayer.searchcontener.setVisible(true);
             musicPlayer.searchcontener.setDisable(false);
         } else {

@@ -121,8 +121,7 @@ public class EntityUtil {
         System.out.println(existingFavorite);
         return existingFavorite != null;
     }
-<<<<<<< HEAD
-=======
+
 
     // If a user exists with the given email, it returns it, otherwise it throws an exception
     public static User findUserWithEmail(String email) throws IncorrectInformationException {

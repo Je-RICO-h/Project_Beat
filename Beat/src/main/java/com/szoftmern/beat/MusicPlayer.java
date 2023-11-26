@@ -2,13 +2,8 @@ package com.szoftmern.beat;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -57,19 +52,18 @@ public class MusicPlayer {
     protected VBox favoriteListContainer;
     @FXML
     protected VBox userPlaylistsVBox;
-    protected VBox favoriteListContener;
     @FXML
     public BorderPane border;
     @FXML
     private VBox userbox;
     @FXML
-    protected VBox historylistContener;
+    protected VBox historylistContainer;
     @FXML
-    protected VBox toplistContener;
+    protected VBox toplistContainer;
     @FXML
     protected VBox searchResultView;
     @FXML
-    protected ScrollPane searchcontener;
+    protected ScrollPane searchContainer;
     @FXML
     private ImageView loop_icon;
     //Declaration of Labels, Buttons etc.
@@ -553,7 +547,7 @@ public class MusicPlayer {
         artistGrid.getChildren().clear();
         artistManager.writeArtistToBlock();
 
-        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox, statisticbox, oneArtistbox);
+        UIController.setMiddlePain(artistbox, homebox, settingsbox, favouritebox, statisticbox, oneArtistbox, playlistbox, onePlaylistbox);
     }
 
 
@@ -621,8 +615,8 @@ public class MusicPlayer {
 
     @FXML
     void leaveSearchContainer() {
-        searchcontener.setVisible(false);
-        searchcontener.setDisable(true);
+        searchContainer.setVisible(false);
+        searchContainer.setDisable(true);
         searchTextField.setText("");
     }
 

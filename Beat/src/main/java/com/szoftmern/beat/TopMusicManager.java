@@ -3,16 +3,11 @@ package com.szoftmern.beat;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.util.Objects;
 
 import static com.szoftmern.beat.DatabaseManager.*;
@@ -44,7 +39,7 @@ public class TopMusicManager {
 
                 hBox1.getChildren().addAll(imageView, hBox);
 
-                musicPlayer.toplistContener.getChildren().add(hBox1);
+                musicPlayer.toplistContainer.getChildren().add(hBox1);
 
                 hBox1.setSpacing(15);
                 HBox.setHgrow(hBox, Priority.ALWAYS);
