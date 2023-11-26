@@ -5,7 +5,6 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -269,12 +268,12 @@ public class UIController {
         });
     }
 
-    public static BarChart<String, Number> createBarChaer(Map<Object, Object> map, String title, String xAxisLabel, String yAxisLabel) {
+
+    public static BarChart<String, Number> createBarChar(Map<Object, Object> dataMap, String title, String xAxisLabel, String yAxisLabel) {
         XYChart.Series dataSeries = new XYChart.Series();
 
-        for (Object name : map.keySet()) {
-            dataSeries.getData().add(new XYChart.Data(name, map.get(name)));
-
+        for (Object name : dataMap.keySet()) {
+            dataSeries.getData().add(new XYChart.Data(name, dataMap.get(name)));
         }
 
         CategoryAxis xAxis = new CategoryAxis();

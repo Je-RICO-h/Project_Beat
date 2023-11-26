@@ -561,6 +561,8 @@ public class MusicPlayer {
 
     @FXML
     void statistic_selected() {
+        VBoxCountryUserDistributionChart.getChildren().clear();
+        VBoxCountryTrackDistributionChart.getChildren().clear();
         staticticManager.writeAllRegistrationNumber();
         staticticManager.populateCountryUserDistributionChart();
         staticticManager.populateCountryTrackDistributionChart();
