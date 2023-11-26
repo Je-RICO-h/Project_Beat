@@ -65,6 +65,7 @@ public class EntityUtil {
 
     public static void updateDatabaseCountryPlayCount() {
         int countryId = (int) DatabaseManager.loggedInUser.getCountryId();
+      
         Country userCountry = DatabaseManager.getEveryCountry().get(countryId - 2 < 0 ? 0 : countryId - 2);
 
         int currentPlayCount = userCountry.getTotalPlayCount();

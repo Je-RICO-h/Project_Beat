@@ -3,17 +3,19 @@
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="registrationPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top,#E3B1EF, #86E09A);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.Registration">
+<Pane fx:id="registrationPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#hideCaptchaPane" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top,#E3B1EF, #86E09A);" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.szoftmern.beat.Registration">
     <children>
-        <Pane layoutX="490.0" layoutY="85.0" prefHeight="550.0" prefWidth="300.0" style="-fx-background-color: ffffff; -fx-background-position: center;">
+        <Pane layoutX="490.0" layoutY="60.0" onMouseClicked="#hideCaptchaPane" prefHeight="600.0" prefWidth="300.0" style="-fx-background-color: white; -fx-background-position: center;">
             <children>
                 <Label layoutX="52.0" layoutY="25.0" prefHeight="39.0" prefWidth="196.0" style="-fx-alignment: center;" text="Regisztráció" textAlignment="CENTER">
                     <font>
@@ -30,7 +32,7 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <Button alignment="TOP_LEFT" layoutX="25.0" layoutY="494.0" mnemonicParsing="false" onAction="#switchBackToLoginScene" prefHeight="30.0" prefWidth="75.0" styleClass="backToLoginButton" stylesheets="@style2.css" text="Vissza">
+                <Button alignment="TOP_LEFT" layoutX="25.0" layoutY="543.0" mnemonicParsing="false" onAction="#switchBackToLoginScene" prefHeight="30.0" prefWidth="75.0" styleClass="backToLoginButton" stylesheets="@style2.css" text="Vissza">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -60,12 +62,14 @@
                         <Font size="14.0" />
                     </font>
                 </Label>
-                <TextField fx:id="usernameField" layoutX="30.0" layoutY="109.0" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="emailField" layoutX="30.0" layoutY="164.0" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="passwordField" layoutX="30.0" layoutY="220.0" prefHeight="24.0" prefWidth="240.0" />
-                <TextField fx:id="passwordAgainField" layoutX="30.0" layoutY="275.0" prefHeight="24.0" prefWidth="240.0" />
-                <DatePicker fx:id="birthDatePicker" layoutX="30.0" layoutY="330.0" prefHeight="24.0" prefWidth="240.0" />
-                <ComboBox fx:id="genderPicker" layoutX="28.0" layoutY="385.0" prefHeight="24.0" prefWidth="100.0">
+                <TextField fx:id="usernameField" layoutX="30.0" layoutY="109.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="emailField" layoutX="30.0" layoutY="164.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+            <PasswordField fx:id="nonvisiblePasswordField" layoutX="30.0" layoutY="220.0" onAction="#setPasswordText1" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="passwordField" layoutX="30.0" layoutY="220.0" onAction="#setPasswordText1" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" visible="false" />
+            <PasswordField fx:id="nonvisiblePasswordField2" layoutX="30.0" layoutY="275.0" onAction="#setPasswordText2" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+                <TextField fx:id="passwordAgainField" layoutX="30.0" layoutY="275.0" onAction="#setPasswordText2" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" visible="false" />
+                <DatePicker fx:id="birthDatePicker" layoutX="30.0" layoutY="330.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="240.0" />
+                <ComboBox fx:id="genderPicker" layoutX="28.0" layoutY="385.0" onMouseClicked="#hideCaptchaPane" prefHeight="24.0" prefWidth="100.0">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Férfi" />
@@ -74,22 +78,44 @@
                         </FXCollections>
                     </items>
                 </ComboBox>
-                <ComboBox fx:id="countryPicker" layoutX="30.0" layoutY="440.0" prefWidth="150.0" />
-                <Button layoutX="68.0" layoutY="192.0" mnemonicParsing="false" onAction="#showPasswordRequirements" prefHeight="16.0" prefWidth="16.0" styleClass="infoButton" stylesheets="@style2.css" text="i" textAlignment="CENTER">
+                <ComboBox fx:id="countryPicker" layoutX="30.0" layoutY="440.0" onMouseClicked="#hideCaptchaPane" prefWidth="150.0" />
+                <Button layoutX="68.0" layoutY="192.0" mnemonicParsing="false" onMouseEntered="#showInfo" onMouseExited="#hideInfo" prefHeight="16.0" prefWidth="16.0" styleClass="infoButton" stylesheets="@style2.css" text="i" textAlignment="CENTER">
                     <font>
                         <Font name="DejaVu Sans Mono Bold" size="12.0" />
                     </font>
                 </Button>
-                <Button layoutX="131.0" layoutY="490.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="39.0" prefWidth="156.0" styleClass="registrationButton" stylesheets="@style2.css" text="Regisztráció" textAlignment="CENTER" textFill="WHITE">
+                <Button layoutX="131.0" layoutY="539.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="39.0" prefWidth="156.0" styleClass="registrationButton" stylesheets="@style2.css" text="Regisztráció" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Button>
+                <Label fx:id="info1" layoutX="111.0" layoutY="147.0" prefHeight="59.0" prefWidth="428.0" style="-fx-background-color: #dcd7d6;" text=" A jelszónak minimum 8 karakterből kell állnia, tartalmaznia &#10; kell kisbetűt, nagybetűt, és számot! Ezenkívül csak a &#10; következő speciális karaktereket tartalmazhatja: !#$%&amp;@+_-\" visible="false" />
+                <CheckBox fx:id="iAmNotARobot" layoutX="24.0" layoutY="492.0" mnemonicParsing="false" onAction="#iAmNotARobot" prefHeight="18.0" prefWidth="150.0" text="Nem vagyok robot" />
+                <Label fx:id="labelRightSum" layoutX="176.0" layoutY="488.0" text="✓" textFill="#00940f" visible="false">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                </Label>
+            <Label fx:id="showPassword1" layoutX="230.0" layoutY="224.0" onMouseClicked="#showPassword1" text="show" />
+            <Label fx:id="showPassword2" layoutX="231.0" layoutY="279.0" onMouseClicked="#showPassword2" text="show" />
+                <Pane fx:id="captchaPane" layoutX="99.0" layoutY="425.0" prefHeight="106.0" prefWidth="196.0" style="-fx-background-color: white; -fx-border-color: grey;" visible="false">
+                    <children>
+                        <Label fx:id="labelNumbers" layoutX="14.0" layoutY="45.0" prefHeight="16.0" prefWidth="75.0" />
+                        <TextField fx:id="sumTextField" layoutX="91.0" layoutY="41.0" prefHeight="24.0" prefWidth="36.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="A két szám összege: " />
+                        <Button layoutX="103.0" layoutY="74.0" mnemonicParsing="false" onAction="#isCaptchaCorrect" text="Ellenőrzés" />
+                        <Label fx:id="labelWrongSum" layoutX="131.0" layoutY="43.0" text="X" textFill="#f20000" visible="false">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </Pane>
             </children>
             <effect>
                 <DropShadow />
             </effect>
         </Pane>
-        <Label fx:id="info" alignment="TOP_LEFT" layoutX="800.0" layoutY="300.0" prefHeight="85.0" prefWidth="250.0" />
+        <Label fx:id="info" alignment="TOP_LEFT" layoutX="800.0" layoutY="300.0" prefHeight="129.0" prefWidth="250.0" />
     </children>
 </Pane>

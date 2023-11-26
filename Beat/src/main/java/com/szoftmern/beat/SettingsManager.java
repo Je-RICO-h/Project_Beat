@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 
 public class SettingsManager {
@@ -11,6 +12,7 @@ public class SettingsManager {
     private int countryIdx = (int)currentUser.getCountryId();
     private boolean wasBadWordsButtonToggled = false;
     private Button saveButton;
+    private Label saveInfoLabel;
     private TextField usernameField;
     private TextField emailField;
     private TextField oldPasswordField;
@@ -22,13 +24,14 @@ public class SettingsManager {
     private Label resetInfoLabel;
 
     public SettingsManager(
-            Button saveButton, TextField usernameField,
+            Button saveButton, Label saveInfoLabel, TextField usernameField,
             TextField emailField, TextField oldPasswordField,
             TextField newPasswordField, TextField newPasswordConfirmationField,
             ComboBox<String> genderPicker, ComboBox<String> countryPicker,
             Button badWordsToggle, Label resetInfoLabel
     ) {
         this.saveButton = saveButton;
+        this.saveInfoLabel = saveInfoLabel;
 
         this.usernameField = usernameField;
         this.emailField = emailField;
@@ -67,9 +70,17 @@ public class SettingsManager {
             newPasswordField.clear();
             newPasswordConfirmationField.clear();
             wasBadWordsButtonToggled = false;
+            countryIdx = (int)currentUser.getCountryId();
+
+            // notify user about successful change
+            saveInfoLabel.setTextFill(Color.color(1, 1, 1));
+            saveInfoLabel.setText("Beállítások elmentve!");
 
             System.out.println("User " + currentUser.getName() + "'s info has been successfully updated.\n");
             System.out.println(currentUser);
+        } else {
+            saveInfoLabel.setTextFill(Color.color(1, 1, 1));
+            saveInfoLabel.setText("Nincs menthető változtatás");
         }
     }
 
@@ -79,10 +90,10 @@ public class SettingsManager {
         }
 
         byte selectedGender = UserInfoHelper.getSelectedGender(genderPicker);
-        String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
-        String userCountry = DatabaseManager.getEveryCountry().get(countryIdx).getName();
-        System.out.println(selectedCountry + " " + userCountry);
 
+        System.out.println(DatabaseManager.getEveryCountry().size());
+        String selectedCountry = UserInfoHelper.getSelectedCountry(countryPicker);
+        String userCountry = DatabaseManager.getEveryCountry().get(countryIdx - 1 > 169 ? 169 : countryIdx - 1).getName();
 
         if ( currentUser.getName().equals(usernameField.getText()) &&
              currentUser.getEmail().equals(emailField.getText()) &&
@@ -130,11 +141,10 @@ public class SettingsManager {
 
         int selectedCountryId = (int)DatabaseManager.getCountryIdFromName(
                 UserInfoHelper.getSelectedCountry(countryPicker));
-        int userCountryId = (int) DatabaseManager.getEveryCountry().get(countryIdx - 1).getId();
-        System.out.println(selectedCountryId + " " + userCountryId);
 
-        if (userCountryId != selectedCountryId) {
-            DatabaseManager.loggedInUser.setCountryId(selectedCountryId + 1);
+
+        if (selectedCountryId != countryIdx) {
+            DatabaseManager.loggedInUser.setCountryId(selectedCountryId);
             canUpdate = true;
         }
 
