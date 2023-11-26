@@ -1,5 +1,6 @@
 package com.szoftmern.beat;
 
+import javafx.animation.PauseTransition;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -27,6 +28,8 @@ import static com.szoftmern.beat.UIController.settingLikeButton;
 import static java.lang.Math.round;
 
 public class MusicPlayer {
+    @FXML
+    private Label WelcomeLabel;
     @FXML
     private TextField newPlaylistName;
     @FXML
@@ -188,6 +191,8 @@ public class MusicPlayer {
 
         playListManager.loadUserPlaylists();
         playListManager.onClickedSaveTrackToSelectedPlaylist(playlistList);
+
+        WelcomeLabel.setText("Hello "+DatabaseManager.loggedInUser.getName()+" !\n");
     }
 
 
@@ -589,6 +594,11 @@ public class MusicPlayer {
             saveInfoLabel.setTextFill(Color.color(1, 0, 0));
             saveInfoLabel.setText(e.getMessage());
         }
+
+        //időzítés hogy 5mp után eltünjön a felirat
+        PauseTransition pause = new PauseTransition(Duration.seconds(5));
+        pause.setOnFinished(event -> saveInfoLabel.setText(""));
+        pause.play();
     }
 
 

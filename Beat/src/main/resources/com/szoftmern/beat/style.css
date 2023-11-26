@@ -22,7 +22,7 @@
 }
 
 
-.increment-button, .decrement-button,.increment-arrow,.decrement-arrow {
+.increment-button, .decrement-button,.increment-arrow,.decrement-arrow,.corner{
     -fx-background-color: transparent;
 
 }
@@ -38,6 +38,19 @@
 
 
 
+}
+.scroll-bar:horizontal{
+    -fx-background-color:transparent;
+
+}
+.scroll-bar:horizontal .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+}
+
+.scroll-bar:horizontal .thumb{
+    -fx-background-color: transparent
 }
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
@@ -89,6 +102,38 @@
 .combo-box .arrow{
     -fx-background-color:white;
 }
+.chart-plot-background {
+    -fx-background-color: #2f2b2b33;
+}
+
+.chart-bar {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-background-radius: 2;
+    -fx-background-position: left center;
+}
+
+.data.chart-bar {
+    -fx-background-color: #2f2b2b33
+}
+
+.chart-title {
+    -fx-text-fill: white;
+    -fx-font-size: 25;
+    -fx-font-family: 'Arial Rounded MT Bold';
+}
+.axis-label {
+    -fx-text-fill: white;
+    -fx-font-size: 20;
+    -fx-font-family: 'Arial Rounded MT Bold';
+}
+
+.axis {
+    -fx-tick-label-fill: white;
+    -fx-font-family: 'Arial Rounded MT Bold';
+
+}
+
 
 
 
