@@ -61,11 +61,11 @@ public class SearchManager{
 
             });
 
-            musicPlayer.searchcontener.setVisible(true);
-            musicPlayer.searchcontener.setDisable(false);
+            musicPlayer.searchContainer.setVisible(true);
+            musicPlayer.searchContainer.setDisable(false);
         } else {
-            musicPlayer.searchcontener.setVisible(false);
-            musicPlayer.searchcontener.setDisable(true);
+            musicPlayer.searchContainer.setVisible(false);
+            musicPlayer.searchContainer.setDisable(true);
         }
     }
 
