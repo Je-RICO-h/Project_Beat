@@ -5,11 +5,12 @@ import lombok.*;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-@ToString(exclude = {"favorites"})
+@ToString(exclude = {"favorites", "playlists"})
 @EqualsAndHashCode
 @Entity
 @Table(name = "Users", schema = "beat-db")
@@ -39,9 +40,9 @@ public class User {
     @Column(name = "date_of_birth")
     private Date dateOfBirth;
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    private Country country;
+    @Basic
+    @Column(name = "country_id")
+    private long countryId;
 
     @Basic
     @Column(name = "registration_date")
@@ -56,15 +57,19 @@ public class User {
     private boolean isFilteringExplicitLyrics;
 
     @ManyToMany(mappedBy = "usersWhoFavorited")
-    private List<Track> favorites;
+    private List<Track> favorites = new ArrayList<>();
 
-    public User(String name, String email, byte[] passHash, Byte gender, Date dateOfBirth, Country country, Date registrationDate) {
+    @OneToMany(mappedBy = "creator")
+    private List<Playlist> playlists = new ArrayList<>();
+
+    public User(String name, String email, byte[] passHash, Byte gender, Date dateOfBirth, long countryId, Date registrationDate, boolean isFilteringExplicitLyrics) {
         this.name = name;
         this.email = email;
         this.passHash = passHash;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
-        this.country = country;
+        this.countryId = countryId;
         this.registrationDate = registrationDate;
+        this.isFilteringExplicitLyrics = isFilteringExplicitLyrics;
     }
 }

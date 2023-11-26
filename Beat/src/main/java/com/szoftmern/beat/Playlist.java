@@ -5,6 +5,7 @@ import lombok.*;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -24,22 +25,20 @@ public class Playlist {
     @Column(name = "name")
     private String name;
 
-    @Basic
-    @Column(name = "public")
-    private boolean isPublic;
-
-    @Basic
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    @Basic
-    @Column(name = "creator")
-    private long creator;
+    @ManyToOne
+    @JoinColumn(name = "creator")
+    private User creator;
 
     @Basic
     @Column(name = "creation_date")
     private Date creationDate;
 
     @ManyToMany(mappedBy = "playlists")
-    private List<Track> tracks;
+    private List<Track> tracks = new ArrayList<>();
+
+    public Playlist(String name, User creator, Date creationDate) {
+        this.name = name;
+        this.creator = creator;
+        this.creationDate = creationDate;
+    }
 }

@@ -64,7 +64,8 @@ public class EntityUtil {
    }
 
     public static void updateDatabaseCountryPlayCount() {
-        Country userCountry = DatabaseManager.loggedInUser.getCountry();
+        int countryId = (int)DatabaseManager.loggedInUser.getCountryId();
+        Country userCountry = DatabaseManager.getEveryCountry().get(countryId - 2 < 0 ? 0 : countryId - 2);
 
         int currentPlayCount = userCountry.getTotalPlayCount();
         int countryTotalPlayCount = sumPlayCounts();
@@ -131,5 +132,27 @@ public class EntityUtil {
 
         throw new IncorrectInformationException("Nem létezik felhasználó ezzel az email címmel!\n");
     }
-}
 
+    public static Playlist getPlaylistFromName(String playlistName) {
+        for (Playlist pl : playlistDAO.getEntities()) {
+            if (pl.getName().equals(playlistName)) {
+                return pl;
+            }
+        }
+
+        return null;
+    }
+
+    public static boolean doesPlaylistAlreadyContainTrack(Playlist playlist, Track track) {
+        for (PlaylistTracks pt : playlistTracksDAO.getEntities()) {
+            if (
+                pt.getPlaylist_id() == playlist.getId() &&
+                pt.getTrack_id() == track.getId()
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

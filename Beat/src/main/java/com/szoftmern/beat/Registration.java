@@ -13,9 +13,19 @@ public class Registration {
     @FXML
     private Label info;
     @FXML
+    private Label info1;
+    @FXML
     private TextField passwordField;
     @FXML
+    private PasswordField nonvisiblePasswordField;
+    @FXML
     private TextField passwordAgainField;
+    @FXML
+    private PasswordField nonvisiblePasswordField2;
+    @FXML
+    private Label showPassword1;
+    @FXML
+    private Label showPassword2;
     @FXML
     private TextField usernameField;
     @FXML
@@ -26,6 +36,20 @@ public class Registration {
     private ComboBox<String> genderPicker;
     @FXML
     private ComboBox<String> countryPicker;
+    @FXML
+    private Pane captchaPane;
+    @FXML
+    private TextField sumTextField;
+    @FXML
+    private Label labelWrongSum;
+    @FXML
+    private Label labelRightSum;
+    @FXML
+    private Label labelNumbers;
+    @FXML
+    private CheckBox iAmNotARobot;
+
+    private boolean isCaptchaCorrect = false;
 
     @FXML
     public void initialize() {
@@ -47,8 +71,47 @@ public class Registration {
     }
 
     @FXML
-    protected void showPasswordRequirements() {
-        info.setText(UserInfoHelper.passwordInfo);
+    protected void showInfo() {
+        info1.setVisible(true);
+    }
+    @FXML
+    protected void hideInfo() {
+        info1.setVisible(false);
+    }
+
+    // when the checkbox is checked, shows captcha panel
+    @FXML
+    protected void iAmNotARobot() {
+        captchaPane.setVisible(true);
+        labelWrongSum.setVisible(false);
+
+        sumTextField.setText("");
+
+        Captcha.setMathProblem(labelNumbers);
+        iAmNotARobot.setDisable(true);
+    }
+
+    // checks the entered sum
+    @FXML
+    protected void isCaptchaCorrect() {
+        this.isCaptchaCorrect = sumTextField.getText().equals(Captcha.getSum(labelNumbers));
+
+        if (!this.isCaptchaCorrect) {
+            labelWrongSum.setVisible(true);
+        }
+        else {
+            captchaPane.setVisible(false);
+            labelRightSum.setVisible(true);
+            iAmNotARobot.setDisable(true);
+        }
+    }
+    @FXML
+    protected void hideCaptchaPane() {
+        if (!labelRightSum.isVisible()) {
+            captchaPane.setVisible(false);
+            iAmNotARobot.setSelected(false);
+            iAmNotARobot.setDisable(false);
+        }
     }
 
     // Saves the new user's info to the database
@@ -71,12 +134,31 @@ public class Registration {
     private User prepareUserForRegistration() {
         String username, email, pass;
 
+
+
+        System.out.println(passwordField.getText()+ " "+passwordAgainField.getText()
+                +" " +nonvisiblePasswordField.getText()+ " "+nonvisiblePasswordField2.getText());
+
         try {
             checkIfEveryInfoIsEntered();
 
+            if (!this.isCaptchaCorrect) {
+                throw new IncorrectInformationException("Rossz captcha válasz");
+            }
+
+            String p1 = passwordField.getText();
+            if (nonvisiblePasswordField.isVisible()) {
+                p1 = nonvisiblePasswordField.getText();
+            }
+
+            String p2 = passwordAgainField.getText();
+            if (nonvisiblePasswordField2.isVisible()) {
+                p2 = nonvisiblePasswordField2.getText();
+            }
+
             username = UserInfoHelper.validateUsername(usernameField.getText());
             email = UserInfoHelper.validateEmail(emailField.getText());
-            pass = UserInfoHelper.validatePassword(passwordField.getText(), passwordAgainField.getText());
+            pass = UserInfoHelper.validatePassword(p1, p2);
 
         } catch (IncorrectInformationException e) {
             info.setText(e.getMessage());
@@ -88,20 +170,20 @@ public class Registration {
         Date dateOfBirth = Date.valueOf(getDateOfBirth());
 
         String countryName = UserInfoHelper.getSelectedCountry(countryPicker);
-        Country country = DatabaseManager.getCountryFromName(countryName);
+        long countryId = DatabaseManager.getCountryIdFromName(countryName);
 
         byte[] passwordHash = UserInfoHelper.generatePasswordHashForUser(pass);
-        Date currentDate = Date.valueOf(LocalDate.now());
+        Date currentDate = UserInfoHelper.getCurrentDate();
 
-        return new User(username, email, passwordHash, gender, dateOfBirth, country, currentDate);
+        return new User(username, email, passwordHash, gender, dateOfBirth, countryId, currentDate, true);
     }
 
     // Checks whether the user has entered every piece of info
     private void checkIfEveryInfoIsEntered() throws IncorrectInformationException{
         if ( emailField.getText().isEmpty() ||
              usernameField.getText().isEmpty() ||
-             passwordField.getText().isEmpty() ||
-             passwordAgainField.getText().isEmpty() ||
+             nonvisiblePasswordField.getText().isEmpty() ||
+             nonvisiblePasswordField2.getText().isEmpty() ||
              birthDatePicker.getValue() == null ||
              genderPicker.getValue() == null ||
              countryPicker.getValue() == null
@@ -112,5 +194,28 @@ public class Registration {
 
     public LocalDate getDateOfBirth() {
         return birthDatePicker.getValue();
+    }
+
+
+    // show/hide password, passing the entered text to textfield/passwordfield
+    @FXML
+    protected void showPassword1(){
+        UIController.showAndHidePassword(nonvisiblePasswordField, passwordField, showPassword1);
+    }
+    @FXML
+    protected void setPasswordText1() {
+        if (nonvisiblePasswordField.isVisible()){
+            passwordField.setText(nonvisiblePasswordField.getText());
+        }
+    }
+    @FXML
+    protected void showPassword2(){
+        UIController.showAndHidePassword(nonvisiblePasswordField2, passwordAgainField, showPassword2);
+    }
+    @FXML
+    protected void setPasswordText2() {
+        if (nonvisiblePasswordField2.isVisible()){
+            passwordAgainField.setText(nonvisiblePasswordField2.getText());
+        }
     }
 }

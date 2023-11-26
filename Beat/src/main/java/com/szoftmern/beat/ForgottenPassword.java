@@ -134,7 +134,7 @@ public class ForgottenPassword {
 
             // if the use has entered the correct confirmation code
             // they can now change their password
-            UIController.setMiddlePain(passwordUpdatePane, emailAndCodeConfirmationPane);
+            UIController.setMiddlePain2(passwordUpdatePane, emailAndCodeConfirmationPane);
 
             doesUserExist = false;
         }
@@ -169,10 +169,8 @@ public class ForgottenPassword {
         MailingService.sendEmail(
                 MailingService.USERNAME,
                 email,
-                "Does it work?",
-                """
-                   <h1 style='font-family: cursive'>Fancy text, eh?</h1>
-     
+                "Confirmation code for new password request",
+                """     
                    Here is your 6-digit confirmation code:
                 """ + confirmationCode,
                 true
@@ -188,7 +186,7 @@ public class ForgottenPassword {
 
     @FXML
     public void switchBackToConfirmationPane() {
-        UIController.setMiddlePain(emailAndCodeConfirmationPane, passwordUpdatePane);
+        UIController.setMiddlePain2(emailAndCodeConfirmationPane, passwordUpdatePane);
 
         // reset pane back to its original state
         emailSentText.setText("");

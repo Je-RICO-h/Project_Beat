@@ -1,6 +1,7 @@
 package com.szoftmern.beat;
 import javafx.animation.*;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -95,7 +96,7 @@ public class UIController {
             System.out.println(artistname);
             musicPlayer.oneArtistName.setText(artistname);
             musicPlayer.oneArtistSongs.getChildren().clear();
-            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox, musicPlayer.statisticbox);
+            setMiddlePain(musicPlayer.oneArtistbox,musicPlayer.homebox, musicPlayer.settingsbox, musicPlayer.artistbox, musicPlayer.favouritebox, musicPlayer.statisticbox,musicPlayer.playlistbox,musicPlayer.onePlaylistbox);
 
             for (Track track : Objects.requireNonNull(getTracksFromArtist(artistname))) {
                 hBox = loadAndSetHBox(track, musicPlayer);
@@ -169,6 +170,8 @@ public class UIController {
 
         Stage stage2 = new Stage();
         stage2.setScene(new Scene(root1));
+        stage2.setMinWidth(1300);
+        stage2.setMinHeight(750);
         stage2.show();
 
         //automatically close the other fxml
@@ -179,7 +182,18 @@ public class UIController {
         UIController.setOnCloseRequestForStage(stage2);
     }
 
-    public static void setMiddlePain(Pane first, Pane... others) {
+    public static void setMiddlePain2(Pane first, Pane... others) {
+
+        first.setDisable(false);
+        first.setVisible(true);
+
+        for (Pane other : others) {
+            other.setDisable(true);
+            other.setVisible(false);
+
+        }
+    }
+    public static void setMiddlePain(AnchorPane first, AnchorPane... others) {
 
         first.setDisable(false);
         first.setVisible(true);
